@@ -1,0 +1,35 @@
+---
+import '@fontsource-variable/open-sans';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/utilities.css';
+import '../styles/motion.css';
+import ConceptBanner from '../components/ConceptBanner.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'Provincial Government of Bulacan',
+  description = 'A concept redesign of the Provincial Government of Bulacan homepage. Not the official website.',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Concept · {title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <ConceptBanner />
+    <slot name="header" />
+    <main id="main"><slot /></main>
+    <slot name="footer" />
+  </body>
+</html>

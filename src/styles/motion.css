@@ -1,0 +1,14 @@
+/* Shared interaction primitives. Only transform and opacity are animated. */
+.press {
+  transition: transform var(--dur-instant) var(--ease-spring), box-shadow var(--dur-instant) var(--ease-out);
+}
+.press:active { transform: scale(var(--press-scale)); }
+
+.lift:hover { transform: var(--hover-lift); box-shadow: var(--shadow-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    transition-duration: 150ms !important;
+  }
+}
