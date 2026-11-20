@@ -1,0 +1,55 @@
+---
+/**
+ * Governor's Message side card (design-system §9.7.2). No portrait, no image of any kind.
+ * Only the "Read full message" button is interactive; it opens a native modal <dialog>.
+ */
+import { governor } from '../data/governor';
+
+const excerpt = governor.paragraphs.slice(0, governor.excerptParagraphs).join(' ');
+---
+
+<div class="gov-card" {...Astro.props}>
+  <span class="gov-card__bar" aria-hidden="true"></span>
+  <p class="eyebrow">{governor.eyebrow}</p>
+  <h3 class="gov-card__heading">{governor.heading}</h3>
+
+  <blockquote class="gov-card__quote">
+    <span class="gov-card__mark icon" style="--icon: var(--icon-quote)" aria-hidden="true"></span>
+    <p>{excerpt}</p>
+  </blockquote>
+
+  <p class="gov-card__by">
+    <span class="gov-card__name">{governor.attribution.name}</span>
+    <span class="gov-card__role">{governor.attribution.title}</span>
+  </p>
+
+  <button
+    type="button"
+    class="gov-card__open icon-end"
+    style="--icon-end: var(--icon-arrow-right)"
+    command="show-modal"
+    commandfor="gov-dialog"
+    data-gov-open
+  >
+    {governor.readMore}
+  </button>
+
+  <dialog id="gov-dialog" class="gov-dialog" aria-labelledby="gov-dialog-title" closedby="any" data-gov-dialog>
+    <div class="gov-dialog__head">
+      <div>
+        <p class="eyebrow">{governor.eyebrow}</p>
+        <h2 id="gov-dialog-title">{governor.heading}</h2>
+      </div>
+      <form method="dialog">
+        <button class="icon-btn icon" style="--icon: var(--icon-x)" aria-label="Close" autofocus></button>
+      </form>
+    </div>
+    <div class="gov-dialog__body" tabindex="-1">
+      {governor.paragraphs.map((p) => <p>{p}</p>)}
+      <p class="gov-card__by">
+        <span class="gov-card__name">{governor.attribution.name}</span>
+        <span class="gov-card__role">{governor.attribution.title}</span>
+      </p>
+    </div>
+  </dialog>
+</div>

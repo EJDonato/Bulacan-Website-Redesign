@@ -1,0 +1,58 @@
+---
+/** News card (design-system §9.7). The title link is stretched over the whole card. */
+import { Image } from 'astro:assets';
+import type { NewsItem } from '../data/types';
+
+interface Props {
+  item: NewsItem;
+}
+const { item } = Astro.props;
+
+const external = item.href.startsWith('http');
+// Dates are plain calendar dates: format in UTC so the day never shifts with the visitor's timezone.
+const dateText = new Intl.DateTimeFormat('en-PH', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+}).format(new Date(item.date));
+---
+
+<article class="news-card">
+  {
+    item.placeholderImage ? (
+      <div class="news-card__media news-card__media--tile">
+        <Image src={item.image} alt={item.imageAlt} width={240} height={168} widths={[240, 360]} sizes="180px" quality={70} loading="lazy" decoding="async" />
+      </div>
+    ) : (
+      <div class="news-card__media">
+        <Image
+          src={item.image}
+          alt={item.imageAlt}
+          width={480}
+          height={320}
+          widths={[320, 480, 720]}
+          sizes="(min-width: 1025px) 270px, (min-width: 641px) 280px, 100vw"
+          quality={72}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    )
+  }
+  <div class="news-card__body">
+    <time class="news-card__date" datetime={item.date}>{dateText}</time>
+    <h3 class="news-card__title">
+      <a
+        href={item.href}
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noopener noreferrer' : undefined}
+      >
+        {item.title}
+        {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+      </a>
+    </h3>
+    <p class="news-card__excerpt">{item.excerpt}</p>
+    <span class="news-card__more icon-end" style="--icon-end: var(--icon-arrow-right)" aria-hidden="true">Read more</span>
+  </div>
+</article>
