@@ -17,7 +17,7 @@
   position: absolute;
   z-index: -1;
   inset-block-end: -35%;
-  inset-inline-start: -12%;
+  inset-inline-end: -12%;
   inline-size: min(70vw, 760px);
   aspect-ratio: 1;
   border-radius: 50%;
@@ -28,7 +28,7 @@
 
 .gov__grid { display: grid; gap: var(--space-4); align-items: end; }
 @media (min-width: 1025px) {
-  .gov__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-7); }
+  .gov__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-7); }
 }
 
 .gov__text {
@@ -101,5 +101,5 @@
 @media (min-width: 641px) { .gov__photo { inline-size: min(100%, 320px); } }
 .gov__photo img { display: block; inline-size: 100%; block-size: auto; }
 @media (min-width: 1025px) {
-  .gov__photo { order: -1; justify-self: start; inline-size: min(100%, 380px); }
+  .gov__photo { justify-self: end; inline-size: min(100%, 380px); }
 }
