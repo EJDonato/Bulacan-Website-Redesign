@@ -1,0 +1,626 @@
+---
+/**
+ * Publications + featured videos (content.md §8, §9; design-system §9.7).
+ *
+ * Two labelled sections side by side on desktop, stacked below that. Video thumbnails only: the YouTube
+ * player is created inside a native <dialog> on click and removed on close, so no YouTube request is made
+ * before the user asks for one. Without script every card is a plain link to the YouTube watch page.
+ */
+import { Image } from 'astro:assets';
+import '../styles/buttons.css';
+import SectionHeading from './SectionHeading.astro';
+import { publications, publicationsHeading } from '../data/publications';
+import { videos, videosHeading } from '../data/videos';
+
+const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+---
+
+<div class="section media-row">
+  <div class="container media-row__grid">
+    <section class="pubs" id="publications" aria-labelledby="publications-title">
+      <SectionHeading title={publicationsHeading} id="publications-title" />
+      <ul class="pubs__list" data-reveal-stagger>
+        {
+          publications.map((pub) => (
+            <li>
+              <a class="pub" href={pub.href} target="_blank" rel="noopener noreferrer" data-tilt>
+                <span class="pub__cover">
+                  <Image
+                    src={pub.cover}
+                    alt={pub.coverAlt}
+                    widths={[200, 320, 480]}
+                    sizes="(max-width: 640px) 44vw, (max-width: 1024px) 260px, 160px"
+                    width={320}
+                    quality={72}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+                <span class="pub__text">
+                  <span class="pub__title">{pub.title}</span>
+                  <span class="pub__issue">{pub.issue}</span>
+                  <span class="pub__cta icon-end" style="--icon-end: var(--icon-external-link)">
+                    Read issue<span class="visually-hidden"> (opens in a new tab)</span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="vids" id="videos" aria-labelledby="videos-title">
+      <SectionHeading
+        title={videosHeading.title}
+        id="videos-title"
+        link={{ label: videosHeading.moreLabel, href: videosHeading.moreHref, external: true }}
+      />
+
+      <div class="carousel" role="group" aria-roledescription="carousel" aria-label="Featured videos" data-carousel data-reveal>
+        <div class="carousel__track" data-track>
+          {
+            videos.map((video, i) => (
+              <div role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${videos.length}`} class="slide">
+                <a
+                  class="vcard"
+                  href={watchUrl(video.youtubeId)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Play video: ${video.title}`}
+                  data-video-id={video.youtubeId}
+                  data-video-title={video.title}
+                >
+                  <span class="vcard__thumb">
+                    <Image
+                      src={video.thumbnail}
+                      alt=""
+                      widths={[320, 480, 640]}
+                      sizes="(max-width: 640px) 78vw, (max-width: 1024px) 44vw, 340px"
+                      width={480}
+                      height={270}
+                      quality={66}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span class="vcard__play icon" style="--icon: var(--icon-play)" aria-hidden="true" />
+                  </span>
+                  <span class="vcard__title">{video.title}</span>
+                </a>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="carousel__bar" data-bar>
+          <p class="carousel__count" data-count aria-hidden="true">Videos 1 to 3 of {videos.length}</p>
+          <div class="carousel__buttons">
+            <button type="button" class="carousel__btn icon press" style="--icon: var(--icon-chevron-left)" aria-label="Previous videos" data-prev></button>
+            <button type="button" class="carousel__btn icon press" style="--icon: var(--icon-chevron-right)" aria-label="Next videos" data-next></button>
+          </div>
+        </div>
+        <p class="visually-hidden" role="status" aria-live="polite" data-status></p>
+      </div>
+    </section>
+  </div>
+
+  <dialog class="player" aria-labelledby="player-title" closedby="any" data-player>
+    <div class="player__panel">
+      <div class="player__bg" aria-hidden="true" data-player-bg></div>
+      <div class="player__bar" data-player-bar>
+        <h3 class="player__title" id="player-title" data-player-title></h3>
+        <button type="button" class="player__close icon press" style="--icon: var(--icon-x)" aria-label="Close video" autofocus data-player-close></button>
+      </div>
+      <div class="player__frame" data-player-frame>
+        <img class="player__poster" alt="" width="1280" height="720" data-player-poster />
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<style>
+  /* Layout ---------------------------------------------------------------------------------------- */
+  .media-row__grid { display: grid; gap: var(--space-8); }
+  .media-row__grid > section { min-inline-size: 0; }
+  @media (min-width: 1025px) {
+    .media-row__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-8); align-items: start; }
+  }
+
+  /* Publications ---------------------------------------------------------------------------------- */
+  .pubs__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  @media (min-width: 641px) { .pubs__list { gap: var(--space-5); } }
+  @media (min-width: 1025px) { .pubs__list { grid-template-columns: 1fr; } }
+
+  .pub {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+    block-size: 100%;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
+    color: var(--fg);
+    text-decoration: none;
+    align-content: start;
+    transition:
+      transform var(--dur-instant) var(--ease-spring),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+  @media (min-width: 1025px) {
+    .pub { grid-template-columns: 150px 1fr; align-items: center; gap: var(--space-5); padding: var(--space-5); }
+  }
+  .pub:hover { text-decoration: none; box-shadow: var(--shadow-2); }
+  .pub:active { transform: scale(var(--press-scale)); }
+  @media (hover: hover) { .pub:hover { transform: var(--hover-lift); } .pub:active { transform: scale(var(--press-scale)); } }
+
+  .pub__cover {
+    display: block;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-2);
+    background: var(--surface-3);
+    /* Pointer tilt (see script): rotation only, written to --rx / --ry. */
+    transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform var(--dur-medium) var(--ease-out);
+    will-change: transform;
+  }
+  .pub__cover.is-tilting { transition-duration: var(--dur-instant); }
+  .pub__cover img { inline-size: 100%; block-size: auto; border-radius: var(--radius-md); }
+  @media (min-width: 641px) and (max-width: 1024px) { .pub__cover { max-inline-size: 260px; } }
+
+  .pub__text { display: grid; gap: var(--space-1); justify-items: start; }
+  .pub__title { font-size: var(--text-lg); font-weight: 600; line-height: 1.3; color: var(--navy-950); }
+  .pub:hover .pub__title { text-decoration: underline; text-underline-offset: 3px; }
+  .pub__issue { font-size: var(--text-sm); color: var(--fg-muted); }
+  .pub__cta {
+    margin-block-start: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--link);
+    --icon-style-size: 1rem;
+    --icon-style-spacing: 0.4em;
+  }
+  .pub__cta::after { transition: transform var(--dur-fast) var(--ease-out); }
+  .pub:hover .pub__cta::after { transform: translate(2px, -2px); }
+
+  /* Videos ----------------------------------------------------------------------------------------- */
+  .carousel { display: grid; gap: var(--space-3); }
+
+  .carousel__track {
+    display: flex;
+    gap: var(--space-4);
+    /* Room for the hover lift and its shadow, which overflow-x would otherwise clip. */
+    padding: var(--space-2) var(--space-1) var(--space-5);
+    margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-1)) calc(-1 * var(--space-3));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--space-1);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+  .carousel__track::-webkit-scrollbar { display: none; }
+  @media (prefers-reduced-motion: no-preference) { .carousel__track { scroll-behavior: smooth; } }
+
+  .slide { flex: 0 0 78%; scroll-snap-align: start; min-inline-size: 0; }
+  @media (min-width: 641px) { .slide { flex-basis: 44%; } }
+  @media (min-width: 1025px) { .slide { flex-basis: 46%; } }
+
+  .vcard {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    block-size: 100%;
+    color: var(--fg);
+    text-decoration: none;
+    transition: transform var(--dur-instant) var(--ease-spring);
+  }
+  .vcard:hover { text-decoration: none; }
+  .vcard:active { transform: scale(var(--press-scale)); }
+
+  .vcard__thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--surface-3);
+    box-shadow: var(--shadow-1);
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .vcard__thumb img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-medium) var(--ease-out);
+  }
+  /* Soft scrim so the white play button reads on any thumbnail. */
+  .vcard__thumb::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(0 6 66 / 0.35), transparent 55%);
+    pointer-events: none;
+  }
+
+  .vcard__play {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    inline-size: 56px;
+    block-size: 56px;
+    margin: -28px 0 0 -28px;
+    border-radius: var(--radius-full);
+    background: var(--white);
+    color: var(--navy-950);
+    box-shadow: var(--shadow-2);
+    --icon-style-size: 24px;
+    --icon-style-voffset: 0;
+    transition: transform var(--dur-fast) var(--ease-spring), background-color var(--dur-instant) var(--ease-out);
+  }
+  .vcard__play::before { margin-inline-start: 3px; fill: currentColor; }
+
+  .vcard__title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--navy-950);
+  }
+
+  @media (hover: hover) {
+    .vcard:hover .vcard__thumb { transform: var(--hover-lift); box-shadow: var(--shadow-2); }
+    .vcard:hover .vcard__thumb img { transform: scale(1.05); }
+    .vcard:hover .vcard__play { transform: scale(1.1); background: var(--gold-400); }
+    .vcard:hover .vcard__title { text-decoration: underline; text-underline-offset: 3px; }
+  }
+  @media (hover: hover) and (prefers-reduced-motion: reduce) {
+    .vcard:hover .vcard__thumb img { transform: none; }
+    .vcard:hover .vcard__play { transform: none; }
+  }
+  .vcard:active .vcard__play { transform: scale(0.94); }
+
+  .carousel__bar { display: none; align-items: center; justify-content: space-between; gap: var(--space-4); }
+  :global(.js) .carousel__bar { display: flex; }
+  .carousel__count { font-size: var(--text-sm); color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+  .carousel__buttons { display: flex; gap: var(--space-2); }
+
+  .carousel__btn {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 44px;
+    block-size: 44px;
+    padding: 0;
+    border: 1.5px solid var(--navy-700);
+    border-radius: var(--radius-full);
+    background: var(--white);
+    color: var(--navy-700);
+    cursor: pointer;
+    --icon-style-size: 24px;
+    --icon-style-voffset: 0;
+    transition:
+      transform var(--dur-instant) var(--ease-spring),
+      background-color var(--dur-instant) var(--ease-out),
+      color var(--dur-instant) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-out);
+  }
+  .carousel__btn:hover:not(:disabled) { background: var(--navy-700); color: var(--white); }
+  .carousel__btn:active:not(:disabled) { transform: scale(var(--press-scale)); }
+  .carousel__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Player dialog ---------------------------------------------------------------------------------- */
+  .player {
+    inline-size: min(960px, calc(100% - 2 * var(--gutter)));
+    max-inline-size: none;
+    max-block-size: calc(100dvh - 2 * var(--space-4));
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--white);
+    overflow: visible;
+  }
+  .player:modal { overscroll-behavior: contain; }
+  .player::backdrop {
+    background: rgb(0 6 66 / 0.82);
+    opacity: 1;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    transition: opacity var(--dur-medium) var(--ease-out);
+  }
+  @starting-style { .player[open]::backdrop { opacity: 0; } }
+  .player.is-closing::backdrop { opacity: 0; transition-duration: var(--dur-fast); transition-timing-function: var(--ease-in); }
+
+  .player__panel {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+  @media (min-width: 641px) { .player__panel { padding: var(--space-4); gap: var(--space-3); } }
+  .player__bg {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-xl);
+    background: var(--bg-inverse);
+    box-shadow: var(--shadow-3);
+  }
+  .player__bar { position: relative; display: flex; padding-inline-start: var(--space-2); align-items: center; justify-content: space-between; gap: var(--space-4); }
+  .player__title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0;
+    color: var(--white);
+  }
+  .player__close {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    inline-size: 44px;
+    block-size: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: rgb(255 255 255 / 0.1);
+    color: var(--white);
+    cursor: pointer;
+    --icon-style-size: 24px;
+    --icon-style-voffset: 0;
+    transition: transform var(--dur-instant) var(--ease-spring), background-color var(--dur-instant) var(--ease-out);
+  }
+  .player__close:hover { background: rgb(255 255 255 / 0.22); }
+  .player__close:active { transform: scale(var(--press-scale)); }
+  .player :focus-visible { outline-color: var(--gold-300); }
+
+  .player__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--navy-900);
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+  .player__poster { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+  .player__frame :global(iframe) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    border: 0;
+    opacity: 0;
+    transition: opacity var(--dur-medium) var(--ease-out);
+  }
+  .player__frame :global(iframe.is-ready) { opacity: 1; }
+</style>
+
+<script>
+  // Tokens come from CSS so durations and easings stay defined in one place (tokens.css).
+  const root = document.documentElement;
+  const css = (name: string) => getComputedStyle(root).getPropertyValue(name).trim();
+  const ms = (name: string) => parseFloat(css(name)) || 0;
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Video carousel: prev/next, count, status --------------------------------------------------
+  const carousel = document.querySelector<HTMLElement>('[data-carousel]');
+  if (carousel) {
+    const track = carousel.querySelector<HTMLElement>('[data-track]')!;
+    const slides = [...track.children] as HTMLElement[];
+    const prev = carousel.querySelector<HTMLButtonElement>('[data-prev]')!;
+    const next = carousel.querySelector<HTMLButtonElement>('[data-next]')!;
+    const count = carousel.querySelector<HTMLElement>('[data-count]')!;
+    const status = carousel.querySelector<HTMLElement>('[data-status]')!;
+    const EDGE = 4;
+    let announced = '';
+    let userScrolled = false;
+
+    // Left edge of a slide in track scroll coordinates (the track is the offset parent's content box).
+    const edge = (s: HTMLElement) => s.offsetLeft - slides[0].offsetLeft;
+
+    // Visible slides = those whose box sits fully inside the track's visible area.
+    const visibleRange = () => {
+      const left = track.scrollLeft;
+      const right = left + track.clientWidth;
+      let first = -1;
+      let last = -1;
+      slides.forEach((s, i) => {
+        const l = edge(s);
+        if (l >= left - EDGE && l + s.offsetWidth <= right + EDGE) {
+          if (first < 0) first = i;
+          last = i;
+        }
+      });
+      if (first < 0) first = last = Math.max(0, slides.findIndex((s) => edge(s) >= left - EDGE));
+      return [first, last] as const;
+    };
+
+    const sync = (announce: boolean) => {
+      const atStart = track.scrollLeft <= EDGE;
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - EDGE;
+      // A disabled control cannot keep focus, so hand it to the opposite one.
+      if (atStart && document.activeElement === prev) next.focus({ preventScroll: true });
+      if (atEnd && document.activeElement === next) prev.focus({ preventScroll: true });
+      prev.disabled = atStart;
+      next.disabled = atEnd;
+      const [a, b] = visibleRange();
+      const text = a === b ? `Video ${a + 1} of ${slides.length}` : `Videos ${a + 1} to ${b + 1} of ${slides.length}`;
+      count.textContent = text;
+      // Announce only when scrolling settles on a different range than the last one announced.
+      if (announce && text !== announced) {
+        if (userScrolled) status.textContent = text;
+        announced = text;
+      }
+    };
+
+    const go = (dir: 1 | -1) => {
+      userScrolled = true;
+      const left = track.scrollLeft;
+      const width = track.clientWidth;
+      let target = left;
+      if (dir === 1) {
+        // First slide that is cut off at the right edge becomes the first visible one.
+        const s = slides.find((el) => edge(el) + el.offsetWidth > left + width + EDGE);
+        if (s) target = edge(s);
+      } else {
+        // Last slide cut off at the left edge becomes the last visible one.
+        const s = [...slides].reverse().find((el) => edge(el) < left - EDGE);
+        if (s) target = edge(s) + s.offsetWidth - width;
+      }
+      track.scrollTo({ left: Math.max(0, target), behavior: reduced() ? 'auto' : 'smooth' });
+    };
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
+
+    let raf = 0;
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => sync(false));
+    }, { passive: true });
+    track.addEventListener('pointerdown', () => (userScrolled = true), { passive: true });
+    track.addEventListener('keydown', () => (userScrolled = true));
+
+    // Settle: announce once scrolling stops. scrollend is Baseline since late 2025; debounce where missing.
+    if ('onscrollend' in window) {
+      track.addEventListener('scrollend', () => sync(true));
+    } else {
+      let t = 0;
+      track.addEventListener('scroll', () => { clearTimeout(t); t = window.setTimeout(() => sync(true), 120); }, { passive: true });
+    }
+    new ResizeObserver(() => sync(false)).observe(track);
+    sync(true);
+  }
+
+  // ---- Player dialog: thumbnail scales into the player -------------------------------------------
+  const dialog = document.querySelector<HTMLDialogElement>('[data-player]');
+  if (dialog && typeof dialog.showModal === 'function') {
+    const panel = dialog.querySelector<HTMLElement>('.player__panel')!;
+    const bg = dialog.querySelector<HTMLElement>('[data-player-bg]')!;
+    const bar = dialog.querySelector<HTMLElement>('[data-player-bar]')!;
+    const frame = dialog.querySelector<HTMLElement>('[data-player-frame]')!;
+    const poster = dialog.querySelector<HTMLImageElement>('[data-player-poster]')!;
+    const titleEl = dialog.querySelector<HTMLElement>('[data-player-title]')!;
+    const closeBtn = dialog.querySelector<HTMLButtonElement>('[data-player-close]')!;
+    let source: HTMLElement | null = null;
+    let closing = false;
+
+    const run = (el: Element, keyframes: Keyframe[], duration: number, easing: string) =>
+      el.animate(keyframes, { duration, easing, fill: 'both' });
+    const fade = (out: boolean): Keyframe[] => (out ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 0 }, { opacity: 1 }]);
+
+    // Transform that makes the frame look like it is still the thumbnail.
+    const fromRect = (from: DOMRect, to: DOMRect) =>
+      `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`;
+
+    const open = (card: HTMLElement) => {
+      const thumb = card.querySelector<HTMLElement>('.vcard__thumb')!;
+      const img = thumb.querySelector('img')!;
+      source = card;
+      closing = false;
+      dialog.classList.remove('is-closing');
+      titleEl.textContent = card.dataset.videoTitle ?? '';
+      poster.src = img.currentSrc || img.src;
+      dialog.showModal();
+
+      const medium = ms('--dur-medium');
+      const easeOut = css('--ease-out');
+      if (reduced()) {
+        run(panel, fade(false), ms('--dur-instant'), 'linear');
+      } else {
+        const to = frame.getBoundingClientRect();
+        const from = thumb.getBoundingClientRect();
+        run(frame, [{ transform: fromRect(from, to) }, { transform: 'none' }], medium, easeOut);
+        run(bg, fade(false), medium, easeOut);
+        run(bar, fade(false), medium, easeOut);
+      }
+
+      // The iframe exists only while the player is open; closing removes it, which stops playback.
+      const iframe = document.createElement('iframe');
+      iframe.title = card.dataset.videoTitle ?? 'Video';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.addEventListener('load', () => iframe.classList.add('is-ready'));
+      iframe.src = `https://www.youtube-nocookie.com/embed/${card.dataset.videoId}?autoplay=1&rel=0`;
+      frame.append(iframe);
+    };
+
+    // Exits are faster than enters: the thumbnail flies back at --dur-fast with the ease-in curve.
+    const dismiss = () => {
+      if (closing || !dialog.open) return;
+      closing = true;
+      dialog.classList.add('is-closing');
+      const finish = () => dialog.close();
+      if (reduced() || !source) {
+        run(panel, fade(true), ms('--dur-instant'), 'linear').finished.then(finish, finish);
+        return;
+      }
+      const fast = ms('--dur-fast');
+      const easeIn = css('--ease-in');
+      const to = frame.getBoundingClientRect();
+      const from = source.querySelector('.vcard__thumb')!.getBoundingClientRect();
+      run(bg, fade(true), fast, easeIn);
+      run(bar, fade(true), fast, easeIn);
+      run(frame, [{ transform: 'none' }, { transform: fromRect(from, to) }], fast, easeIn).finished.then(finish, finish);
+    };
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-video-id]').forEach((card) => {
+      card.addEventListener('click', (e) => {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        open(card);
+      });
+    });
+
+    closeBtn.addEventListener('click', dismiss);
+    // Esc, the back gesture and native light dismiss all arrive as `cancel`: run the exit animation first.
+    dialog.addEventListener('cancel', (e) => { e.preventDefault(); dismiss(); });
+    // Light dismiss where `closedby` is not supported (Safari): a click on the dialog itself is the backdrop,
+    // because the panel fills the dialog box.
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      dialog.addEventListener('click', (e) => { if (e.target === dialog) dismiss(); });
+    }
+    dialog.addEventListener('close', () => {
+      dialog.querySelector('iframe')?.remove();
+      poster.removeAttribute('src');
+      dialog.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+      dialog.classList.remove('is-closing');
+      closing = false;
+      source = null; // focus returns to the card that opened the player (native behaviour)
+    });
+  }
+
+  // ---- Publication covers: subtle pointer tilt (fine pointers only, never under reduced motion) ---
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+    const cover = card.querySelector<HTMLElement>('.pub__cover')!;
+    const MAX = 7; // degrees
+    card.addEventListener('pointermove', (e) => {
+      if (!fine.matches || reduced() || e.pointerType !== 'mouse') return;
+      const r = cover.getBoundingClientRect();
+      const x = Math.min(1, Math.max(-1, ((e.clientX - r.left) / r.width - 0.5) * 2));
+      const y = Math.min(1, Math.max(-1, ((e.clientY - r.top) / r.height - 0.5) * 2));
+      cover.classList.add('is-tilting');
+      cover.style.setProperty('--ry', `${x * MAX}deg`);
+      cover.style.setProperty('--rx', `${-y * MAX}deg`);
+    });
+    const reset = () => {
+      cover.classList.remove('is-tilting');
+      cover.style.removeProperty('--rx');
+      cover.style.removeProperty('--ry');
+    };
+    card.addEventListener('pointerleave', reset);
+    card.addEventListener('pointerdown', reset);
+  });
+</script>

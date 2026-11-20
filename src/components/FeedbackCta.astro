@@ -1,0 +1,133 @@
+---
+/**
+ * Feedback call to action (content.md §11.1; design-system §9.9).
+ * Navy panel: heading, one line, accent button, QR. On phones the QR sits behind a toggle (a code cannot be
+ * scanned on the phone that shows it). Without script the QR simply stays visible.
+ */
+import { Image } from 'astro:assets';
+import '../styles/buttons.css';
+import SectionHeading from './SectionHeading.astro';
+import { feedback } from '../data/footer';
+import feedbackQr from '../assets/footer/feedback-form-qr.svg';
+---
+
+<section class="section section--tight feedback" id="feedback" aria-labelledby="feedback-title">
+  <div class="container">
+    <div class="panel" data-reveal>
+      <div class="panel__copy">
+        <SectionHeading title={feedback.heading} id="feedback-title" lead={feedback.text} />
+        <div class="panel__actions">
+          <span class="glow">
+            <a
+              class="btn btn--accent icon-end"
+              style="--icon-end: var(--icon-external-link)"
+              href={feedback.button.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {feedback.button.label}<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </span>
+          <button
+            type="button"
+            class="btn btn--ghost qr-toggle icon-start"
+            style="--icon-start: var(--icon-qr-code)"
+            aria-expanded="false"
+            aria-controls="feedback-qr"
+            data-show={feedback.showQr}
+            data-hide={feedback.hideQr}
+            data-qr-toggle
+          >
+            <span data-qr-label>{feedback.showQr}</span>
+          </button>
+        </div>
+      </div>
+
+      <figure class="qr" id="feedback-qr" data-qr>
+        <div class="qr__code">
+          <Image src={feedbackQr} alt={feedback.qr.alt} width={176} height={176} loading="lazy" />
+        </div>
+        <figcaption>Or scan the code with your phone</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    gap: var(--space-6);
+    padding: var(--space-6) var(--space-5);
+    border-radius: var(--radius-xl);
+    background: var(--bg-inverse);
+    color: var(--fg-inverse);
+  }
+  @media (min-width: 641px) {
+    .panel { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--space-8); padding: var(--space-7); }
+  }
+  @media (min-width: 1025px) { .panel { padding: var(--space-8) var(--space-8); } }
+
+  /* The shared heading is built for light backgrounds; restate its colors for the navy panel. */
+  .panel :global(.section-head) { margin-block-end: var(--space-5); }
+  .panel :global(.section-head h2) { color: var(--white); }
+  .panel :global(.section-head__lead) { color: var(--fg-inverse-muted); font-size: var(--text-base); }
+  .panel :focus-visible { outline-color: var(--gold-300); }
+
+  .panel__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); }
+  .panel__actions .btn { --icon-style-size: 1.125rem; --icon-style-spacing: 0.1em; }
+
+  /* Slow glow behind the button: a pseudo-element that only changes opacity. Never flashes; off when motion is reduced. */
+  .glow { position: relative; display: inline-flex; border-radius: var(--radius-md); }
+  .glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    box-shadow: 0 0 var(--space-6) var(--space-2) var(--gold-400);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .glow::before { animation: glow calc(var(--dur-slow) * 8) var(--ease-in-out) infinite alternate; }
+  }
+  @media (prefers-reduced-motion: reduce) { .glow::before { display: none; } }
+  @keyframes glow { from { opacity: 0.12; } to { opacity: 0.5; } }
+
+  /* QR ----------------------------------------------------------------------------------------------- */
+  .qr { margin: 0; display: grid; justify-items: center; gap: var(--space-3); }
+  .qr__code {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    box-shadow: var(--shadow-2);
+  }
+  .qr__code img { inline-size: 176px; block-size: 176px; }
+  .qr figcaption { font-size: var(--text-sm); color: var(--fg-inverse-muted); text-align: center; max-inline-size: 22ch; }
+
+  /* Toggle is only for phones, and only when script can drive it. */
+  .qr-toggle { display: none; }
+  @media (max-width: 640px) {
+    :global(.js) .qr-toggle { display: inline-flex; }
+    :global(.js) .qr:not([data-open]) { display: none; }
+    .qr[data-open] { animation: qr-in var(--dur-medium) var(--ease-out); justify-items: start; }
+    .qr__code img { inline-size: 160px; block-size: 160px; }
+  }
+  @keyframes qr-in { from { opacity: 0; transform: translateY(var(--reveal-distance)); } }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-qr-toggle]');
+  const qr = document.querySelector<HTMLElement>('[data-qr]');
+  if (toggle && qr) {
+    const label = toggle.querySelector<HTMLElement>('[data-qr-label]')!;
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? toggle.dataset.hide! : toggle.dataset.show!;
+      qr.toggleAttribute('data-open', open);
+    });
+  }
+</script>

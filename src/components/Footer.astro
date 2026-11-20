@@ -1,0 +1,99 @@
+---
+/**
+ * Site footer (content.md §11; design-system §9.3, §9.10). Page-agnostic: put it in BaseLayout's footer slot.
+ * The concept disclaimer appears here and nowhere else.
+ */
+import { Image } from 'astro:assets';
+import '../styles/icons.css';
+import '../styles/footer.css';
+import { footerColumns, seals } from '../data/footer';
+import { logos, site } from '../data/site';
+
+const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+
+<footer class="site-footer" data-site-footer>
+  <div class="container">
+    <nav class="footer-cols" aria-label="Footer" data-fcols>
+      {
+        footerColumns.map((col) => (
+          <div class="fcol" data-fcol>
+            <h2 class="fcol__title" data-ftitle>{col.heading}</h2>
+            <ul class="fcol__list" id={`footer-${slug(col.heading)}`}>
+              {col.links.map((link) => (
+                <li>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                    {link.label}
+                    <span class="visually-hidden"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </nav>
+
+    <div class="footer-seals">
+      {
+        seals.map((seal) => (
+          <a class="seal-link" href={seal.href} target="_blank" rel="noopener noreferrer">
+            <Image src={seal.src} alt={seal.label} height={128} loading="lazy" decoding="async" />
+            <span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        ))
+      }
+      <Image src={logos.peoplesAgenda.src} alt={logos.peoplesAgenda.alt} height={128} loading="lazy" decoding="async" />
+    </div>
+
+    <div class="footer-legal">
+      <p>{site.conceptCredit}</p>
+      <p class="footer-legal__quote">
+        Original site credit: <q>{site.originalCredit}</q> Hosted by
+        <a href={site.hosting.href} target="_blank" rel="noopener noreferrer">{site.hosting.label}<span class="visually-hidden"> (opens in a new tab)</span></a>.
+      </p>
+      <p class="footer-legal__disclaimer">{site.disclaimer}</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile accordion: below 641px each column heading becomes a button (aria-expanded) that shows its links.
+  // Wider screens keep plain headings and always-visible links, so nothing is hidden without a control.
+  const mq = matchMedia('(max-width: 640px)');
+  const cols = [...document.querySelectorAll<HTMLElement>('[data-fcol]')];
+
+  const parts = cols.map((col) => {
+    const title = col.querySelector<HTMLElement>('[data-ftitle]')!;
+    const list = col.querySelector<HTMLElement>('.fcol__list')!;
+    const label = title.textContent ?? '';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'fcol__toggle icon-end';
+    button.style.setProperty('--icon-end', 'var(--icon-chevron-down)');
+    button.setAttribute('aria-controls', list.id);
+    button.setAttribute('aria-expanded', 'false');
+    button.textContent = label;
+    button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      button.setAttribute('aria-expanded', String(open));
+      list.hidden = !open;
+    });
+    return { title, list, label, button };
+  });
+
+  const apply = () => {
+    for (const { title, list, label, button } of parts) {
+      if (mq.matches) {
+        button.setAttribute('aria-expanded', 'false');
+        title.replaceChildren(button);
+        list.hidden = true;
+      } else {
+        title.replaceChildren(label);
+        list.hidden = false;
+      }
+    }
+  };
+  apply();
+  mq.addEventListener('change', apply);
+</script>
