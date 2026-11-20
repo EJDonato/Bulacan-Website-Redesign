@@ -7,6 +7,7 @@ import '../styles/motion.css';
 import '../styles/icon-tokens.css';
 import '../styles/icons.css';
 import '../styles/sections.css';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
@@ -33,7 +34,7 @@ const {
     <a class="skip-link" href="#main">Skip to main content</a>
     <slot name="header" />
     <main id="main"><slot /></main>
-    <slot name="footer" />
+    <Footer />
     <script>
       import '../scripts/reveal';
     </script>
