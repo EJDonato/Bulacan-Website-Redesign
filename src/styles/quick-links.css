@@ -101,7 +101,9 @@
 }
 
 /* The hero sits directly above; the news heading below supplies its own space. */
-.quick-links { padding-block: var(--space-6) 0; }
-@media (min-width: 1025px) { .quick-links { padding-block: var(--space-7) 0; } }
+/* The hero already leaves space above the tiles, so the row adds none of its own, and the next section starts
+   a comfortable but not oversized step below. */
+.quick-links { padding-block: 0; }
+.quick-links + .section { padding-block-start: var(--space-7); }
 
 @media (min-width: 641px) and (max-width: 1024px) { .ql-tile__hint { -webkit-line-clamp: 2; line-clamp: 2; } }

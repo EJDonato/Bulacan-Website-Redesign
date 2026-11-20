@@ -4,8 +4,8 @@
  * work without script. Script (src/scripts/hero.ts) only adds the controls and announcements.
  */
 
-.hero { padding-block: var(--space-4) var(--space-6); }
-@media (min-width: 641px) { .hero { padding-block: var(--space-5) var(--space-7); } }
+.hero { padding-block: var(--space-4) var(--space-4); }
+@media (min-width: 641px) { .hero { padding-block: var(--space-5) var(--space-5); } }
 
 .hero__wrap {
   max-inline-size: 1440px;
