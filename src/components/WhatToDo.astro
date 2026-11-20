@@ -1,0 +1,52 @@
+---
+/** What to do in Bulacan (design-system §9.7 image card): Shop, Invest, Have Fun. Each card is one link. */
+import { Image } from 'astro:assets';
+import '../styles/what-to-do.css';
+import SectionHeading from './SectionHeading.astro';
+import { experience, experienceHeading } from '../data/experience';
+---
+
+<section class="section section--alt" aria-labelledby="what-to-do-heading">
+  <div class="container">
+    <SectionHeading id="what-to-do-heading" title={experienceHeading.title} lead={experienceHeading.lead} />
+
+    <ul class="wtd-grid" data-reveal-stagger>
+      {
+        experience.map((card) => {
+          const external = card.href.startsWith('http');
+          return (
+            <li>
+              <a
+                class="wtd-card"
+                href={card.href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
+              >
+                <Image
+                  class="wtd-card__img"
+                  src={card.image}
+                  alt={card.imageAlt}
+                  width={720}
+                  height={540}
+                  widths={[480, 720, 960]}
+                  sizes="(min-width: 1025px) 384px, (min-width: 641px) 32vw, 100vw"
+                  quality={70}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="wtd-card__scrim" aria-hidden="true"></span>
+                <span class="wtd-card__caption">
+                  <span class="wtd-card__label icon-end" style="--icon-end: var(--icon-arrow-right)">
+                    {card.label}
+                    {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+                  </span>
+                  <span class="wtd-card__desc">{card.description}</span>
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>
