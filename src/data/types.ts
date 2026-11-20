@@ -15,23 +15,17 @@ export type NavItem = {
   children?: NavItem[];
 };
 
+/** One hero poster, shown whole. The text fields transcribe what the poster says: they describe it for screen readers. */
 export type Slide = {
   id: string;
   eyebrow: string;
   title: string;
-  /** Language of `title` when it is not English. */
-  lang?: 'fil';
   text?: string;
-  /** Language of `text` when it is not English. */
-  textLang?: 'fil';
-  /** Extra lines kept in data; shown only where a slide has room. */
+  /** Extra lines the poster carries (winners, deadlines). */
   details?: string[];
-  /** Human-readable date as shown on the slide. */
+  /** Human-readable date as shown on the poster. */
   dateLabel?: string;
-  /** `image` slides show the poster artwork; `text` slides use the brand background (no photos of officials). */
-  variant: 'image' | 'text';
-  image?: ImageMetadata;
-  imageAlt?: string;
+  image: ImageMetadata;
   /** Source poster path under /wp-content/uploads/, for reference. */
   source: string;
 };

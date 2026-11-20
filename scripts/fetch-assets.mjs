@@ -21,10 +21,19 @@ const manifest = [
   ['logos/province-banner.png', UP + '2021/07/FRAME-3-e1636598453840.png'],
   ['logos/peoples-agenda.png', UP + '2021/11/peoples-agenda-e1636598233282.png'],
 
-  // hero: only posters without officials' photos (content.md §3)
+  // hero: the 13 slider posters, shown whole (content.md §3). Sources are 2500px wide; capped at 2000.
   ['hero/job-fair.jpg', UP + '2026/11/jobfair_nov28.jpg'],
   ['hero/dapc-week.jpg', UP + '2026/11/DAPC-PGB-WEBSITE.jpg'],
   ['hero/childrens-month.jpg', UP + '2026/11/buwan-ng-mga-bata.jpg'],
+  ['hero/outstanding-governor.jpg', UP + '2026/10/OutstandingGovernor2026.png'],
+  ['hero/peoples-governor-excellence.jpg', UP + '2026/06/ExcellenceAward2026.jpg'],
+  ['hero/duyan-ka-ng-magiting.jpg', UP + '2026/06/award_DuyanKaNgMagiting.jpg'],
+  ['hero/global-beacon.jpg', UP + '2026/01/2025GlobalBeaconAward.jpg'],
+  ['hero/top-performing-province.jpg', UP + '2026/01/Top-Performing-Province.jpg'],
+  ['hero/subaybayani.jpg', UP + '2025/12/SubayBayani_award2025.jpg'],
+  ['hero/clexah-2024.jpg', UP + '2025/12/CLEXAH2024.jpg'],
+  ['hero/blgf-finance.jpg', UP + '2025/12/finance_award2025.jpg'],
+  ['hero/real-property-tax.jpg', UP + '2025/11/Real-Property-Tax.jpg'],
   ['hero/iso-9001.jpg', UP + '2024/02/iso_banner.jpg'],
 
   // news (§5)

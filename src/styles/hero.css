@@ -1,25 +1,27 @@
 /*
- * Hero carousel (design-system §9.5, §9.5.1).
- * The track is a native scroll-snap row, so swipe, keyboard and no-JS scrolling all work without script.
- * Script (src/scripts/hero.ts) only adds the controls, counter and announcements.
+ * Hero carousel (design-system §9.5): each slide is its full poster, set inside the page with space around it
+ * so it doesn't cover the page. The track is a native scroll-snap row, so swipe, keyboard and no-JS scrolling all
+ * work without script. Script (src/scripts/hero.ts) only adds the controls and announcements.
  */
 
-.hero { --hero-scrim: color-mix(in srgb, var(--navy-950) 85%, transparent); }
+.hero { padding-block: var(--space-4) var(--space-6); }
+@media (min-width: 641px) { .hero { padding-block: var(--space-5) var(--space-7); } }
 
-.hero__wrap { padding-inline: 0; }
-@media (min-width: 641px) {
-  .hero { padding-block-start: var(--space-5); }
-  .hero__wrap { padding-inline: var(--gutter); }
+.hero__wrap {
+  max-inline-size: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
 }
 
 .hero__frame {
-  display: grid;
-  grid-template-rows: 1fr auto;
+  position: relative;
   overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
   background: var(--bg-inverse);
   color: var(--white);
 }
-@media (min-width: 641px) { .hero__frame { border-radius: var(--radius-xl); box-shadow: var(--shadow-2); } }
+@media (min-width: 641px) { .hero__frame { border-radius: var(--radius-xl); } }
 
 /* ---------- Track and slides ---------- */
 
@@ -37,198 +39,48 @@
 .hero__track:focus-visible { outline-offset: -6px; outline-color: var(--gold-300); }
 
 .hero__slide {
-  position: relative;
-  isolation: isolate;
   flex: 0 0 100%;
   min-inline-size: 0;
   scroll-snap-align: start;
   /* One slide per swipe, even on a hard fling across 13 slides. */
   scroll-snap-stop: always;
-  overflow: clip;
-  display: grid;
-  padding: var(--space-5);
-  aspect-ratio: 4 / 5;
 }
-@media (min-width: 641px) { .hero__slide { padding: var(--space-6); aspect-ratio: 5 / 4; } }
-@media (min-width: 1025px) { .hero__slide { padding: var(--space-7); aspect-ratio: 2 / 1; } }
-
-/* ---------- Text ---------- */
-
-.hero__content {
-  display: grid;
-  gap: var(--space-3);
-  align-content: end;
-  justify-items: start;
-  min-inline-size: 0;
+/* The poster is the slide: it fills the frame's width at its own proportions (2000x897). */
+/* The hero is never taller than the screen. When the screen is short, the frame gets narrower (the poster's
+   width follows its capped height at 2000:897) and stays centered, so the poster shrinks as a whole and is
+   never cropped. The cap leaves room for the header, the space around the poster, the slim bar and a peek of
+   what follows. */
+.hero {
+  --hero-max-h: min(680px, calc(100svh - var(--header-h) - var(--space-9)));
 }
-.hero__content::before {
-  content: "";
-  inline-size: 40px;
-  block-size: 3px;
-  border-radius: var(--radius-full);
-  background: var(--gold-500);
+.hero__frame {
+  max-inline-size: calc(var(--hero-max-h) * 2000 / 897);
+  margin-inline: auto;
 }
-.hero__eyebrow {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--gold-400);
-}
-.hero__title {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  color: var(--white);
-  text-wrap: balance;
-}
-.hero__text {
-  max-inline-size: 60ch;
-  font-size: var(--text-base);
-  color: var(--fg-inverse-muted);
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
-  line-clamp: 5;
-  overflow: hidden;
-}
-.hero__date {
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
-  background: var(--gold-400);
-  color: var(--navy-950);
-  font-size: var(--text-sm);
-  font-weight: 600;
-}
-@media (min-width: 641px) {
-  .hero__title { font-size: var(--text-3xl); }
-  .hero__text { font-size: var(--text-lg); line-clamp: unset; -webkit-line-clamp: unset; display: block; overflow: visible; }
-}
-
-/* ---------- Image slide: poster artwork on a dimmed, blurred copy of itself ---------- */
-
-.hero__bg {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
+.hero__slide img {
+  display: block;
   inline-size: 100%;
-  block-size: 100%;
-  object-fit: cover;
-  filter: blur(18px) saturate(1.2);
-  /* Pushes the blur's soft edge outside the frame. */
-  transform: scale(1.25);
-}
-.hero__scrim {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  /* §9.5 gradient over an even navy veil, so white text clears AA on pale posters too. */
-  background:
-    linear-gradient(to top, var(--hero-scrim), color-mix(in srgb, var(--navy-950) 20%, transparent) 60%, transparent),
-    color-mix(in srgb, var(--navy-950) 62%, transparent);
-}
-
-.hero__slide--image { gap: var(--space-5); grid-template-rows: auto 1fr; }
-.hero__poster {
-  order: -1;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-3);
+  block-size: auto;
   aspect-ratio: 2000 / 897;
-  background: var(--surface-3);
-}
-.hero__poster img { inline-size: 100%; block-size: 100%; object-fit: cover; }
-
-@media (min-width: 1025px) {
-  .hero__slide--image { grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); grid-template-rows: none; gap: var(--space-6); align-items: end; }
-  .hero__poster { order: 0; align-self: center; }
+  object-fit: contain;
+  background: var(--navy-900);
 }
 
-/* Slow zoom on the active poster only, and only when motion is allowed. */
-@keyframes hero-zoom { from { transform: scale(1); } to { transform: scale(1.04); } }
-@media (prefers-reduced-motion: no-preference) {
-  .hero__slide.is-active .hero__poster img { animation: hero-zoom 16s var(--ease-out) forwards; }
-}
-
-/* ---------- Text slide: brand navy and gold, no photos (design-system §9.5.1) ---------- */
-
-.hero__slide--text {
-  background:
-    radial-gradient(ellipse at 88% 8%, color-mix(in srgb, var(--gold-500) 24%, transparent), transparent 52%),
-    linear-gradient(150deg, var(--navy-800), var(--navy-950) 62%);
-}
-/* Fine diagonal weave. */
-.hero__slide--text::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--white) 4%, transparent) 0 1px, transparent 1px 14px);
-  mask-image: linear-gradient(to bottom right, black, transparent 80%);
-}
-/* Concentric gold rings, like a seal's engraved border. */
-.hero__slide--text::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset-block-start: -22%;
-  inset-inline-end: -26%;
-  inline-size: 88%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: repeating-radial-gradient(circle, transparent 0 26px, color-mix(in srgb, var(--gold-500) 42%, transparent) 26px 27px);
-  mask-image: radial-gradient(circle, black 18%, transparent 68%);
-}
-@media (min-width: 1025px) {
-  .hero__slide--text::before { inline-size: 62%; inset-block-start: -34%; inset-inline-end: -8%; }
-  .hero__slide--text .hero__content { max-inline-size: 66%; }
-  .hero__slide--text .hero__title { font-size: calc(var(--text-3xl) * 1.2); }
-}
-@keyframes hero-drift { from { transform: scale(1) rotate(0deg); } to { transform: scale(1.08) rotate(6deg); } }
-@media (prefers-reduced-motion: no-preference) {
-  .hero__slide--text.is-active::before { animation: hero-drift 18s var(--ease-out) forwards; }
-}
-
-/* Content rises in when its slide becomes active. Without script nothing is hidden. */
-@keyframes hero-rise { from { opacity: 0; translate: 0 var(--reveal-distance); } }
-.js .hero__slide.is-active .hero__content > * {
-  animation: hero-rise var(--dur-slow) var(--ease-out) backwards;
-  animation-delay: calc(var(--n, 0) * var(--stagger));
-}
-
-/* ---------- Control bar (script only) ---------- */
+/* ---------- Control bar (script only): the progress scrubber, in a slim bar under the poster ---------- */
 
 .hero__bar { display: none; }
-.js .hero__bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-4);
-  border-block-start: 1px solid color-mix(in srgb, var(--white) 14%, transparent);
-}
-@media (min-width: 641px) { .js .hero__bar { padding-inline: var(--space-6); gap: var(--space-4); } }
-@media (min-width: 1025px) { .js .hero__bar { padding-inline: var(--space-7); } }
-
-.hero__count {
-  min-inline-size: 5ch;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--fg-inverse-muted);
-  white-space: nowrap;
-}
-.hero__count b { color: var(--white); font-weight: 700; }
+.js .hero__bar { display: block; padding: 0 var(--space-4); }
+@media (min-width: 641px) { .js .hero__bar { padding-inline: var(--space-5); } }
 
 /* Progress: 13 thin segments with an invisible native range laid over them for pointer and keyboard scrubbing. */
-.hero__progress { position: relative; flex: 1; min-inline-size: 0; block-size: 44px; display: grid; align-items: center; }
+.hero__progress { position: relative; min-inline-size: 0; block-size: 36px; display: grid; align-items: center; }
 .hero__segs { display: flex; gap: 2px; align-items: center; block-size: 8px; pointer-events: none; }
 .hero__seg {
   flex: 1;
   block-size: 4px;
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--white) 28%, transparent);
-  transform-origin: center;
+  background: color-mix(in srgb, var(--white) 38%, transparent);
+    transform-origin: center;
   transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
 }
 .hero__seg.is-done { background: var(--gold-400); }
@@ -255,7 +107,8 @@
   border-radius: var(--radius-sm);
 }
 
-.hero__btns { display: flex; align-items: center; gap: var(--space-1); }
+/* ---------- Previous / next: the left and right edges, vertically centered over the poster (tablet and up) ---------- */
+
 .hero__btn {
   display: inline-grid;
   place-items: center;
@@ -264,7 +117,8 @@
   padding: 0;
   border: 1.5px solid color-mix(in srgb, var(--white) 40%, transparent);
   border-radius: var(--radius-full);
-  background: transparent;
+  background: color-mix(in srgb, var(--navy-950) 60%, transparent);
+  backdrop-filter: blur(8px);
   color: var(--white);
   --icon-style-size: 1.25rem;
   cursor: pointer;
@@ -273,13 +127,23 @@
     background-color var(--dur-instant) var(--ease-out),
     opacity var(--dur-fast) var(--ease-out);
 }
-.hero__btn:hover:not(:disabled) { background: color-mix(in srgb, var(--white) 12%, transparent); }
-.hero__btn:active:not(:disabled) { transform: scale(var(--press-scale)); background: color-mix(in srgb, var(--white) 20%, transparent); }
+.hero__btn:hover:not(:disabled) { background: color-mix(in srgb, var(--navy-950) 85%, transparent); }
+.hero__btn:active:not(:disabled) { transform: scale(var(--press-scale)); }
 .hero__btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .hero__btn:focus-visible { outline-color: var(--gold-300); }
-.hero__btn[data-hero-play][data-playing="true"] { background: var(--gold-400); border-color: var(--gold-400); color: var(--navy-950); }
-/* Nothing moves under reduced motion, so a play control would have nothing to do. */
-@media (prefers-reduced-motion: reduce) { .hero__btn[data-hero-play] { display: none; } }
+
+.hero__nav { display: none; }
+@media (min-width: 641px) {
+  .js .hero__nav {
+    display: inline-grid;
+    position: absolute;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    z-index: 1;
+  }
+  .hero__nav--prev { inset-inline-start: var(--space-4); }
+  .hero__nav--next { inset-inline-end: var(--space-4); }
+}
 
 @media (forced-colors: active) {
   .hero__seg { background: GrayText; }

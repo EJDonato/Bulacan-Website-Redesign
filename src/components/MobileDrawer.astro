@@ -1,5 +1,5 @@
 ---
-import { nav } from '../data/nav';
+import { nav, hasExternal } from '../data/nav';
 import NavLink from './NavLink.astro';
 import NavItems from './NavItems.astro';
 import { isExternal, toPath } from '../data/site';
@@ -48,7 +48,7 @@ const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').
                     {item.label}
                   </button>
                   <div class="drawer-panel" id={`drawer-${slug(item.label)}`} hidden>
-                    <p class="visually-hidden">Links marked with an arrow icon open the official Bulacan website in a new tab.</p>
+                    {hasExternal(item) && <p class="visually-hidden">Links marked with an arrow icon open the official Bulacan website in a new tab.</p>}
                     <ul class="drawer-sublist">
                       {item.href && (
                         <li>

@@ -20,7 +20,7 @@ This is the single source for every piece of content on the concept homepage. Ea
 | **Status markers:** `[external]` opens in a new tab; `[broken]` renders as a placeholder (design-system §9.13); `[new label]` means a label or hint written for the concept, drawn from existing page titles | — |
 | **No new facts.** Hints and descriptions only restate what the destination page or site title already says | — |
 | **Outdated text stays** (PRD non-goal), but is flagged in §12 for the Part 1 audit | "newly launched" in the Governor's Message |
-| **No photos of officials** in the design (PRD §3). Posters that contain them use the text-only slide variant | See §3 |
+| **No photos of officials as design elements** (PRD §3). The slider posters are existing content and are shown whole and unaltered | See §3 |
 
 ---
 
@@ -119,25 +119,25 @@ All asset paths in this file are relative to `https://bulacan.gov.ph`.
 
 `src/data/hero.ts`. 13 posters on the live site (2500×1121px each, **21.9 MB in total**). None of them link anywhere and none have alt text.
 
-**Image rule:** 4 posters have no photos of officials and can be shown as images (cropped to the artwork, with the real headline over the scrim). The other 9 feature officials' portraits or group photos, so they use the **text-only slide variant** (navy/gold brand background, no photo; see §13).
+**Image rule:** every slide is its full poster, unaltered (owner decision, 2026-11-20). The text columns below transcribe each poster; they feed its alt text and nothing is overlaid on the image.
 
 **Order:** most recent and most useful to residents first. Upcoming events lead; awards follow, newest first.
 
 | # | Eyebrow | Headline | Supporting line | Date | Visual | Source file |
 |---|---|---|---|---|---|---|
-| 1 | Job fair · ⏱ | Tara trabaho, G? Job fair for local employment | Level 1, Robinsons Malolos, City of Malolos, Bulacan · 10:00 AM | 2026-11-28 | Image (crop out logos) | `2026/11/jobfair_nov28.jpg` |
-| 2 | Drug Abuse Prevention and Control · ⏱ | DAPC Week 2026 | *"Nagkakaisang Pamilya at Pamayanan Laban sa Ilegal na Droga Para sa Ligtas at Malusog na Kinabukasan."* (`lang="fil"`) | 2026-11-16 to 2026-11-22 | Image | `2026/11/DAPC-PGB-WEBSITE.jpg` |
-| 3 | 34th National Children's Month Celebration · ⏱ | Manindigan! Tumugon at Kumalinga: Sa batang handa, mas ligtas ang bansa. (`lang="fil"`) | — | November 2026 | Image | `2026/11/buwan-ng-mga-bata.jpg` |
-| 4 | Award | Outstanding Governor for Excellence in Provincial Leadership and Public Service Award | Governor Daniel R. Fernando · Parangal ng Natatanging Pilipino Awards Inc., Eurotel Hotel, Makati | 2026-10-25 | Text-only | `2026/10/OutstandingGovernor2026.png` |
-| 5 | Award | People's Governor Excellence Award | Hon. Daniel R. Fernando · 15th World Class Excellence Japan Awards, The Heritage Hotel Manila, Pasay City | 2026-06-18 | Text-only | `2026/06/ExcellenceAward2026.jpg` |
-| 6 | Award · In commemoration of Philippine Independence Day | Duyan ka ng Magiting | Natatanging Filipino sa Larangan sa Paglilingkod sa Tao at Bayan · Gov. Daniel R. Fernando · AFP Commissioned Officers Club House, Tejeros Hall General Emilio Aguinaldo, Quezon City | 2026-06-12 | Text-only | `2026/06/award_DuyanKaNgMagiting.jpg` |
-| 7 | Award | 2025 Global Beacon of Good Governance | Gov. Daniel R. Fernando · GAA Hollywood | 2025 | Text-only | `2026/01/2025GlobalBeaconAward.jpg` |
-| 8 | Award · Provincial Agriculture Office | Top Performing Province (Rank 1) | Province of Bulacan | — | Text-only | `2026/01/Top-Performing-Province.jpg` |
-| 9 | Award · DILG | SubayBayani Award Exemplar 2025 | Province of Bulacan · The Manila Hotel, City of Manila | 2025-11-26 | Text-only | `2025/12/SubayBayani_award2025.jpg` |
-| 10 | Award · Department of Health | CLEXAH 2024 Health Champions | Province of Bulacan, Gold, Provincial Category · Central Luzon 11th Excellence Awards for Health 2024, Royce Hotel, Clark, Pampanga | 2025-11-24 | Text-only | `2025/12/CLEXAH2024.jpg` |
-| 11 | Award · Bureau of Local Government Finance | Three awards at the BLGF Stakeholders' Recognition Program | Top 1 in the collection of locally sourced revenues among all provinces for FY 2024 · Third in the ratio of locally sourced revenues to total current operating income · Ninth in the year-on-year growth rate of locally sourced revenues | — | Text-only | `2025/12/finance_award2025.jpg` |
-| 12 | Paalala · Tanggapan ng Panlalawigang Ingat-Yaman · ⏱ | Real property tax deadlines 2026 (`lang="fil"` body) | Q1 Marso 31 · Q2 Hunyo 30 · Q3 Setyembre 30 · Q4 Disyembre 29, 2026 · 10% discount for on-time payment, 15% for advance payment · Inquiries: Revenue Operations Division, (044) 791-8115 | 2026 | Text-only (poster has officials' photos) | `2025/11/Real-Property-Tax.jpg` |
-| 13 | Certification | ISO 9001:2015 certified | TÜV Rheinland, Management System, ID 9105086309 | — | Image (capitol + seal artwork) | `2024/02/iso_banner.jpg` |
+| 1 | Job fair · ⏱ | Tara trabaho, G? Job fair for local employment | Level 1, Robinsons Malolos, City of Malolos, Bulacan · 10:00 AM | 2026-11-28 | Whole poster | `2026/11/jobfair_nov28.jpg` |
+| 2 | Drug Abuse Prevention and Control · ⏱ | DAPC Week 2026 | *"Nagkakaisang Pamilya at Pamayanan Laban sa Ilegal na Droga Para sa Ligtas at Malusog na Kinabukasan."* (`lang="fil"`) | 2026-11-16 to 2026-11-22 | Whole poster | `2026/11/DAPC-PGB-WEBSITE.jpg` |
+| 3 | 34th National Children's Month Celebration · ⏱ | Manindigan! Tumugon at Kumalinga: Sa batang handa, mas ligtas ang bansa. (`lang="fil"`) | — | November 2026 | Whole poster | `2026/11/buwan-ng-mga-bata.jpg` |
+| 4 | Award | Outstanding Governor for Excellence in Provincial Leadership and Public Service Award | Governor Daniel R. Fernando · Parangal ng Natatanging Pilipino Awards Inc., Eurotel Hotel, Makati | 2026-10-25 | Whole poster | `2026/10/OutstandingGovernor2026.png` |
+| 5 | Award | People's Governor Excellence Award | Hon. Daniel R. Fernando · 15th World Class Excellence Japan Awards, The Heritage Hotel Manila, Pasay City | 2026-06-18 | Whole poster | `2026/06/ExcellenceAward2026.jpg` |
+| 6 | Award · In commemoration of Philippine Independence Day | Duyan ka ng Magiting | Natatanging Filipino sa Larangan sa Paglilingkod sa Tao at Bayan · Gov. Daniel R. Fernando · AFP Commissioned Officers Club House, Tejeros Hall General Emilio Aguinaldo, Quezon City | 2026-06-12 | Whole poster | `2026/06/award_DuyanKaNgMagiting.jpg` |
+| 7 | Award | 2025 Global Beacon of Good Governance | Gov. Daniel R. Fernando · GAA Hollywood | 2025 | Whole poster | `2026/01/2025GlobalBeaconAward.jpg` |
+| 8 | Award · Provincial Agriculture Office | Top Performing Province (Rank 1) | Province of Bulacan | — | Whole poster | `2026/01/Top-Performing-Province.jpg` |
+| 9 | Award · DILG | SubayBayani Award Exemplar 2025 | Province of Bulacan · The Manila Hotel, City of Manila | 2025-11-26 | Whole poster | `2025/12/SubayBayani_award2025.jpg` |
+| 10 | Award · Department of Health | CLEXAH 2024 Health Champions | Province of Bulacan, Gold, Provincial Category · Central Luzon 11th Excellence Awards for Health 2024, Royce Hotel, Clark, Pampanga | 2025-11-24 | Whole poster | `2025/12/CLEXAH2024.jpg` |
+| 11 | Award · Bureau of Local Government Finance | Three awards at the BLGF Stakeholders' Recognition Program | Top 1 in the collection of locally sourced revenues among all provinces for FY 2024 · Third in the ratio of locally sourced revenues to total current operating income · Ninth in the year-on-year growth rate of locally sourced revenues | — | Whole poster | `2025/12/finance_award2025.jpg` |
+| 12 | Paalala · Tanggapan ng Panlalawigang Ingat-Yaman · ⏱ | Real property tax deadlines 2026 (`lang="fil"` body) | Q1 Marso 31 · Q2 Hunyo 30 · Q3 Setyembre 30 · Q4 Disyembre 29, 2026 · 10% discount for on-time payment, 15% for advance payment · Inquiries: Revenue Operations Division, (044) 791-8115 | 2026 | Whole poster | `2025/11/Real-Property-Tax.jpg` |
+| 13 | Certification | ISO 9001:2015 certified | TÜV Rheinland, Management System, ID 9105086309 | — | Whole poster | `2024/02/iso_banner.jpg` |
 
 **Slide 10 extra detail** (shown only if the text-only variant has room, otherwise omitted from the slide and kept in data): City and municipal health champions: Gold, City of San Jose del Monte · Silver, Plaridel · Bronze, Santa Maria.
 
@@ -180,7 +180,7 @@ Section heading: **Quick links** (h2, visually hidden; the tiles speak for thems
 | Sub-heading | "Want to know the latest?" | Kept as the lead line |
 | View all | (none on the live site) | "View all news →" `[new label]`. Destination: no news index URL is linked on the live homepage; **open item** (§13) |
 
-| # | Title (concept) | Original title | Date | Excerpt (as published, truncated by the live site) | Image | Link |
+| # | Title (concept) | Original title | Date | Excerpt (as published, truncated by the live site) | Whole poster | Link |
 |---|---|---|---|---|---|---|
 | 1 | Photo release – Gawad Galing Kooperatiba 2026 Hall of Fame awardee | PHOTO RELEASE – GAWAD GALING KOOPERATIBA 2026 HALL OF FAME AWARDEE | 2026-11-19 | Bulacan Governor Daniel R. Fernando with (5th from left) Sta. Monica of Bustos Multipurpose Cooperative… | `bb-plugin/cache/GAWAD-GALING-KOOPERATIBA-2026-HALL-OF-FAME-AWARDEE-1024x576-landscape.jpeg` | `/photo-release-gawad-galing-kooperatiba-2026-hall-of-fame-awardee/` |
 | 2 | Photo release – Double win | PHOTO RELEASE – DOUBLE WIN | 2026-11-18 | Barangay officials of Brgy. Matictic, Norzagaray headed by their Captain Marcial S. Lucas, who won… | `bb-plugin/cache/DOUBLE-WIN-1024x683-landscape.jpg` | `/photo-release-double-win-2/` |
@@ -232,7 +232,7 @@ All image paths are under `/wp-content/uploads/`.
 | Heading | What to do in Bulacan? |
 | Lead | Experience Bulacan! |
 
-| Card | Description (revealed on hover) `[new label]` | Image | Link |
+| Card | Description (revealed on hover) `[new label]` | Whole poster | Link |
 |---|---|---|---|
 | Shop | Tatak Bulakenyo products | `2022/07/Shop.jpg` | `/tatak-bulakenyo-products/` |
 | Invest | Business and investment in Bulacan | `2022/08/Major-Industries-2.jpg` | `/business/` |
@@ -341,7 +341,7 @@ Logos used on the live footer for Galing Bulacan (`2022/07/GB-LOGO-NEW-nov14.png
 
 ### 11.3 Seals row
 
-| Seal | Image | Link |
+| Seal | Whole poster | Link |
 |---|---|---|
 | Transparency Seal | `2020/01/transparencyseal-1-150x150.png` | `/government/citizens-charter/` (as on live site) |
 | Philippine Government Seal | `2021/06/govph-seal-mono-footer150.png` | `https://www.gov.ph/` `[external]` |
@@ -383,7 +383,7 @@ Found while taking this snapshot. Not fixed in content (PRD non-goal), but usefu
 
 ## 13. Open items
 
-1. **Text-only hero slide variant** isn't specified in `design-system.md` yet (needed for 9 of 13 slides).
+1. ~~Text-only hero slide variant~~ Dropped: every slide shows its full poster.
 2. **News "View all" destination:** no news index is linked on the live homepage. Options: link to the live site's category/archive page if one exists, or omit the link.
 3. **News thumbnails with officials:** treated as article content, not design elements. Confirm.
 4. **BPSTPC full name:** not stated on its own site or the homepage; confirm from another source or show the acronym only.

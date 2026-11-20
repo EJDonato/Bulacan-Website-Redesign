@@ -248,7 +248,7 @@ Borders: `1px solid var(--border)` for card outlines on white; cards on `--surfa
 - **Photos:** 16:9 for hero and video thumbnails, 3:2 for news and "What to do" cards, original ratio for publication covers.
 - **Posters with baked-in text:** crop to the image area where possible; the headline is real text (system-design §4.2).
 - **Agency logos:** shown in a fixed 56×56px box on a white rounded square, so mixed logo styles look uniform.
-- **No photos of officials** used as design elements (PRD §3).
+- **Photos of officials** are never used as design elements. Posters and news photos that include them appear only as existing content, whole and unaltered (PRD §3).
 - **Alt text:** describe what the image shows; `alt=""` for decorative images.
 
 ---
@@ -312,28 +312,12 @@ No site-wide banner (owner decision, 2026-11-20): a banner above the header woul
 - **Mobile drawer:** opens from the right, 88% width (max 400px), `--navy-950` background, white text, accordion sections with chevrons that rotate 180°. Scrim `rgb(0 6 66 / 0.5)`.
 
 ### 9.5 Hero
-- Full-bleed image (desktop: inset with `--radius-xl`), 16:9 on desktop, 4:5 on mobile.
-- **Scrim:** `linear-gradient(to top, rgb(0 6 66 / 0.85), rgb(0 6 66 / 0.2) 60%, transparent)` so white text always reaches AA.
-- Content bottom-left: eyebrow (date or category), `--text-3xl` headline, one accent button.
-- Controls: previous/next buttons (44px, ghost), progress dots (8px, active dot stretches to 24px and fills as a progress bar), pause button when auto-advance is on.
-
-### 9.5.1 Hero slide variants
-
-The hero holds 13 slides in a native scroll-snap row. Two variants share the same text block (gold bar, eyebrow, headline, text, date chip) and the same control bar.
-
-**Image slide** (posters, 4 of 13). The poster is shown whole, as artwork, so its baked-in text is never cropped or fought with: it sits in a `--radius-lg` card with `--shadow-3` (right, 6 of 10 columns on desktop; on top, full width, on phones and tablets) over a blurred, saturated, tiny copy of itself (48px source, `blur(18px)`) under a navy veil (62%) and the §9.5 gradient. The real headline, text and date sit bottom-left on that veil. The active poster zooms slowly (1 to 1.04 over 16s) only when motion is allowed.
-
-**Text slide** (no photos, 9 of 13: awards and notices). Brand-only background so no photo of an official is ever used (PRD §3):
-- `linear-gradient(150deg, --navy-800, --navy-950 62%)` with a soft `--gold-500` glow at the top right (24%).
-- A fine 135-degree weave (white, 4%, 1px lines every 14px), faded toward the bottom right.
-- Concentric `--gold-500` rings (42% alpha, 1px lines every 27px) masked to fade out, like an engraved seal border; it drifts and rotates slowly (1.08 scale, 6 degrees over 18s) only when motion is allowed.
-- Content bottom-left, max 66% wide on desktop. Headline at 1.2 times `--text-3xl` on desktop (`--text-3xl` on tablet, `--text-2xl` on phones). Date as a `--gold-400` pill with `--navy-950` text.
-
-**Slide face.** Eyebrow, headline, text (clamped to 5 lines on phones) and date are shown. `details` are not shown on the slide.
-
-**Heading.** The page's h1 is a stable, visually hidden "Provincial Government of Bulacan". Slide headlines are styled paragraphs, not headings; each slide is a group labelled "n of 13" and the active title is announced politely.
-
-**Controls** (below the slides, inside the frame): counter "n / 13", a 13-segment progress bar (done segments `--gold-400`, current segment white and twice as tall, so position is not conveyed by color alone) with an invisible native range laid over it for scrubbing, then play/pause (auto-advance is off until pressed; hidden under reduced motion), previous and next. All 44px. Disabled previous/next hand focus to the opposite button.
+Each of the 13 slides is its **full poster, unaltered** (owner decision, 2026-11-20): shown at its own 2000:897 proportions, never tinted or overlaid with text. The artwork carries its own headline, so the hero adds nothing on top of it.
+- **Inset with space around it** (owner decision, 2026-11-20, after trying full bleed): the poster sits in a frame inside the page gutter (max 1440px wide, `--radius-xl` from 641px and `--radius-lg` on phones, `--shadow-2`), with `--space-5` above and `--space-7` below it (`--space-4` and `--space-6` on phones), so it never covers the page edge to edge. It scales with the frame width at 2000:897 and its height is capped at `min(680px, 100svh - header - 96px)`, so the hero is never taller than the screen. **The poster is never cropped:** when the screen is short, the frame itself gets narrower (its max width is the capped height times 2000/897) and stays centered, so the poster shrinks as a whole.
+- **Track:** a native scroll-snap row, one slide per swipe. Swipe, arrow keys and the no-JS scroll all work without script.
+- **Controls:** previous and next are 48px round buttons on the **left and right edges** of the poster, vertically centered (44px, translucent navy with `backdrop-filter: blur(8px)`; tablet and up). A 13-segment progress scrubber (an invisible native range laid over it, so there are no 13 tab stops) sits in a slim navy bar under the poster, so it never covers the artwork. There is **no play button and no slide numbers** (owner decision, 2026-11-20), and slides never advance on their own. On phones swiping moves between slides and the arrows are hidden. Previous and next disable at the ends and hand focus to the other button.
+- **Accessibility:** the page's only h1 is a visually hidden "Provincial Government of Bulacan". Each poster's alt text transcribes everything it says (`slideAlt` in `src/data/hero.ts`), and the active slide's title is announced politely after the person moves the carousel.
+- **Motion:** nothing moves on a poster. Under reduced motion slides snap instantly.
 
 ### 9.6 Section heading
 Eyebrow (optional) → h2 `--text-2xl` → optional lead → optional "View all" text link aligned right on desktop, below on mobile. A 40×3px `--gold-500` bar sits above the eyebrow. Spacing to content: `--space-6`.

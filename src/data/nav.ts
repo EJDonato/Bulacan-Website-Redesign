@@ -1,5 +1,5 @@
 import type { NavItem } from './types';
-import { page } from './site';
+import { page, isExternal } from './site';
 
 const city = (label: string, slug: string): NavItem => ({
   label,
@@ -39,7 +39,11 @@ export const municipalities: NavItem[] = [
   city('Santa Maria', 'santa-maria'),
 ];
 
-export const nav: NavItem[] = [
+/**
+ * The complete menu of the original site. Not shown as-is: the navbar is derived from it (see `nav` below),
+ * and the page registry reads it for breadcrumbs and for the child links listed on section pages.
+ */
+export const fullMenu: NavItem[] = [
   { label: 'Home', href: page('/') }, // the concept's own homepage
   {
     label: 'General Info',
@@ -138,3 +142,27 @@ export const nav: NavItem[] = [
   { label: 'HR Corner', href: page('/hr-corner/') },
   { label: 'Contact Us', href: page('/contact-us/') },
 ];
+
+const isInternal = (item: NavItem) => !!item.href && !item.broken && !isExternal(item.href);
+
+/**
+ * Keeps only what lives on our site, so the navbar never sends someone to the original site by surprise.
+ * An item stays if it is a concept page (its own links beneath it stay only if they are concept pages too),
+ * or if it groups concept pages. A group with a single concept page becomes that page. Adding a path to
+ * `conceptPages` in site.ts adds it to the navbar automatically.
+ */
+const curate = (items: NavItem[]): NavItem[] =>
+  items.flatMap((item): NavItem[] => {
+    const kids = curate(item.children ?? []);
+    if (isInternal(item)) return [{ label: item.label, href: item.href, ...(kids.length ? { children: kids } : {}) }];
+    if (kids.length === 0) return [];
+    if (kids.length === 1) return kids;
+    return [{ label: item.label, children: kids }];
+  });
+
+/** The navbar and mobile drawer. */
+export const nav: NavItem[] = curate(fullMenu);
+
+/** True when a menu entry lists any link that leaves the concept. */
+export const hasExternal = (item: NavItem): boolean =>
+  (item.children ?? []).some((c) => (!!c.href && isExternal(c.href)) || hasExternal(c));

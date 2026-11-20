@@ -1,5 +1,5 @@
 import type { NavItem } from './types';
-import { nav } from './nav';
+import { fullMenu } from './nav';
 import { quickLinks } from './quickLinks';
 import { experience } from './experience';
 import { footerColumns, seals } from './footer';
@@ -71,7 +71,7 @@ const walk = (items: NavItem[], crumbs: Crumb[]) => {
   }
 };
 
-walk(nav.filter((i) => i.label !== 'Home'), []);
+walk(fullMenu.filter((i) => i.label !== 'Home'), []);
 
 // Any concept page the menu tree does not reach (labels as the fallback title).
 for (const l of [...quickLinks, ...experience, ...footerColumns.flatMap((c) => c.links), ...seals]) {

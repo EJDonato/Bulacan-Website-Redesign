@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import '../styles/buttons.css';
 import '../styles/header.css';
 import '../styles/drawer.css';
-import { nav } from '../data/nav';
+import { nav, hasExternal } from '../data/nav';
 import { logos, isExternal, toPath } from '../data/site';
 import type { NavItem } from '../data/types';
 import NavLink from './NavLink.astro';
@@ -56,7 +56,7 @@ const containsCurrent = (item: NavItem): boolean =>
                 </button>
                 {/* Placed right after its trigger so browsers add no implicit aria-details. */}
                 <div id={id} class:list={['dropdown', { 'dropdown--mega': mega }]} popover="auto">
-                  <p class="visually-hidden">Links marked with an arrow icon open the official Bulacan website in a new tab.</p>
+                  {hasExternal(item) && <p class="visually-hidden">Links marked with an arrow icon open the official Bulacan website in a new tab.</p>}
                   {/* The wrapper is a transparent hover bridge; the visible card is the list. */}
                   <ul class="dropdown-card">
                     {item.href && (
