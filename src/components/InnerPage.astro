@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import '../styles/buttons.css';
+import '../styles/inner.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import type { PageEntry } from '../data/pages';
+
+interface Props {
+  page: PageEntry;
+}
+
+const { page } = Astro.props;
+const home = import.meta.env.BASE_URL;
+const hasChildren = page.groups.some((g) => g.items.length);
+const count = page.groups.reduce((n, g) => n + g.items.length, 0);
+
+const dateLabel = page.news
+  ? new Intl.DateTimeFormat('en-PH', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(page.news.date))
+  : undefined;
+---
+
+<BaseLayout title={page.title} description={`${page.title}. An inner page placeholder in a concept redesign of the Provincial Government of Bulacan website. Not the official website.`}>
+  <Header slot="header" />
+
+  <div class="inner">
+    <nav class="breadcrumb" aria-label="Breadcrumbs">
+      <ol class="container">
+        <li><a href={home}>Home</a></li>
+        {
+          page.crumbs.map((c) => (
+            <li>{c.href ? <a href={c.href}>{c.title}</a> : <span class="breadcrumb-text">{c.title}</span>}</li>
+          ))
+        }
+        <li><a href={page.href} aria-current="page">{page.title}</a></li>
+      </ol>
+    </nav>
+
+    <header class="inner-intro">
+      <div class="container inner-intro-grid">
+        <div class="inner-intro-text">
+          {dateLabel && <p class="inner-eyebrow"><time datetime={page.news!.date}>{dateLabel}</time></p>}
+          {page.publication && <p class="inner-eyebrow">{page.publication.issue}</p>}
+          <h1>{page.title}</h1>
+          {page.news && <p class="inner-lead">{page.news.excerpt}</p>}
+          {hasChildren && <p class="inner-lead">{count} {count === 1 ? 'page' : 'pages'} in this section.</p>}
+        </div>
+        {
+          page.news && (
+            <Image
+              class:list={['inner-media', { 'inner-media--placeholder': page.news.placeholderImage }]}
+              src={page.news.image}
+              alt={page.news.imageAlt}
+              width={480}
+              loading="eager"
+            />
+          )
+        }
+        {
+          page.publication && (
+            <Image class="inner-media inner-media--cover" src={page.publication.cover} alt={page.publication.coverAlt} width={320} loading="eager" />
+          )
+        }
+      </div>
+    </header>
+
+    <section class="container inner-body" aria-labelledby="notice-title">
+      <div class="inner-notice">
+        <h2 id="notice-title">This page is not part of the concept redesign</h2>
+        <p>
+          This concept redesigns the homepage only. This page is a placeholder so navigation stays inside the concept.
+          The full content is on the official website of the Provincial Government of Bulacan.
+        </p>
+        <div class="inner-actions">
+          <a class="btn btn--primary" href={page.official} target="_blank" rel="noopener noreferrer">
+            View the original page on bulacan.gov.ph<span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+          <a class="btn btn--secondary" href={home}>Back to the homepage</a>
+        </div>
+      </div>
+
+      {
+        page.groups.map((group, gi) => (
+          <section class="inner-group" aria-labelledby={`group-${gi}`}>
+            <h2 id={`group-${gi}`}>{group.label ?? (page.groups.length > 1 ? 'Pages' : 'In this section')}</h2>
+            <ul class="inner-cards">
+              {group.items.map((c) => (
+                <li>
+                  {c.href ? (
+                    <a class="inner-card" href={c.href}>{c.title}</a>
+                  ) : (
+                    <span class="inner-card is-unavailable" title="Link unavailable on the official site">
+                      {c.title}
+                      <span class="visually-hidden"> (link unavailable on the official site)</span>
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </section>
+  </div>
+</BaseLayout>

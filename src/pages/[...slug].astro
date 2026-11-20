@@ -1,0 +1,12 @@
+---
+import InnerPage from '../components/InnerPage.astro';
+import { pages, slugOf } from '../data/pages';
+
+export function getStaticPaths() {
+  return pages.map((page) => ({ params: { slug: slugOf(page.path) }, props: { page } }));
+}
+
+const { page } = Astro.props;
+---
+
+<InnerPage page={page} />

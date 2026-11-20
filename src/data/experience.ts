@@ -1,5 +1,5 @@
 import type { ExperienceCard } from './types';
-import { official } from './site';
+import { page } from './site';
 
 import shop from '../assets/experience/shop.jpg';
 import invest from '../assets/experience/invest.jpg';
@@ -17,20 +17,20 @@ export const experience: ExperienceCard[] = [
     description: 'Tatak Bulakenyo products',
     image: shop,
     imageAlt: 'Tatak Bulakenyo products',
-    href: official('/tatak-bulakenyo-products/'),
+    href: page('/tatak-bulakenyo-products/'),
   },
   {
     label: 'Invest',
     description: 'Business and investment in Bulacan',
     image: invest,
     imageAlt: "Bulacan's major industries",
-    href: official('/business/'),
+    href: page('/business/'),
   },
   {
     label: 'Have Fun',
     description: 'Tourism: historical, heritage, ecological and religious sites, and festivals',
     image: haveFun,
     imageAlt: 'Tourist attractions in Bulacan',
-    href: official('/tourism/'),
+    href: page('/tourism/'),
   },
 ];

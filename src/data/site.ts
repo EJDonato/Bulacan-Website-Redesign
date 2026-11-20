@@ -4,8 +4,22 @@ import peoplesAgenda from '../assets/logos/peoples-agenda.png';
 
 export const OFFICIAL_ORIGIN = 'https://bulacan.gov.ph';
 
-/** Absolute URL on the official site. Every link in the concept leaves the concept, so all are absolute. */
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+/** A page inside the concept. `path` is the pathname on bulacan.gov.ph, which the concept mirrors: "/government/offices/". */
+export const page = (path: string) => `${BASE}${path}`;
+
+/** Absolute URL of the same page on the official site (the "view the original" counterpart). */
 export const official = (path: string) => `${OFFICIAL_ORIGIN}${path}`;
+
+/** Inverse of `page()`: the site-relative path of an internal href, always with a leading and a trailing slash. */
+export const toPath = (href: string) => {
+  const p = BASE && href.startsWith(BASE) ? href.slice(BASE.length) : href;
+  return p.endsWith('/') ? p : `${p}/`;
+};
+
+/** True for hrefs that leave the concept. */
+export const isExternal = (href: string) => /^https?:/.test(href);
 
 export const site = {
   name: 'Provincial Government of Bulacan',
