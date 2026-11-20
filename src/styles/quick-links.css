@@ -1,0 +1,107 @@
+/* Quick link tiles (design-system §9.7.1). Mobile: 2 stacked columns, hint hidden. Tablet: 3 horizontal. Desktop: 6 stacked. */
+
+.ql-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+@media (min-width: 641px) { .ql-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); } }
+@media (min-width: 1025px) { .ql-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+
+.ql-grid > li { display: grid; }
+
+.ql-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-block-size: 112px;
+  padding: var(--space-4);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--fg);
+  text-decoration: none;
+  transition:
+    transform var(--dur-fast) var(--ease-out) var(--stagger),
+    box-shadow var(--dur-fast) var(--ease-out) var(--stagger),
+    background-color var(--dur-fast) var(--ease-out);
+}
+.ql-tile:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--shadow-2);
+  background: var(--navy-50);
+  text-decoration: none;
+  z-index: var(--z-raised);
+}
+.ql-tile:active {
+  transform: scale(var(--press-scale));
+  box-shadow: var(--shadow-1);
+  transition-delay: 0s;
+  transition-duration: var(--dur-instant);
+  transition-timing-function: var(--ease-spring);
+}
+
+/* Icon circle. The glyph nudges up first (anticipation), then the tile lifts after one --stagger. */
+.ql-tile__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 40px;
+  block-size: 40px;
+  border-radius: var(--radius-full);
+  background: var(--navy-100);
+  color: var(--navy-700);
+  --icon-style-size: 1.25rem;
+  --icon-style-spacing: 0;
+  transition: background-color var(--dur-instant) var(--ease-out), color var(--dur-instant) var(--ease-out);
+}
+.ql-tile__icon::before { transition: transform var(--dur-fast) var(--ease-out); }
+.ql-tile:hover .ql-tile__icon { background: var(--navy-700); color: var(--white); }
+.ql-tile:hover .ql-tile__icon::before { transform: translateY(-2px); }
+
+.ql-tile__text { display: grid; gap: var(--space-1); min-inline-size: 0; }
+.ql-tile__label { font-size: var(--text-base); font-weight: 600; line-height: 1.3; color: var(--navy-950); text-wrap: balance; }
+.ql-tile__hint {
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--fg-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+/* On phones the hint is removed from view but stays referenced by aria-describedby. */
+@media (max-width: 640px) {
+  .ql-tile__hint { display: none; }
+}
+
+.ql-tile__end {
+  position: absolute;
+  inset-block-start: var(--space-4);
+  inset-inline-end: var(--space-3);
+  color: var(--text-subtle);
+  --icon-style-size: 1.125rem;
+  --icon-style-spacing: 0;
+  transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.ql-tile:hover .ql-tile__end { color: var(--navy-700); transform: translateX(2px); }
+
+@media (min-width: 641px) {
+  .ql-tile { flex-direction: row; align-items: center; gap: var(--space-4); min-block-size: 96px; padding-inline-end: var(--space-7); }
+  .ql-tile__icon { inline-size: 48px; block-size: 48px; --icon-style-size: 1.5rem; }
+  .ql-tile__end { inset-block-start: 50%; inset-inline-end: var(--space-4); translate: 0 -50%; }
+}
+
+@media (min-width: 1025px) {
+  .ql-tile { flex-direction: column; align-items: flex-start; gap: var(--space-3); min-block-size: 0; padding-inline-end: var(--space-4); }
+  .ql-tile__end { inset-block-start: var(--space-4); inset-inline-end: var(--space-3); translate: none; }
+}
+
+/* The hero sits directly above; the news heading below supplies its own space. */
+.quick-links { padding-block: var(--space-6) 0; }
+@media (min-width: 1025px) { .quick-links { padding-block: var(--space-7) 0; } }
+
+@media (min-width: 641px) and (max-width: 1024px) { .ql-tile__hint { -webkit-line-clamp: 2; line-clamp: 2; } }

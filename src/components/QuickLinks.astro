@@ -1,0 +1,50 @@
+---
+/** Quick links (design-system §9.7.1): six task tiles. Section heading is visually hidden. */
+import '../styles/quick-links.css';
+import { quickLinks } from '../data/quickLinks';
+
+const isExternal = (href: string) => href.startsWith('http');
+---
+
+<section class="section section--tight quick-links" aria-labelledby="quick-links-heading">
+  <div class="container">
+    <h2 id="quick-links-heading" class="visually-hidden">Quick links</h2>
+    <ul class="ql-grid" data-reveal-stagger>
+      {
+        quickLinks.map((link, i) => {
+          const external = isExternal(link.href);
+          const hintId = `quick-link-hint-${i}`;
+          return (
+            <li>
+              <a
+                class="ql-tile"
+                href={link.href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
+                aria-describedby={hintId}
+              >
+                <span
+                  class="ql-tile__icon icon-start"
+                  style={`--icon-start: var(--icon-${link.icon})`}
+                  aria-hidden="true"
+                />
+                <span class="ql-tile__text">
+                  <span class="ql-tile__label">
+                    {link.label}
+                    {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+                  </span>
+                  <span class="ql-tile__hint" id={hintId}>{link.hint}</span>
+                </span>
+                <span
+                  class="ql-tile__end icon-start"
+                  style={`--icon-start: var(--icon-${external ? 'external-link' : 'chevron-right'})`}
+                  aria-hidden="true"
+                />
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>
