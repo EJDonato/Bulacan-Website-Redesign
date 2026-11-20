@@ -317,6 +317,24 @@ No site-wide banner (owner decision, 2026-11-20): a banner above the header woul
 - Content bottom-left: eyebrow (date or category), `--text-3xl` headline, one accent button.
 - Controls: previous/next buttons (44px, ghost), progress dots (8px, active dot stretches to 24px and fills as a progress bar), pause button when auto-advance is on.
 
+### 9.5.1 Hero slide variants
+
+The hero holds 13 slides in a native scroll-snap row. Two variants share the same text block (gold bar, eyebrow, headline, text, date chip) and the same control bar.
+
+**Image slide** (posters, 4 of 13). The poster is shown whole, as artwork, so its baked-in text is never cropped or fought with: it sits in a `--radius-lg` card with `--shadow-3` (right, 6 of 10 columns on desktop; on top, full width, on phones and tablets) over a blurred, saturated, tiny copy of itself (48px source, `blur(18px)`) under a navy veil (62%) and the §9.5 gradient. The real headline, text and date sit bottom-left on that veil. The active poster zooms slowly (1 to 1.04 over 16s) only when motion is allowed.
+
+**Text slide** (no photos, 9 of 13: awards and notices). Brand-only background so no photo of an official is ever used (PRD §3):
+- `linear-gradient(150deg, --navy-800, --navy-950 62%)` with a soft `--gold-500` glow at the top right (24%).
+- A fine 135-degree weave (white, 4%, 1px lines every 14px), faded toward the bottom right.
+- Concentric `--gold-500` rings (42% alpha, 1px lines every 27px) masked to fade out, like an engraved seal border; it drifts and rotates slowly (1.08 scale, 6 degrees over 18s) only when motion is allowed.
+- Content bottom-left, max 66% wide on desktop. Headline at 1.2 times `--text-3xl` on desktop (`--text-3xl` on tablet, `--text-2xl` on phones). Date as a `--gold-400` pill with `--navy-950` text.
+
+**Slide face.** Eyebrow, headline, text (clamped to 5 lines on phones) and date are shown. `details` are not shown on the slide.
+
+**Heading.** The page's h1 is a stable, visually hidden "Provincial Government of Bulacan". Slide headlines are styled paragraphs, not headings; each slide is a group labelled "n of 13" and the active title is announced politely.
+
+**Controls** (below the slides, inside the frame): counter "n / 13", a 13-segment progress bar (done segments `--gold-400`, current segment white and twice as tall, so position is not conveyed by color alone) with an invisible native range laid over it for scrubbing, then play/pause (auto-advance is off until pressed; hidden under reduced motion), previous and next. All 44px. Disabled previous/next hand focus to the opposite button.
+
 ### 9.6 Section heading
 Eyebrow (optional) → h2 `--text-2xl` → optional lead → optional "View all" text link aligned right on desktop, below on mobile. A 40×3px `--gold-500` bar sits above the eyebrow. Spacing to content: `--space-6`.
 
