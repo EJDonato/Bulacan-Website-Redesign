@@ -9,8 +9,10 @@
   inset-block-start: 0;
   z-index: var(--z-header);
   block-size: var(--header-h);
-  background: var(--bg);
-  border-block-end: 1px solid var(--border);
+  /* Brand navy with a gold edge, echoing the gold frame of the province banner. */
+  background: var(--bg-inverse);
+  color: var(--fg-inverse);
+  border-block-end: 2px solid var(--gold-500);
 }
 
 .header-inner {
@@ -55,26 +57,22 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  color: var(--navy-950);
+  border-radius: var(--radius-sm);
   text-decoration: none;
 }
 .brand:hover { text-decoration: none; }
 .brand-seal { inline-size: 40px; block-size: 40px; }
-.brand-text { display: grid; line-height: 1.1; }
-.brand-kicker { font-size: var(--text-sm); font-weight: 600; color: var(--text-muted); }
-.brand-name { font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.01em; }
+/* The gold-framed plaque is its own wordmark. It is only 391px wide, so it stays at or under 2x. */
+.brand-banner { inline-size: auto; block-size: 44px; }
 
 /* People's Agenda 10 logo only where there is room; it always appears in the footer. */
 .brand-agenda { display: none; inline-size: 40px; block-size: 40px; }
-@media (min-width: 1400px) { .brand-agenda { display: block; } }
+@media (min-width: 1500px) { .brand-agenda { display: block; } }
 
-/* Compact header: seal and "Bulacan" only. The full name stays available to screen readers.
-   On phones to save space; on mid-size desktops so the whole nav row fits before it collapses to the drawer. */
-@media (max-width: 480px), (min-width: 1025px) and (max-width: 1319px) {
-  .brand-kicker {
-    position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
-    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-  }
+/* Phones: the banner already carries the name, so drop the seal to keep room for search and menu. */
+@media (max-width: 640px) {
+  .brand-seal { display: none; }
+  .brand-banner { block-size: 40px; }
 }
 
 /* ---------- Actions ---------- */
@@ -91,17 +89,25 @@
   align-items: center;
   min-block-size: 44px;
   padding-inline: var(--space-4);
-  border: 1.5px solid var(--navy-700);
+  border: 1.5px solid rgb(255 255 255 / 0.6);
   border-radius: var(--radius-md);
   background: transparent;
-  color: var(--navy-700);
+  color: var(--white);
   font: 600 var(--text-base) / 1 var(--font-sans);
   --icon-style-size: 1.25rem;
   cursor: pointer;
   transition: transform var(--dur-instant) var(--ease-spring), background-color var(--dur-instant) var(--ease-out);
 }
-.menu-button:hover { background: var(--navy-50); }
+.menu-button:hover { background: rgb(255 255 255 / 0.1); border-color: var(--white); }
 .menu-button:active { transform: scale(var(--press-scale)); }
+
+.header-actions .icon-btn { color: var(--white); }
+.header-actions .icon-btn:hover { background: rgb(255 255 255 / 0.1); }
+
+/* The default focus ring is navy; on the navy header it needs to be gold. Dropdown items stay on white. */
+.brand:focus-visible,
+.header-actions :focus-visible,
+.nav-item > :is(.nav-link, .nav-trigger):focus-visible { outline-color: var(--gold-300); }
 
 @media (max-width: 480px) {
   .menu-button { justify-content: center; inline-size: 44px; padding: 0; --icon-style-spacing: 0; }
@@ -140,7 +146,7 @@ html:not(.js) .menu-button { display: none; }
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--text);
+  color: var(--white);
   font: 600 var(--text-sm) / 1 var(--font-sans);
   text-decoration: none;
   cursor: pointer;
@@ -156,16 +162,15 @@ html:not(.js) .menu-button { display: none; }
   inset-inline: 6px;
   inset-block-end: 7px;
   block-size: 2px;
-  background: var(--gold-500);
+  background: var(--gold-400);
   transform: scaleX(0);
   transition: transform var(--dur-fast) var(--ease-out);
 }
-.nav-item > :is(.nav-link, .nav-trigger):is(:hover, [aria-expanded="true"]) { color: var(--navy-700); }
+.nav-item > :is(.nav-link, .nav-trigger):is(:hover, [aria-expanded="true"]) { color: var(--gold-300); }
 .nav-item > :is(.nav-link, .nav-trigger):is(:hover, :focus-visible, [aria-expanded="true"])::before { transform: scaleX(1); }
 
-/* Current page: a stronger indicator that keeps 3:1 contrast against the background (not color alone). */
-.nav-item > .nav-link[aria-current="page"] { color: var(--navy-700); }
-.nav-item > .nav-link[aria-current="page"]::before { transform: scaleX(1); block-size: 3px; background: var(--gold-700); }
+/* Current page: a thicker underline, 9.9:1 against navy (not color alone). */
+.nav-item > .nav-link[aria-current="page"]::before { transform: scaleX(1); block-size: 3px; }
 
 .nav-item > .nav-trigger::after { transition: transform var(--dur-fast) var(--ease-out); }
 .nav-item > .nav-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }

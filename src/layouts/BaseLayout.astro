@@ -6,7 +6,7 @@ import '../styles/utilities.css';
 import '../styles/motion.css';
 import '../styles/icon-tokens.css';
 import '../styles/icons.css';
-import ConceptBanner from '../components/ConceptBanner.astro';
+import '../styles/sections.css';
 
 interface Props {
   title?: string;
@@ -31,9 +31,11 @@ const {
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to main content</a>
-    <ConceptBanner />
     <slot name="header" />
     <main id="main"><slot /></main>
     <slot name="footer" />
+    <script>
+      import '../scripts/reveal';
+    </script>
   </body>
 </html>

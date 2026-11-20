@@ -9,7 +9,8 @@ export const official = (path: string) => `${OFFICIAL_ORIGIN}${path}`;
 
 export const site = {
   name: 'Provincial Government of Bulacan',
-  conceptBanner: 'Concept redesign, not the official website of the Provincial Government of Bulacan.',
+  // Shown once, quietly, in the footer. There is no site-wide banner (owner's decision, 2026-11-20).
+  disclaimer: 'Concept redesign, not the official website of the Provincial Government of Bulacan.',
   conceptCredit:
     'Concept redesign by Elton. Content from bulacan.gov.ph, developed by the Provincial Information Technology Office. Not affiliated with the Provincial Government of Bulacan.',
   originalCredit:
@@ -19,7 +20,7 @@ export const site = {
 
 export const logos = {
   seal: { src: seal, alt: 'Official seal of the Province of Bulacan' },
-  // Low-resolution source (300px wide); consider redrawing as SVG.
-  provinceBanner: { src: provinceBanner, alt: 'Province of Bulacan, the official website' },
+  // The gold-framed plaque from the official header. Low-resolution source (391px wide): shown at 2x or less.
+  provinceBanner: { src: provinceBanner, alt: 'Republic of the Philippines, Province of Bulacan, The Official Website' },
   peoplesAgenda: { src: peoplesAgenda, alt: "The People's Agenda 10 advocacies" },
 };

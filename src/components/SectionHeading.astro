@@ -1,0 +1,38 @@
+---
+/**
+ * Section heading (design-system §9.6): gold bar, optional eyebrow, h2, optional lead,
+ * optional "view all" link aligned right on wide screens.
+ */
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+  /** id for the h2, so the section can use aria-labelledby. */
+  id?: string;
+  link?: { label: string; href: string; external?: boolean };
+}
+
+const { title, eyebrow, lead, id, link } = Astro.props;
+---
+
+<header class="section-head">
+  <span class="section-head__bar" aria-hidden="true"></span>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <div class="section-head__row">
+    <h2 id={id}>{title}</h2>
+    {
+      link && (
+        <a
+          class="link-arrow"
+          style="--icon-end: var(--icon-arrow-right)"
+          href={link.href}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+        >
+          {link.label}
+        </a>
+      )
+    }
+  </div>
+  {lead && <p class="section-head__lead">{lead}</p>}
+</header>

@@ -46,7 +46,7 @@ This is a **concept redesign** of the Bulacan Provincial Government homepage. It
 
 ## 3. Constraints and guardrails
 
-- **Clearly a concept.** Show a visible "Concept redesign, not the official website of the Provincial Government of Bulacan" banner on every page.
+- **Clearly a concept, without a banner.** No site-wide banner, since it would get in the way of the design being shown. The disclaimer "Concept redesign, not the official website of the Provincial Government of Bulacan" appears once in the footer, together with the page being `noindex` and hosted off any official-looking domain.
 - **No impersonation.** Never deploy on a domain or URL that looks official, and don't collect any user data. Forms and search are visual only.
 - **Respectful tone.** In the reels, critique design principles, not people. Credit what the current site does well.
 - **Assets.** Reuse logos and seals only as in-context placeholders for the concept. Don't use photos of officials as design elements.

@@ -1,0 +1,42 @@
+/* Shared page-section primitives (design-system §5, §9.6). Every homepage section builds on these. */
+
+.section { padding-block: var(--space-7); }
+@media (min-width: 641px) { .section { padding-block: var(--space-8); } }
+@media (min-width: 1025px) { .section { padding-block: var(--space-9); } }
+
+.section--alt { background: var(--bg-alt); }
+.section--inverse { background: var(--bg-inverse); color: var(--fg-inverse); }
+.section--tight { padding-block: var(--space-6); }
+
+/* Section heading block: gold bar, optional eyebrow, h2, optional lead, optional "view all" link. */
+.section-head {
+  display: grid;
+  gap: var(--space-3);
+  margin-block-end: var(--space-6);
+}
+.section-head__bar { inline-size: 40px; block-size: 3px; background: var(--gold-500); border-radius: var(--radius-full); }
+.section-head__row { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-3) var(--space-5); }
+.section-head__lead { max-inline-size: 65ch; color: var(--fg-muted); font-size: var(--text-lg); line-height: 1.5; }
+.section--inverse .section-head__lead { color: var(--fg-inverse-muted); }
+.section--inverse .section-head h2 { color: var(--white); }
+.section--inverse .eyebrow { color: var(--gold-400); }
+
+/* Text link with a trailing arrow that nudges right on hover. */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  text-decoration: none;
+  --icon-style-size: 1.125rem;
+  --icon-style-spacing: 0.35em;
+}
+.link-arrow:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.link-arrow::after { transition: transform var(--dur-fast) var(--ease-out); }
+.link-arrow:hover::after { transform: translateX(4px); }
+
+/* Scroll reveal (see src/scripts/reveal.ts). Visible by default: only hidden once script is running. */
+.js [data-reveal]:not(.is-revealed) { opacity: 0; translate: 0 var(--reveal-distance); }
+[data-reveal] {
+  transition: opacity var(--dur-slow) var(--ease-out), translate var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * var(--stagger));
+}

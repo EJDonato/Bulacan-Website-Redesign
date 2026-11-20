@@ -44,7 +44,7 @@ A static, front-end-only concept homepage that re-presents the content of https:
 | F3 | Hero with a real text headline over an image, with accessible controls | PRD §6 #4 |
 | F4 | Videos shown as thumbnails; the YouTube player loads only on click | PRD §6 #12 |
 | F5 | Search icon and any forms are visual only. Nothing is submitted or stored | PRD §3 |
-| F6 | "Concept redesign, not the official website" banner on every page | PRD §3 |
+| F6 | Disclaimer "Concept redesign, not the official website" in the footer (no site-wide banner) | PRD §3 |
 | F7 | Outbound links go to the real official URLs and open in a new tab. Known broken links are shown as disabled placeholders | Review of live site |
 
 ### 2.2 Non-functional
@@ -113,7 +113,6 @@ Fonts: Open Sans (variable), self-hosted via `@fontsource-variable/open-sans`, L
 │   │   ├── base.css            # Reset, typography, focus styles
 │   │   └── utilities.css       # Container, visually-hidden, stack/cluster layouts
 │   ├── components/
-│   │   ├── ConceptBanner.astro
 │   │   ├── Header.astro        # Logos + Nav + search icon
 │   │   ├── Nav.astro           # Desktop dropdowns + mobile drawer (same markup)
 │   │   ├── Hero.astro
@@ -135,7 +134,7 @@ Fonts: Open Sans (variable), self-hosted via `@fontsource-variable/open-sans`, L
 │   │   ├── header-scroll.ts    # Compact header state on scroll
 │   │   └── feedback.ts         # Visual-only feedback helper (press, success, error)
 │   ├── layouts/
-│   │   └── BaseLayout.astro    # <head>, meta, noindex, ConceptBanner, Header, Footer
+│   │   └── BaseLayout.astro    # <head>, meta, noindex, Header, Footer
 │   └── pages/
 │       └── index.astro         # Composes sections in PRD §7 order
 └── .github/workflows/ci.yml    # Build + Lighthouse CI + deploy
@@ -179,7 +178,6 @@ type Agency = {
 
 ```
 BaseLayout
-├── ConceptBanner            (sticky-free, always first in DOM)
 ├── Header → Nav
 └── <main>
     ├── Hero                 h1 lives here (visually the featured headline)
@@ -397,7 +395,7 @@ push / PR ─▶ GitHub Actions
 
 | Guardrail | How it's enforced |
 |---|---|
-| Clearly a concept | `ConceptBanner` is rendered by `BaseLayout`, so no page can skip it. Footer repeats the disclaimer |
+| Clearly a concept | No banner. The footer (rendered by `BaseLayout`, so no page can skip it) carries the disclaimer and concept credit |
 | Not mistaken for official | `<meta name="robots" content="noindex, nofollow">`, `robots.txt` disallows all; `<title>` starts with "Concept ·" |
 | No data collection | No forms submit anywhere; no analytics, cookies, or trackers |
 | No official photos as design elements | Governor's Message uses a neutral image or none; enforced in review against `content.md` |

@@ -31,7 +31,7 @@ This is the single source for every piece of content on the concept homepage. Ea
 | Site name | Provincial Government of Bulacan |
 | Page title (concept) | Concept · Provincial Government of Bulacan |
 | Original `<title>` | Provincial Government of Bulacan – Official Website of the Provincial Government of Bulacan |
-| Concept banner | Concept redesign, not the official website of the Provincial Government of Bulacan. |
+| Disclaimer (footer only; no banner) | Concept redesign, not the official website of the Provincial Government of Bulacan. |
 
 ### Logos
 
@@ -354,7 +354,7 @@ Logos used on the live footer for Galing Bulacan (`2022/07/GB-LOGO-NEW-nov14.png
 | Original credit (verbatim) | Provincial Government of Bulacan \| Developed and Designed by the Provincial Information Technology Office. © Copyright 2022. All Rights Reserved. |
 | Original hosting credit | Philippine Data Center → `https://bnshosting.net/` |
 | Concept credit `[new label]` | Concept redesign by Elton. Content from bulacan.gov.ph, developed by the Provincial Information Technology Office. Not affiliated with the Provincial Government of Bulacan. |
-| Disclaimer (repeated) | Concept redesign, not the official website of the Provincial Government of Bulacan. |
+| Disclaimer | Concept redesign, not the official website of the Provincial Government of Bulacan. (shown once, in the footer) |
 
 The concept shows its own credit and disclaimer; the original credit is quoted in a smaller line as the source attribution.
 
