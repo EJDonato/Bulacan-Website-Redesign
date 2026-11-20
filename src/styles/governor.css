@@ -8,10 +8,8 @@
   isolation: isolate;
   overflow: clip;
   /* The photo stands on the bottom edge, so the section adds no padding below it. */
-  padding-block: var(--space-7) 0;
+  padding-block: var(--space-6) 0;
 }
-@media (min-width: 641px) { .section.gov { padding-block-start: var(--space-8); } }
-@media (min-width: 1025px) { .section.gov { padding-block-start: var(--space-9); } }
 
 /* Soft gold glow behind the photo. */
 .gov::before {
@@ -28,29 +26,29 @@
 
 .gov :focus-visible { outline-color: var(--gold-300); }
 
-.gov__grid { display: grid; gap: var(--space-6); align-items: end; }
+.gov__grid { display: grid; gap: var(--space-4); align-items: end; }
 @media (min-width: 1025px) {
-  .gov__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-8); }
+  .gov__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-7); }
 }
 
 .gov__text {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-4);
   align-content: start;
-  padding-block-end: var(--space-2);
 }
-@media (min-width: 1025px) { .gov__text { align-self: center; padding-block-end: var(--space-8); } }
+@media (min-width: 1025px) { .gov__text { align-self: center; padding-block-end: var(--space-6); } }
 .gov .section-head { margin-block-end: 0; }
 
 /* The brief: one opening paragraph, set large. */
-.gov__quote { position: relative; margin: 0; padding-block-start: var(--space-6); max-inline-size: 60ch; }
-.gov__mark { position: absolute; inset-block-start: 0; inset-inline-start: 0; color: var(--gold-400); --icon-style-size: 2.25rem; }
+.gov__quote { position: relative; margin: 0; padding-block-start: var(--space-5); max-inline-size: 60ch; }
+.gov__mark { position: absolute; inset-block-start: 0; inset-inline-start: 0; color: var(--gold-400); --icon-style-size: 1.75rem; }
 .gov__quote p {
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   line-height: 1.45;
   color: var(--white);
   text-wrap: pretty;
 }
+@media (min-width: 1025px) { .gov__quote p { font-size: var(--text-xl); } }
 
 .gov__by { display: grid; font-size: var(--text-sm); }
 .gov__name { font-weight: 600; color: var(--white); }
@@ -99,8 +97,9 @@
 
 /* ---------- Photo ---------- */
 
-.gov__photo { margin: 0; align-self: end; justify-self: center; inline-size: min(100%, 460px); }
+.gov__photo { margin: 0; align-self: end; justify-self: center; inline-size: min(100%, 260px); }
+@media (min-width: 641px) { .gov__photo { inline-size: min(100%, 320px); } }
 .gov__photo img { display: block; inline-size: 100%; block-size: auto; }
 @media (min-width: 1025px) {
-  .gov__photo { order: -1; justify-self: start; inline-size: min(100%, 520px); }
+  .gov__photo { order: -1; justify-self: start; inline-size: min(100%, 380px); }
 }
