@@ -1,0 +1,41 @@
+/*
+ * CSS icon engine: icons are masked pseudo-elements that follow the element's text color.
+ * Tokens (--icon-menu, ...) live in icon-tokens.css (generated).
+ *
+ *   <button class="icon-start" style="--icon-start: var(--icon-menu)">Menu</button>
+ *   <a class="icon-end"        style="--icon-end:   var(--icon-arrow-right)">Read more</a>
+ *   <button class="icon" style="--icon: var(--icon-x)" aria-label="Close"></button>   (icon-only)
+ *
+ * Explicit class hooks are used instead of container style queries (Baseline only since 2026-05).
+ */
+@property --icon-start { syntax: "*"; inherits: false; }
+@property --icon-end { syntax: "*"; inherits: false; }
+
+:where(.icon-start, .icon:empty)::before,
+:where(.icon-end)::after {
+  content: "" / "";
+  display: inline-block;
+  inline-size: var(--icon-style-size, 1em);
+  block-size: var(--icon-style-size, 1em);
+  background-color: var(--icon-style-color, currentColor);
+  vertical-align: calc(0.5cap - var(--icon-style-size, 1em) / 2 + var(--icon-style-voffset, -0.02em));
+  flex: none;
+  pointer-events: none;
+  forced-color-adjust: none;
+}
+
+:where(.icon-start)::before { --icon-start: inherit; mask: var(--icon-start) no-repeat center / contain; }
+:where(.icon:empty)::before { --icon-start: var(--icon); mask: var(--icon-start) no-repeat center / contain; }
+:where(.icon-end)::after { --icon-end: inherit; mask: var(--icon-end) no-repeat center / contain; }
+
+/* Space between an icon and sibling text. */
+:where(.icon-start:not(.icon, :empty))::before { margin-inline-end: var(--icon-style-spacing, 0.4em); }
+:where(.icon-end:not(.icon, :empty))::after { margin-inline-start: var(--icon-style-spacing, 0.4em); }
+
+/* Safari: icons can fail to paint until interaction (WebKit 301609). */
+@keyframes webkit-301609 {}
+@supports ((-webkit-nbsp-mode: normal) or (-webkit-touch-callout: none) or (font: -apple-system-body)) and (content-visibility: auto) {
+  @layer webkit-301609-fix {
+    ::before, ::after { animation: webkit-301609 0s; }
+  }
+}

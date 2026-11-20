@@ -1,0 +1,64 @@
+---
+import { nav } from '../data/nav';
+import NavLink from './NavLink.astro';
+import NavItems from './NavItems.astro';
+
+const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+
+<!--
+  Navigation drawer (modern-web-guidance: navigation-drawer). A modal <dialog> holding a horizontal
+  scroll-snap scroller: swiping the sheet is native scrolling, so momentum and interruption come free.
+  The sheet sits in the second column, so scroll 0 = closed and the end of the scroller = open.
+-->
+<dialog class="drawer" id="drawer" aria-label="Site menu" data-drawer>
+  <div class="drawer-scroller">
+    <nav class="drawer-sheet" aria-label="Primary">
+      <div class="drawer-head">
+        <p class="drawer-title">Menu</p>
+        <button
+          class="icon-btn icon"
+          type="button"
+          id="drawer-close"
+          style="--icon: var(--icon-x)"
+          aria-label="Close menu"
+          autofocus></button>
+      </div>
+
+      <ul class="drawer-list">
+        {
+          nav.map((item, i) => (
+            <li style={`--i: ${i}`}>
+              {item.children ? (
+                <>
+                  <button
+                    class="drawer-trigger icon-end"
+                    style="--icon-end: var(--icon-chevron-down)"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls={`drawer-${slug(item.label)}`}
+                    data-accordion
+                  >
+                    {item.label}
+                  </button>
+                  <div class="drawer-panel" id={`drawer-${slug(item.label)}`} hidden>
+                    <ul class="drawer-sublist">
+                      {item.href && (
+                        <li>
+                          <NavLink item={item} class="nav-link nav-link--overview" label={`${item.label} overview`} />
+                        </li>
+                      )}
+                      <NavItems items={item.children} />
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <NavLink item={item} class="drawer-link" current={item.label === 'Home'} />
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</dialog>

@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets';
+import '../styles/buttons.css';
+import '../styles/header.css';
+import '../styles/drawer.css';
+import { nav } from '../data/nav';
+import { logos } from '../data/site';
+import NavLink from './NavLink.astro';
+import NavItems from './NavItems.astro';
+import MobileDrawer from './MobileDrawer.astro';
+
+const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const home = import.meta.env.BASE_URL;
+---
+
+<header class="site-header" data-site-header>
+  <div class="header-inner" data-header-inner>
+    <a class="brand" href={home}>
+      <Image class="brand-seal" src={logos.seal.src} alt="" width={80} height={80} />
+      <span class="brand-text">
+        <span class="brand-kicker">Provincial Government of</span>{' '}
+        <span class="brand-name">Bulacan</span>
+      </span>
+    </a>
+    <Image class="brand-agenda" src={logos.peoplesAgenda.src} alt={logos.peoplesAgenda.alt} width={80} height={80} />
+
+    <nav class="site-nav" aria-label="Primary" data-site-nav>
+      <ul class="nav-list">
+        {
+          nav.map((item) => {
+            if (!item.children) {
+              const isHome = item.label === 'Home';
+              return (
+                <li class="nav-item">
+                  <NavLink
+                    item={item}
+                    class="nav-link"
+                    iconOnly={isHome ? 'house' : undefined}
+                    current={isHome}
+                  />
+                </li>
+              );
+            }
+            const id = `menu-${slug(item.label)}`;
+            // The 24 municipalities are a 3-column panel (design-system §9.4).
+            const mega = item.children.length > 12;
+            return (
+              <li class="nav-item nav-item--dropdown">
+                <button
+                  class="nav-trigger icon-end"
+                  style="--icon-end: var(--icon-chevron-down)"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls={id}
+                  popovertarget={id}
+                >
+                  {item.label}
+                </button>
+                {/* Placed right after its trigger so browsers add no implicit aria-details. */}
+                <div id={id} class:list={['dropdown', { 'dropdown--mega': mega }]} popover="auto">
+                  {/* The wrapper is a transparent hover bridge; the visible card is the list. */}
+                  <ul class="dropdown-card">
+                    {item.href && (
+                      <li class="dropdown-overview">
+                        <NavLink item={item} class="nav-link nav-link--overview" label={`${item.label} overview`} />
+                      </li>
+                    )}
+                    <NavItems items={item.children} />
+                  </ul>
+                </div>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button
+        class="icon-btn icon"
+        type="button"
+        style="--icon: var(--icon-search)"
+        aria-label="Search"
+        popovertarget="search-panel"></button>
+      <button
+        class="menu-button icon-start"
+        style="--icon-start: var(--icon-menu)"
+        type="button"
+        aria-controls="drawer"
+        aria-expanded="false"
+        data-drawer-open
+      >
+        <span class="menu-button-label">Menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Visual only (PRD §3): nothing is submitted or stored. -->
+<search id="search-panel" class="search-panel" popover="auto">
+  <form class="search-form" data-search-form novalidate>
+    <label class="visually-hidden" for="site-search">Search the site</label>
+    <input id="site-search" class="search-input" type="search" name="q" placeholder="Search" autocomplete="off" autofocus />
+    <button class="btn btn--primary" type="submit">Search</button>
+  </form>
+  <p class="search-message" role="status" data-search-message></p>
+</search>
+
+<MobileDrawer />
+
+<script>
+  import '../scripts/nav';
+  import '../scripts/drawer';
+  import '../scripts/search';
+</script>

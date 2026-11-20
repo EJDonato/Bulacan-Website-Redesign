@@ -31,6 +31,7 @@
 
   /* Layout */
   --container-max: 1200px; --container-narrow: 720px; --gutter: 16px;
+  --header-h: 60px; --header-h-scrolled: 52px;
 
   /* Shape */
   --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px; --radius-full: 999px;
@@ -51,7 +52,7 @@
   --stagger: 40ms; --press-scale: 0.97; --hover-lift: translateY(-4px); --reveal-distance: 16px;
 }
 
-@media (min-width: 641px) { :root { --gutter: 24px; } }
+@media (min-width: 641px) { :root { --gutter: 24px; --header-h: 72px; --header-h-scrolled: 60px; } }
 @media (min-width: 1025px) { :root { --gutter: 32px; } }
 
 @media (prefers-reduced-motion: reduce) {

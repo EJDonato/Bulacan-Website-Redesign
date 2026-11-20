@@ -304,10 +304,11 @@ Sizes: md (44px height, `--space-3` / `--space-5` padding, `--text-base` 600) an
 Full-width strip above the header. `--gold-100` background, `--navy-950` text, `--text-sm`, info icon. Text: "Concept redesign, not the official website of the Provincial Government of Bulacan." Not dismissible. Not sticky.
 
 ### 9.4 Header and navigation
-- **At rest (top of page):** white background, compact logo lockup on the left (seal 40px + "Province of Bulacan" wordmark; People's Agenda logo moves to the footer on mobile), nav on the right, search icon button.
-- **Scrolled:** sticky, height shrinks from 72px to 60px, gains `--shadow-2`. Max 15% of the mobile screen (PRD).
-- **Desktop nav:** single row, `--text-base` 600, `--text` color. Hover: `--navy-700` with a 2px `--gold-500` underline that grows from the center. Current page: gold underline always shown, `aria-current="page"`.
-- **Dropdown:** white panel, `--radius-lg`, `--shadow-3`, `--space-2` padding, items 44px tall. Third-level items (e.g. History → National Heroes) are an indented group with a small label, not a flyout. Cities and Municipalities uses a 3-column mega panel for its 24 entries.
+- **At rest (top of page):** white background, compact logo lockup on the left (seal 40px + a two-line "Provincial Government of / Bulacan" wordmark), nav on the right, search icon button. The People's Agenda logo shows in the header only at ≥ 1400px and always in the footer. The wordmark's first line is hidden on phones and on mid-size desktops (1025–1319px) so the nav row fits.
+- **Scrolled:** sticky, height shrinks from 72px to 60px (60px to 52px on phones) over the first scroll distance and gains `--shadow-2`. Max 15% of the mobile screen (PRD). Progressive enhancement: where scroll-driven animations or motion aren't available it stays 72px.
+- **Layout switch:** there is no fixed breakpoint. A script measures the inline row and uses it only when every link fits (about ≥ 1280px today); otherwise the Menu button opens the drawer. Adding a link, a translation or larger text moves the switch point automatically. Without script, the nav shows inline and wraps.
+- **Desktop nav:** single row, `--text-sm` 600 (a deviation from `--text-base`, needed to fit ten items in one row on a 1280px laptop), `--text` color. Home is an icon-only link. Hover: `--navy-700` with a 2px `--gold-500` underline that grows from the center. Current page: a 3px `--gold-700` underline always shown (≥ 3:1 against the background, unlike gold-500), `aria-current="page"`.
+- **Dropdown:** a native popover. A transparent wrapper provides a hover bridge, and the visible card is white, `--radius-lg`, `--shadow-3`, `--space-2` padding, items 40px tall. Opens on hover (mouse only) or Enter/Space, and positions itself with anchor positioning, flipping at screen edges. Each parent with its own page gets an "{Label} overview" first link. Links that are broken on the official site render as dashed placeholders. Third-level items (e.g. History → National Heroes) are an indented group with a small label, not a flyout. Cities and Municipalities uses a 3-column mega panel for its 24 entries.
 - **Mobile drawer:** opens from the right, 88% width (max 400px), `--navy-950` background, white text, accordion sections with chevrons that rotate 180°. Scrim `rgb(0 6 66 / 0.5)`.
 
 ### 9.5 Hero
@@ -377,7 +378,7 @@ Navy panel (`--bg-inverse`), `--radius-xl`. Left: heading, one line of text, acc
 Columns (desktop 4, tablet 2, mobile accordion): **Government**, **Services** (Webmail, SEPS Online, E-Procurement…), **Media** (Galing Bulacan, Radyo Kapitolyo, publications), **Resources** (PAGASA, gov.ph). Bottom row: Transparency Seal + Philippine Government Seal + People's Agenda logo, credit line (Provincial Information Technology Office as original content source), copyright, and the concept disclaimer repeated.
 
 ### 9.11 Search overlay (visual only)
-Field expands from the search icon across the header (`--dur-medium`, `--ease-out`). Submitting runs `feedback.error()` (shake) and shows an inline message: "Search isn't available in this concept."
+A native popover panel anchored under the search icon, right-aligned, with the field focused on open. Submitting runs `feedback.error()` (shake, and a red border for reduced motion) and shows an inline message: "Search isn't available in this concept."
 
 ### 9.12 Skip link
 First focusable element. Hidden until focused, then slides down from the top: `--navy-950` bg, white text, `--z-skip`.

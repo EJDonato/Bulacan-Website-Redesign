@@ -1,0 +1,46 @@
+---
+import type { NavItem } from '../data/types';
+
+interface Props {
+  item: Pick<NavItem, 'label' | 'href' | 'broken'>;
+  class?: string;
+  /** Visible/accessible text, when it differs from the item label. */
+  label?: string;
+  /** Lucide icon name: renders an icon-only link whose name is still the label. */
+  iconOnly?: string;
+  current?: boolean;
+}
+
+const { item, class: className, label = item.label, iconOnly, current } = Astro.props;
+
+// Everything except the concept's own pages leaves for the official site, in a new tab.
+const external = !!item.href && /^https?:/.test(item.href);
+const unavailable = item.broken || !item.href;
+---
+
+{
+  unavailable ? (
+    // Placeholder for links that are broken on the official site (design-system §9.13): not focusable.
+    <span class:list={[className, 'is-unavailable']} title="Link unavailable on the official site">
+      {label}
+      <span class="visually-hidden"> (link unavailable on the official site)</span>
+    </span>
+  ) : (
+    <a
+      class={className}
+      href={item.href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+      aria-current={current ? 'page' : undefined}
+    >
+      {iconOnly ? (
+        <>
+          <span class="icon" style={`--icon: var(--icon-${iconOnly})`} aria-hidden="true" />
+          <span class="visually-hidden">{label}</span>
+        </>
+      ) : (
+        label
+      )}
+    </a>
+  )
+}

@@ -1,0 +1,31 @@
+---
+import type { NavItem } from '../data/types';
+import NavLink from './NavLink.astro';
+
+/**
+ * Items inside a dropdown or drawer panel. An item with children becomes an indented group:
+ * its own link (or a plain label when it has no page, like "District Hospitals") above a nested list.
+ */
+interface Props {
+  items: NavItem[];
+}
+
+const { items } = Astro.props;
+---
+
+{
+  items.map((item) =>
+    item.children ? (
+      <li class="nav-group">
+        {item.href ? <NavLink item={item} class="nav-link" /> : <span class="nav-label">{item.label}</span>}
+        <ul class="nav-sublist">
+          <Astro.self items={item.children} />
+        </ul>
+      </li>
+    ) : (
+      <li>
+        <NavLink item={item} class="nav-link" />
+      </li>
+    ),
+  )
+}

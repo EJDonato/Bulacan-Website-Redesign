@@ -40,7 +40,7 @@ export const municipalities: NavItem[] = [
 ];
 
 export const nav: NavItem[] = [
-  { label: 'Home', href: official('/') },
+  { label: 'Home', href: '/' }, // the concept's own homepage
   {
     label: 'General Info',
     href: official('/general-info/'),

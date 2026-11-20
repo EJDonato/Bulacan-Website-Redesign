@@ -4,6 +4,8 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/utilities.css';
 import '../styles/motion.css';
+import '../styles/icon-tokens.css';
+import '../styles/icons.css';
 import ConceptBanner from '../components/ConceptBanner.astro';
 
 interface Props {
@@ -24,6 +26,8 @@ const {
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>Concept · {title}</title>
+    <!-- Lets CSS tell "script is running" from "no script", so the no-JS layout needs no separate branch. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to main content</a>
