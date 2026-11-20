@@ -258,6 +258,10 @@ html:not(.js) .menu-button { display: none; }
 }
 
 /* Links that are broken on the official site (design-system §9.13). Two classes so it beats .dropdown .nav-link. */
+/* External links: a small trailing icon marks links that leave the concept. */
+.nav-link.icon-end { --icon-style-size: 0.8em; --icon-style-spacing: 0.5em; }
+.dropdown .nav-link.icon-end::after { color: var(--text-subtle); }
+
 .nav-link.is-unavailable {
   color: var(--text-subtle);
   text-decoration: underline dashed;

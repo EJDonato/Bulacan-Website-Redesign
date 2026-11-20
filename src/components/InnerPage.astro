@@ -1,11 +1,14 @@
 ---
-import { Image } from 'astro:assets';
 import '../styles/buttons.css';
 import '../styles/inner.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import type { PageEntry } from '../data/pages';
 
+/**
+ * Placeholder template for concept pages that have no dedicated component yet (see components/dedicated.ts).
+ * Honest by design: it says the page is not designed yet and points to the original.
+ */
 interface Props {
   page: PageEntry;
 }
@@ -14,13 +17,10 @@ const { page } = Astro.props;
 const home = import.meta.env.BASE_URL;
 const hasChildren = page.groups.some((g) => g.items.length);
 const count = page.groups.reduce((n, g) => n + g.items.length, 0);
-
-const dateLabel = page.news
-  ? new Intl.DateTimeFormat('en-PH', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(page.news.date))
-  : undefined;
+const hasExternal = page.groups.some((g) => g.items.some((c) => c.external));
 ---
 
-<BaseLayout title={page.title} description={`${page.title}. An inner page placeholder in a concept redesign of the Provincial Government of Bulacan website. Not the official website.`}>
+<BaseLayout title={page.title} description={`${page.title}. A placeholder page in a concept redesign of the Provincial Government of Bulacan website. Not the official website.`}>
   <Header slot="header" />
 
   <div class="inner">
@@ -39,36 +39,17 @@ const dateLabel = page.news
     <header class="inner-intro">
       <div class="container inner-intro-grid">
         <div class="inner-intro-text">
-          {dateLabel && <p class="inner-eyebrow"><time datetime={page.news!.date}>{dateLabel}</time></p>}
-          {page.publication && <p class="inner-eyebrow">{page.publication.issue}</p>}
           <h1>{page.title}</h1>
-          {page.news && <p class="inner-lead">{page.news.excerpt}</p>}
           {hasChildren && <p class="inner-lead">{count} {count === 1 ? 'page' : 'pages'} in this section.</p>}
         </div>
-        {
-          page.news && (
-            <Image
-              class:list={['inner-media', { 'inner-media--placeholder': page.news.placeholderImage }]}
-              src={page.news.image}
-              alt={page.news.imageAlt}
-              width={480}
-              loading="eager"
-            />
-          )
-        }
-        {
-          page.publication && (
-            <Image class="inner-media inner-media--cover" src={page.publication.cover} alt={page.publication.coverAlt} width={320} loading="eager" />
-          )
-        }
       </div>
     </header>
 
     <section class="container inner-body" aria-labelledby="notice-title">
       <div class="inner-notice">
-        <h2 id="notice-title">This page is not part of the concept redesign</h2>
+        <h2 id="notice-title">This page is not designed yet</h2>
         <p>
-          This concept redesigns the homepage only. This page is a placeholder so navigation stays inside the concept.
+          This concept redesigns the homepage and a few key pages. This page is a placeholder for one of them.
           The full content is on the official website of the Provincial Government of Bulacan.
         </p>
         <div class="inner-actions">
@@ -79,6 +60,8 @@ const dateLabel = page.news
         </div>
       </div>
 
+      {hasExternal && <p class="inner-legend">Links with an arrow open the official site in a new tab.</p>}
+
       {
         page.groups.map((group, gi) => (
           <section class="inner-group" aria-labelledby={`group-${gi}`}>
@@ -87,7 +70,15 @@ const dateLabel = page.news
               {group.items.map((c) => (
                 <li>
                   {c.href ? (
-                    <a class="inner-card" href={c.href}>{c.title}</a>
+                    <a
+                      class:list={['inner-card', { 'icon-end': c.external }]}
+                      href={c.href}
+                      style={c.external ? '--icon-end: var(--icon-external-link)' : undefined}
+                      target={c.external ? '_blank' : undefined}
+                      rel={c.external ? 'noopener noreferrer' : undefined}
+                    >
+                      {c.title}
+                    </a>
                   ) : (
                     <span class="inner-card is-unavailable" title="Link unavailable on the official site">
                       {c.title}

@@ -1,5 +1,6 @@
 ---
 import InnerPage from '../components/InnerPage.astro';
+import { dedicatedPages } from '../components/dedicated';
 import { pages, slugOf } from '../data/pages';
 
 export function getStaticPaths() {
@@ -7,6 +8,7 @@ export function getStaticPaths() {
 }
 
 const { page } = Astro.props;
+const Dedicated = dedicatedPages[page.path];
 ---
 
-<InnerPage page={page} />
+{Dedicated ? <Dedicated page={page} /> : <InnerPage page={page} />}

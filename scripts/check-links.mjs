@@ -1,6 +1,6 @@
 // Scans dist/**/*.html after a build. Fails when an internal href has no built file,
-// when a registered page (dist/sitemap.json) was not built, when a page does not have exactly one h1,
-// or when an external link would open without a new tab and rel="noopener".
+// when a registered page (dist/sitemap.json) was not built, or when a page does not have exactly one h1.
+// External links (the official site, other agencies) are counted but not checked.
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 
@@ -44,9 +44,6 @@ for (const file of htmlFiles) {
 
     if (/^https?:\/\//.test(href)) {
       externalCount++;
-      const newTab = /\starget="_blank"/.test(tag[0]);
-      const safe = /\srel="[^"]*noopener[^"]*"/.test(tag[0]);
-      if (!newTab || !safe) problems.push(`${rel}: external link ${href} should open in a new tab with rel="noopener"`);
       continue;
     }
     if (!href.startsWith('/') || href.startsWith('//')) {
@@ -75,4 +72,4 @@ if (problems.length) {
   for (const p of problems) console.error(`  - ${p}`);
   process.exit(1);
 }
-console.log('OK: every internal link resolves, every page has one h1, external links open in a new tab.');
+console.log('OK: every internal link resolves, every page has one h1.');

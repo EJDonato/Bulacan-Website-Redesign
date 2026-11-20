@@ -430,7 +430,7 @@ push / PR ─▶ GitHub Actions
 
 ## 12. Revisit as it grows
 
-- **Inner pages:** every link hosted on bulacan.gov.ph now resolves to a placeholder page inside the concept. `page(path)` in `src/data/site.ts` builds the internal href, `official(path)` the original; `src/data/pages.ts` collects all internal hrefs into one registry (titles, breadcrumb trails, children from the nav tree, news and publication details) and `src/pages/[...slug].astro` builds a route for each. `npm run check:links` verifies the built output. Real inner-page designs (municipalities, offices, tourism) remain v2 and would replace the placeholder per route.
+- **Key pages on our site:** `conceptPages` in `src/data/site.ts` is the only list that decides which bulacan.gov.ph paths are internal. `page(path)` returns the concept path for those (and Home) and the absolute official URL for everything else, so data files call one helper and need no edits when the list changes. `src/data/pages.ts` builds a registry from the internal hrefs (titles, breadcrumbs, child links from the nav tree), `src/pages/[...slug].astro` builds a route for each, and `src/components/dedicated.ts` maps a path to its own component to replace the generic placeholder (`InnerPage.astro`). `npm run check:links` verifies internal links and the registered pages in `dist/`; external links are ignored. Real designs for the key pages are v2 work.
 - **Cities and Municipalities:** an SVG map of the 24 LGUs as an alternative to the list (PRD open question).
 - **Language toggle:** English / Filipino using Astro's i18n routing.
 - **Real search:** a static index (e.g. Pagefind) once there are inner pages worth searching.

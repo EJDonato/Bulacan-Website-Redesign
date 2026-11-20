@@ -6,8 +6,24 @@ export const OFFICIAL_ORIGIN = 'https://bulacan.gov.ph';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-/** A page inside the concept. `path` is the pathname on bulacan.gov.ph, which the concept mirrors: "/government/offices/". */
-export const page = (path: string) => `${BASE}${path}`;
+/**
+ * The pages that exist inside the concept (same pathname as bulacan.gov.ph). Home ("/") is always ours.
+ * This is the ONLY list to edit to add or remove a page: `page()` sends every other path to the official site.
+ */
+export const conceptPages: readonly string[] = [
+  '/cities-and-municipalities/',
+  '/government/offices/',
+  '/government/citizens-charter/',
+  '/invest-in-bulacan/',
+  '/health/',
+  '/tourism/',
+  '/hr-corner/',
+  '/contact-us/',
+];
+
+/** Href for a bulacan.gov.ph page: the concept path when it is a concept page, else the absolute official URL. */
+export const page = (path: string) =>
+  path === '/' || conceptPages.includes(path) ? `${BASE}${path}` : official(path);
 
 /** Absolute URL of the same page on the official site (the "view the original" counterpart). */
 export const official = (path: string) => `${OFFICIAL_ORIGIN}${path}`;
