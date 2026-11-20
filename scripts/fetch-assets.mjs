@@ -41,6 +41,9 @@ const manifest = [
   ['news/double-win.jpg', UP + 'bb-plugin/cache/DOUBLE-WIN-1024x683-landscape.jpg'],
   ['news/seal-placeholder.jpg', UP + 'bb-plugin/cache/Untitled-2-landscape.jpg'],
 
+  // governor's message (§6): the photo that sits beside the message on the live site
+  ['governor/gov-and-vg.png', UP + '2022/07/gov-and-vg.png'],
+
   // what to do (§7)
   ['experience/shop.jpg', UP + '2022/07/Shop.jpg'],
   ['experience/invest.jpg', UP + '2022/08/Major-Industries-2.jpg'],

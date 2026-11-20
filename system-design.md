@@ -182,9 +182,8 @@ BaseLayout
 └── <main>
     ├── Hero                 h1 lives here (visually the featured headline)
     ├── QuickLinks           6 task tiles (§4.4)
-    ├── <div .row-news>
-    │   ├── News             3 × NewsCard + "View all"      (wide column)
-    │   └── GovernorMessage  excerpt + "Read full message" (side card, no portrait)
+    ├── News                 3 × NewsCard, full width
+    ├── GovernorMessage      brief opening + photo, full message expands in place (native <details>)
     ├── WhatToDo             3 × ImageCard, full width
     ├── <div .row-media>
     │   ├── Publications     2 × ImageCard, stacked         (narrow column)
@@ -200,10 +199,11 @@ Desktop layout:
 Header (compact)
 Hero slider
 Quick links (6 tiles)
-┌───────────────────────────────┬─────────────────┐
-│ News & Announcements (wide)   │ Governor's      │
-│ 3 equal cards + View all →    │ Message (card)  │
-└───────────────────────────────┴─────────────────┘
+News & announcements (3 equal cards)
+┌─────────────────┬───────────────────────────────┐
+│ Governor's      │ Governor's Message (brief)    │
+│ photo           │ [Read full message ▾]         │   navy band
+└─────────────────┴───────────────────────────────┘
 What to do in Bulacan: Shop · Invest · Have Fun (3 large image cards)
 ┌───────────────┬─────────────────────────────────┐
 │ Publications  │ Featured Videos (carousel)      │
@@ -398,7 +398,7 @@ push / PR ─▶ GitHub Actions
 | Clearly a concept | No banner. The footer (rendered by `BaseLayout`, so no page can skip it) carries the disclaimer and concept credit |
 | Not mistaken for official | `<meta name="robots" content="noindex, nofollow">`, `robots.txt` disallows all; `<title>` starts with "Concept ·" |
 | No data collection | No forms submit anywhere; no analytics, cookies, or trackers |
-| No official photos as design elements | Governor's Message uses a neutral image or none; enforced in review against `content.md` |
+| No official photos as design elements | Photos of officials appear only as existing content (slider posters, news photos, the Governor's message photo), unaltered; none is used as decoration |
 | Respectful credit | Footer credits the original site and the Provincial Information Technology Office as the content source |
 
 ---

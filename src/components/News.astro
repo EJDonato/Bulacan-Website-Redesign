@@ -1,10 +1,9 @@
 ---
-/** News (wide column) and Governor's Message (side card). DOM order is the mobile order: News first. */
+/** News and announcements: three equal cards across the full width. */
 import '../styles/buttons.css';
-import '../styles/news-governor.css';
+import '../styles/news.css';
 import SectionHeading from './SectionHeading.astro';
 import NewsCard from './NewsCard.astro';
-import GovernorCard from './GovernorCard.astro';
 import { news, newsHeading } from '../data/news';
 
 // "View all news" has no destination yet (content.md §13), so no link is rendered.
@@ -17,15 +16,8 @@ const viewAll = newsHeading.viewAllHref
   <div class="container">
     <SectionHeading id="news-heading" title={newsHeading.title} lead={newsHeading.lead} link={viewAll} />
 
-    <div class="ng-grid">
-      <ul class="news-grid" data-reveal-stagger>
-        {news.map((item) => <li><NewsCard item={item} /></li>)}
-      </ul>
-      <GovernorCard data-reveal style={`--i: ${news.length}`} />
-    </div>
+    <ul class="news-grid" data-reveal-stagger>
+      {news.map((item) => <li><NewsCard item={item} /></li>)}
+    </ul>
   </div>
 </section>
-
-<script>
-  import '../scripts/governor';
-</script>

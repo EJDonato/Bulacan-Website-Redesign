@@ -197,15 +197,15 @@ All image paths are under `/wp-content/uploads/`.
 
 ## 6. Governor's Message
 
-`src/data/governor.ts`. No portrait (PRD §3). The live section also shows `2022/07/gov-and-vg.png` (Governor and Vice Governor); **not used**.
+`src/data/governor.ts`. Its own brief section with the photo the live site shows beside the message: `2022/07/gov-and-vg.png` (Governor and Vice Governor), kept as content. Only the opening paragraph shows; the full message expands in place.
 
 | Field | Value |
 |---|---|
 | Eyebrow | From the Governor `[new label]` |
 | Heading | Governor's Message |
 | Attribution | Daniel R. Fernando, Governor of Bulacan (name as it appears in the site's news; the message itself is unsigned) |
-| Card excerpt (4-line clamp) | Paragraphs 1–2 below |
-| Link | "Read full message →" opens a dialog with the full text (there is no inner page in v1) |
+| Brief (always visible) | Paragraph 1 below |
+| Expand control | "Read full message" / "Show less" expands paragraphs 2-6 in place (native `<details>`) |
 
 **Full message (verbatim):**
 

@@ -1,0 +1,106 @@
+/*
+ * Governor's Message (design-system §9.7.2): a brief section on brand navy, with the photo standing on the
+ * section's bottom edge. Only the opening paragraph shows; a native <details> expands the rest in place.
+ */
+
+.section.gov {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  /* The photo stands on the bottom edge, so the section adds no padding below it. */
+  padding-block: var(--space-7) 0;
+}
+@media (min-width: 641px) { .section.gov { padding-block-start: var(--space-8); } }
+@media (min-width: 1025px) { .section.gov { padding-block-start: var(--space-9); } }
+
+/* Soft gold glow behind the photo. */
+.gov::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-block-end: -35%;
+  inset-inline-start: -12%;
+  inline-size: min(70vw, 760px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--gold-500) 32%, transparent), transparent 66%);
+}
+
+.gov :focus-visible { outline-color: var(--gold-300); }
+
+.gov__grid { display: grid; gap: var(--space-6); align-items: end; }
+@media (min-width: 1025px) {
+  .gov__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-8); }
+}
+
+.gov__text {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+  padding-block-end: var(--space-2);
+}
+@media (min-width: 1025px) { .gov__text { align-self: center; padding-block-end: var(--space-8); } }
+.gov .section-head { margin-block-end: 0; }
+
+/* The brief: one opening paragraph, set large. */
+.gov__quote { position: relative; margin: 0; padding-block-start: var(--space-6); max-inline-size: 60ch; }
+.gov__mark { position: absolute; inset-block-start: 0; inset-inline-start: 0; color: var(--gold-400); --icon-style-size: 2.25rem; }
+.gov__quote p {
+  font-size: var(--text-xl);
+  line-height: 1.45;
+  color: var(--white);
+  text-wrap: pretty;
+}
+
+.gov__by { display: grid; font-size: var(--text-sm); }
+.gov__name { font-weight: 600; color: var(--white); }
+.gov__role { color: var(--fg-inverse-muted); }
+
+/* ---------- Expand in place ---------- */
+
+.gov__more { max-inline-size: 65ch; }
+.gov__toggle {
+  list-style: none;
+  --icon-style-size: 1.125rem;
+  --icon-style-spacing: 0.5em;
+}
+.gov__toggle::-webkit-details-marker { display: none; }
+.gov__toggle::after { transition: transform var(--dur-fast) var(--ease-out); }
+.gov__more[open] .gov__toggle::after { transform: rotate(180deg); }
+
+/* One label at a time. */
+.gov__more:not([open]) .gov__when-open,
+.gov__more[open] .gov__when-closed { display: none; }
+
+.gov__rest {
+  display: grid;
+  gap: var(--space-4);
+  padding-block: var(--space-5) var(--space-2);
+  color: var(--fg-inverse-muted);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* Slide open and closed where the browser lets us animate to an intrinsic height; elsewhere it opens instantly. */
+@supports (interpolate-size: allow-keywords) and selector(::details-content) {
+  @media (prefers-reduced-motion: no-preference) {
+    .gov__more {
+      interpolate-size: allow-keywords;
+    }
+    .gov__more::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition: block-size var(--dur-medium) var(--ease-out), content-visibility var(--dur-medium);
+      transition-behavior: allow-discrete;
+    }
+    .gov__more[open]::details-content { block-size: auto; }
+  }
+}
+
+/* ---------- Photo ---------- */
+
+.gov__photo { margin: 0; align-self: end; justify-self: center; inline-size: min(100%, 460px); }
+.gov__photo img { display: block; inline-size: 100%; block-size: auto; }
+@media (min-width: 1025px) {
+  .gov__photo { order: -1; justify-self: start; inline-size: min(100%, 520px); }
+}

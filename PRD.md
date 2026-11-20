@@ -49,7 +49,7 @@ This is a **concept redesign** of the Bulacan Provincial Government homepage. It
 - **Clearly a concept, without a banner.** No site-wide banner, since it would get in the way of the design being shown. The disclaimer "Concept redesign, not the official website of the Provincial Government of Bulacan" appears once in the footer, together with the page being `noindex` and hosted off any official-looking domain.
 - **No impersonation.** Never deploy on a domain or URL that looks official, and don't collect any user data. Forms and search are visual only.
 - **Respectful tone.** In the reels, critique design principles, not people. Credit what the current site does well.
-- **Assets.** Reuse logos and seals only as in-context placeholders for the concept. Don't use photos of officials as design elements. The existing slider posters and news photos are content, so they are shown whole and unaltered.
+- **Assets.** Reuse logos and seals only as in-context placeholders for the concept. Don't use photos of officials as design elements. The existing slider posters, news photos and the Governor's message photo are content, so they are shown unaltered.
 
 ---
 
@@ -125,7 +125,7 @@ SP (Sangguniang Panlalawigan), PCL, LNB, PESO, GAD-FPS, PDRRMO, BPSTPC, BPC, Bul
 | 2 | Whitespace | Large blank gap between the menu and the slider | Purposeful spacing on a consistent spacing scale |
 | 3 | Navigation | 10 top-level items; wraps into two rows on smaller laptops; plain dropdowns | Single-row nav, styled dropdowns, mobile drawer menu |
 | 4 | Slider | Text baked into poster images, hard to read on phones | Real text headline over the image, with clear controls |
-| 5 | Governor's Message | Long wall of text under a huge heading | Short excerpt with a "Read full message" link, better line length |
+| 5 | Governor's Message | Long wall of text under a huge heading | Brief opening with an expandable "Read full message", better line length |
 | 6 | "What to do" cards | Small images floating in big grey boxes | Full-bleed image cards with clear labels |
 | 7 | News cards | Uneven heights, repeated thumbnail, centered text, title turns grey on hover | Equal-height cards, left-aligned text, hover that highlights |
 | 8 | Typography | Mixed casing and ~10 font sizes | One type scale, one heading style |

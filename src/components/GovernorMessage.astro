@@ -1,0 +1,61 @@
+---
+/**
+ * Governor's Message (design-system §9.7.2): its own brief section with the Governor's photo. Only the opening
+ * is shown; the rest of the message expands in place. A native <details> does the expanding, so it works
+ * without script and the hidden text stays searchable with Find in page.
+ */
+import { Image } from 'astro:assets';
+import '../styles/buttons.css';
+import '../styles/governor.css';
+import SectionHeading from './SectionHeading.astro';
+import { governor } from '../data/governor';
+
+const brief = governor.paragraphs.slice(0, governor.excerptParagraphs);
+const rest = governor.paragraphs.slice(governor.excerptParagraphs);
+---
+
+<section class="section section--inverse gov" aria-labelledby="governor-heading">
+  <div class="container gov__grid">
+    <div class="gov__text" data-reveal>
+      <SectionHeading id="governor-heading" eyebrow={governor.eyebrow} title={governor.heading} />
+
+      <blockquote class="gov__quote">
+        <span class="gov__mark icon" style="--icon: var(--icon-quote)" aria-hidden="true"></span>
+        {brief.map((p) => <p>{p}</p>)}
+      </blockquote>
+
+      <p class="gov__by">
+        <span class="gov__name">{governor.attribution.name}</span>
+        <span class="gov__role">{governor.attribution.title}</span>
+      </p>
+
+      {
+        rest.length > 0 && (
+          <details class="gov__more">
+            <summary
+              class="btn btn--ghost gov__toggle icon-end"
+              style="--icon-end: var(--icon-chevron-down)"
+            >
+              <span class="gov__when-closed">{governor.readMore}</span>
+              <span class="gov__when-open">{governor.readLess}</span>
+            </summary>
+            <div class="gov__rest">
+              {rest.map((p) => <p>{p}</p>)}
+            </div>
+          </details>
+        )
+      }
+    </div>
+
+    <figure class="gov__photo" data-reveal style="--i: 1">
+      <Image
+        src={governor.photo.src}
+        alt={governor.photo.alt}
+        widths={[390, 780]}
+        sizes="(min-width: 1025px) 520px, 90vw"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+  </div>
+</section>

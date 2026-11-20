@@ -248,7 +248,7 @@ Borders: `1px solid var(--border)` for card outlines on white; cards on `--surfa
 - **Photos:** 16:9 for hero and video thumbnails, 3:2 for news and "What to do" cards, original ratio for publication covers.
 - **Posters with baked-in text:** crop to the image area where possible; the headline is real text (system-design §4.2).
 - **Agency logos:** shown in a fixed 56×56px box on a white rounded square, so mixed logo styles look uniform.
-- **Photos of officials** are never used as design elements. Posters and news photos that include them appear only as existing content, whole and unaltered (PRD §3).
+- **Photos of officials** are never used as design elements. The slider posters, news photos and the Governor's message photo appear only as existing content, unaltered (PRD §3).
 - **Alt text:** describe what the image shows; `alt=""` for decorative images.
 
 ---
@@ -353,21 +353,15 @@ Six tiles (system-design §4.4). The tile changes shape per breakpoint so the hi
 - **Labels must fit in 2 lines at 2 columns on a 360px screen.** "Cities & Municipalities" is the longest and has been checked at `--text-base`.
 - **Reveal:** tiles stagger in at `--stagger` the first time the row enters view.
 
-#### 9.7.2 Governor's Message card
-A compact side card next to News on desktop (4 of 12 columns); full width below News on mobile and tablet.
+#### 9.7.2 Governor's Message section
+Its own brief section between News and "What to do" (owner decision, 2026-11-20), not a side card. It keeps the live site's photo of the Governor and Vice Governor and expands the full message on request.
 
-- **Surface:** `--surface-2` background, no border, `--radius-lg`, padding `--space-5` (mobile) / `--space-6` (desktop). Sits on a white section so it reads as a distinct panel.
-- **Anatomy (top to bottom):**
-  1. 40×3px `--gold-500` bar
-  2. Eyebrow "From the Governor" (`--gold-700`)
-  3. Heading "Governor's Message" (`--text-xl`, h3 inside the News row; the row's h2 is "News and announcements")
-  4. Excerpt: the opening sentences of the existing message, `--text-base`, `--fg-muted`, **4-line clamp** on desktop, 5 on mobile. Wrapped in `<blockquote>` with a large decorative opening quote mark in `--gold-300` (`aria-hidden`)
-  5. Attribution: name and title (`--text-sm` 600, `--fg`), as listed in content.md §6
-  6. Text link "Read full message →" (arrow nudges right on hover); opens the full message in a dialog (`--shadow-3`, `--radius-xl`, max width `--container-narrow`, scales in from the link with `--dur-medium`)
-- **No portrait** (PRD §3). No image of any kind.
-- **Height:** stretches to match the News column on desktop (`align-self: stretch`), with the link pushed to the bottom.
-- **Not a single big link:** only "Read full message" is interactive, so the card has no lift or press state. The link carries the hover and focus states.
-- **Reveal:** fades in with the News cards, one `--stagger` after the last card.
+- **Surface:** brand navy (`--bg-inverse`) full-width band, so the white-shirted cutout photo reads clearly, with a soft `--gold-500` glow behind the photo. This also breaks up the long run of white and `--surface-2` sections.
+- **Layout (> 1024px):** photo left (5 of 12 columns, max 520px) standing on the bottom edge of the band (the section adds no padding below it), text right (7 of 12, vertically centered). Below 1025px the text comes first and the photo stands on the bottom edge beneath it, centered. DOM order is text first (heading, then photo) on every screen.
+- **Text (top to bottom):** gold bar, eyebrow "From the Governor" (`--gold-400`), h2 "Governor's Message" (white), then the **opening paragraph only**, set at `--text-xl` with a `--gold-400` quote mark, then the attribution ("Daniel R. Fernando", "Governor of Bulacan").
+- **Expand in place:** a ghost button "Read full message" with a chevron, built on a native `<details>`/`<summary>`. Opening reveals the remaining five paragraphs in `--fg-inverse-muted`, the label changes to "Show less" and the chevron turns 180°. It slides open where the browser can animate to an intrinsic height and opens instantly elsewhere and under reduced motion. It works without script, and the hidden text is still found by Find in page.
+- **Photo:** alt text "Governor Daniel R. Fernando and Vice Governor Alex C. Castro". It is existing content from the live site, not a design element.
+- **Reveal:** the text and the photo rise in on scroll, the photo one step later.
 
 ### 9.8 Filter chip (agencies)
 36px tall pill, `--radius-full`. Rest: white, `--border-strong` border. Selected: `--navy-950` bg, white text, check icon draws in. Hover: `--navy-50`.
