@@ -130,7 +130,10 @@
 }
 .drawer-link:hover,
 .drawer-trigger:hover { background: rgb(255 255 255 / 0.08); }
-.drawer-link[aria-current="page"] { color: var(--gold-400); }
+.drawer-link[aria-current="page"],
+.drawer-trigger[aria-current="true"] { color: var(--gold-400); }
+/* The current page inside a panel: gold, and bolder so color is not the only cue. */
+.drawer .nav-link[aria-current="page"] { color: var(--gold-400); font-weight: 700; }
 
 .drawer-trigger::after { transition: transform var(--dur-fast) var(--ease-out); }
 .drawer-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
