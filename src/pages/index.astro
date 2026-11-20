@@ -1,17 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import QuickLinks from '../components/QuickLinks.astro';
+import NewsGovernor from '../components/NewsGovernor.astro';
+import WhatToDo from '../components/WhatToDo.astro';
+import MediaRow from '../components/MediaRow.astro';
+import Agencies from '../components/Agencies.astro';
+import FeedbackCta from '../components/FeedbackCta.astro';
 ---
+
 <BaseLayout>
   <Header slot="header" />
-  <section class="container scaffold">
-    <h1>Provincial Government of Bulacan</h1>
-    <p class="scaffold__note">Header and navigation are in. Page sections come next.</p>
-  </section>
+  <Hero />
+  <QuickLinks />
+  <NewsGovernor />
+  <WhatToDo />
+  <MediaRow />
+  <Agencies />
+  <FeedbackCta />
 </BaseLayout>
-
-<style>
-  /* Tall enough to scroll, so the sticky header can be tested until real sections replace this. */
-  .scaffold { padding-block: var(--space-8); min-block-size: 200vh; }
-  .scaffold__note { margin-top: var(--space-3); color: var(--fg-muted); }
-</style>
