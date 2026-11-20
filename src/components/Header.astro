@@ -4,13 +4,18 @@ import '../styles/buttons.css';
 import '../styles/header.css';
 import '../styles/drawer.css';
 import { nav } from '../data/nav';
-import { logos } from '../data/site';
+import { logos, isExternal, toPath } from '../data/site';
+import type { NavItem } from '../data/types';
 import NavLink from './NavLink.astro';
 import NavItems from './NavItems.astro';
 import MobileDrawer from './MobileDrawer.astro';
 
 const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const home = import.meta.env.BASE_URL;
+const here = toPath(Astro.url.pathname);
+/** True when the item, or any page beneath it, is the page being viewed. */
+const containsCurrent = (item: NavItem): boolean =>
+  (!!item.href && !isExternal(item.href) && toPath(item.href) === here) || !!item.children?.some(containsCurrent);
 ---
 
 <header class="site-header" data-site-header>
@@ -29,12 +34,7 @@ const home = import.meta.env.BASE_URL;
               const isHome = item.label === 'Home';
               return (
                 <li class="nav-item">
-                  <NavLink
-                    item={item}
-                    class="nav-link"
-                    iconOnly={isHome ? 'house' : undefined}
-                    current={isHome}
-                  />
+                  <NavLink item={item} class="nav-link" iconOnly={isHome ? 'house' : undefined} />
                 </li>
               );
             }
@@ -49,12 +49,14 @@ const home = import.meta.env.BASE_URL;
                   type="button"
                   aria-expanded="false"
                   aria-controls={id}
+                  aria-current={containsCurrent(item) ? 'true' : undefined}
                   popovertarget={id}
                 >
                   {item.label}
                 </button>
                 {/* Placed right after its trigger so browsers add no implicit aria-details. */}
                 <div id={id} class:list={['dropdown', { 'dropdown--mega': mega }]} popover="auto">
+                  <p class="visually-hidden">Links marked with an arrow icon open the official Bulacan website in a new tab.</p>
                   {/* The wrapper is a transparent hover bridge; the visible card is the list. */}
                   <ul class="dropdown-card">
                     {item.href && (

@@ -1,5 +1,5 @@
 import type { Publication } from './types';
-import { official } from './site';
+import { page } from './site';
 
 import theCapitol from '../assets/publications/the-capitol.jpg';
 import bulacanNgayon from '../assets/publications/bulacan-ngayon.jpg';
@@ -13,13 +13,13 @@ export const publications: Publication[] = [
     issue: '2nd Quarter 2026',
     cover: theCapitol,
     coverAlt: 'Cover of The Capitol, 2nd Quarter 2026',
-    href: official('/capitol/the-capitol-2nd-quarter-2026/'),
+    href: page('/capitol/the-capitol-2nd-quarter-2026/'),
   },
   {
     title: 'Bulacan Ngayon',
     issue: '2nd Quarter 2026',
     cover: bulacanNgayon,
     coverAlt: 'Cover of Bulacan Ngayon, 2nd Quarter 2026',
-    href: official('/bulngayon/bulacan-ngayon-2nd-quarter-2026/'),
+    href: page('/bulngayon/bulacan-ngayon-2nd-quarter-2026/'),
   },
 ];

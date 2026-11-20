@@ -1,0 +1,95 @@
+/* Inner pages: placeholders inside the concept (not redesigned). */
+
+/* ---------- Breadcrumb (plain, slash divider, hidden from assistive tech) ---------- */
+.breadcrumb { background: var(--white); border-block-end: 1px solid var(--navy-100); }
+.breadcrumb > ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  padding-block: var(--space-3);
+  font-size: var(--text-sm);
+}
+/* Keeps each divider on the same line as the item it precedes, even when a long title wraps. */
+.breadcrumb > ol > li { display: flex; align-items: baseline; }
+.breadcrumb > ol > li + li::before { content: "/" / ""; margin-inline-end: var(--space-2); color: var(--text-subtle); }
+.breadcrumb a {
+  display: inline-block;
+  padding-block: var(--space-1);
+  color: var(--navy-700);
+  text-decoration: underline;
+}
+.breadcrumb a:hover { color: var(--navy-950); }
+.breadcrumb a[aria-current="page"] { color: var(--navy-950); font-weight: 700; text-decoration: none; }
+.breadcrumb-text { color: var(--text-muted); }
+
+/* ---------- Intro band ---------- */
+.inner-intro { background: var(--navy-50); border-block-end: 1px solid var(--navy-100); padding-block: var(--space-7); }
+.inner-intro-grid { display: grid; gap: var(--space-6); align-items: center; }
+.inner-intro-text { display: grid; gap: var(--space-3); max-inline-size: 60ch; }
+.inner-eyebrow { font-size: var(--text-sm); font-weight: 600; color: var(--navy-700); }
+.inner-lead { font-size: var(--text-lg); color: var(--fg-muted); }
+
+
+/* ---------- Body ---------- */
+.inner-body { display: grid; gap: var(--space-7); padding-block: var(--space-7) var(--space-9); }
+
+.inner-notice {
+  display: grid;
+  gap: var(--space-4);
+  max-inline-size: 60ch;
+  padding: var(--space-5);
+  border: 1px solid var(--navy-100);
+  border-inline-start: 4px solid var(--gold-400);
+  border-radius: var(--radius-md);
+  background: var(--white);
+}
+.inner-notice h2 { font-size: var(--text-xl); }
+.inner-notice p { color: var(--fg-muted); }
+.inner-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.inner-actions .btn { text-align: center; }
+.inner-legend { font-size: var(--text-sm); color: var(--text-muted); margin-block-end: calc(var(--space-4) * -1); }
+
+.inner-group { display: grid; gap: var(--space-4); }
+.inner-group h2 { font-size: var(--text-xl); }
+
+.inner-cards {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+}
+.inner-card {
+  display: flex;
+  align-items: center;
+  block-size: 100%;
+  min-block-size: 56px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--navy-100);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  color: var(--navy-700);
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+/* Cards that leave for the official site end with a small arrow icon. */
+.inner-card.icon-end { justify-content: space-between; gap: var(--space-3); --icon-style-size: 1rem; }
+a.inner-card:hover { border-color: var(--navy-700); box-shadow: var(--shadow-1); }
+a.inner-card:active { transform: scale(var(--press-scale)); }
+@media (prefers-reduced-motion: no-preference) {
+  a.inner-card:hover { transform: var(--hover-lift); }
+}
+/* Broken on the official site: dashed, not focusable (design-system section 9.13). */
+.inner-card.is-unavailable {
+  border-style: dashed;
+  background: transparent;
+  color: var(--text-subtle);
+  font-weight: 400;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .inner-card { border-color: CanvasText; }
+  .breadcrumb a[aria-current="page"] { text-decoration: underline; }
+}

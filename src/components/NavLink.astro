@@ -1,5 +1,6 @@
 ---
 import type { NavItem } from '../data/types';
+import { isExternal, toPath } from '../data/site';
 
 interface Props {
   item: Pick<NavItem, 'label' | 'href' | 'broken'>;
@@ -8,14 +9,15 @@ interface Props {
   label?: string;
   /** Lucide icon name: renders an icon-only link whose name is still the label. */
   iconOnly?: string;
-  current?: boolean;
 }
 
-const { item, class: className, label = item.label, iconOnly, current } = Astro.props;
+const { item, class: className, label = item.label, iconOnly } = Astro.props;
 
-// Everything except the concept's own pages leaves for the official site, in a new tab.
-const external = !!item.href && /^https?:/.test(item.href);
+// External links get a small trailing icon (decorative; each panel says once what it means, so
+// screen readers are not read a hint 70 times). Concept pages stay in the tab; separate sites (subdomains, BPC, Google, and so on) open in a new tab.
+const external = !!item.href && isExternal(item.href);
 const unavailable = item.broken || !item.href;
+const current = !!item.href && !external && toPath(item.href) === toPath(Astro.url.pathname);
 ---
 
 {
@@ -27,7 +29,8 @@ const unavailable = item.broken || !item.href;
     </span>
   ) : (
     <a
-      class={className}
+      class:list={[className, { 'icon-end': external && !iconOnly }]}
+      style={external && !iconOnly ? '--icon-end: var(--icon-external-link)' : undefined}
       href={item.href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}

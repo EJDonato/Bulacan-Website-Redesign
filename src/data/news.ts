@@ -1,5 +1,5 @@
 import type { NewsItem } from './types';
-import { official } from './site';
+import { page } from './site';
 
 import gawadGalingKooperatiba from '../assets/news/gawad-galing-kooperatiba.jpg';
 import doubleWin from '../assets/news/double-win.jpg';
@@ -22,7 +22,7 @@ export const news: NewsItem[] = [
     excerpt: 'Bulacan Governor Daniel R. Fernando with (5th from left) Sta. Monica of Bustos Multipurpose Cooperative…',
     image: gawadGalingKooperatiba,
     imageAlt: 'Gawad Galing Kooperatiba 2026 Hall of Fame awardees with Governor Daniel R. Fernando',
-    href: official('/photo-release-gawad-galing-kooperatiba-2026-hall-of-fame-awardee/'),
+    href: page('/photo-release-gawad-galing-kooperatiba-2026-hall-of-fame-awardee/'),
   },
   {
     title: 'Photo release – Double win',
@@ -31,7 +31,7 @@ export const news: NewsItem[] = [
     excerpt: 'Barangay officials of Brgy. Matictic, Norzagaray headed by their Captain Marcial S. Lucas, who won…',
     image: doubleWin,
     imageAlt: 'Barangay officials of Brgy. Matictic, Norzagaray',
-    href: official('/photo-release-double-win-2/'),
+    href: page('/photo-release-double-win-2/'),
   },
   {
     title: 'PGB honors outstanding barangay programs, officials in 25th GGB',
@@ -40,7 +40,7 @@ export const news: NewsItem[] = [
     excerpt: 'CITY OF MALOLOS – The Provincial Government of Bulacan (PGB) headed by Governor Daniel R.…',
     image: sealPlaceholder,
     imageAlt: '',
-    href: official('/pgb-honors-outstanding-barangay-programs-officials-in-25th-ggb/'),
+    href: page('/pgb-honors-outstanding-barangay-programs-officials-in-25th-ggb/'),
     placeholderImage: true,
   },
 ];

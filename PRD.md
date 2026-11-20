@@ -39,7 +39,7 @@ This is a **concept redesign** of the Bulacan Provincial Government homepage. It
 ### Non-goals
 - Not rewriting or updating the content: no new services, no new copy, no fixing outdated text.
 - Not building a working backend (search results, forms, CMS).
-- Not redesigning inner pages, at least in v1. Homepage only.
+- Not redesigning most inner pages, at least in v1. The homepage plus a small set of key pages (Cities and Municipalities, Offices, Citizen's Charter, Invest in Bulacan, Health, Tourism, HR Corner, Contact Us) get pages on our site, currently placeholders with a link to the original. Every other bulacan.gov.ph link goes to the official site in a new tab, with a small external-link icon in the menus. The `conceptPages` list in `src/data/site.ts` controls which pages are ours.
 - Not an official site and not meant to replace the real one.
 
 ---

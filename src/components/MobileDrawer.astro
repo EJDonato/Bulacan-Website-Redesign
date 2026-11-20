@@ -2,7 +2,12 @@
 import { nav } from '../data/nav';
 import NavLink from './NavLink.astro';
 import NavItems from './NavItems.astro';
+import { isExternal, toPath } from '../data/site';
+import type { NavItem } from '../data/types';
 
+const here = toPath(Astro.url.pathname);
+const containsCurrent = (item: NavItem): boolean =>
+  (!!item.href && !isExternal(item.href) && toPath(item.href) === here) || !!item.children?.some(containsCurrent);
 const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
 
@@ -37,11 +42,13 @@ const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').
                     type="button"
                     aria-expanded="false"
                     aria-controls={`drawer-${slug(item.label)}`}
+                    aria-current={containsCurrent(item) ? 'true' : undefined}
                     data-accordion
                   >
                     {item.label}
                   </button>
                   <div class="drawer-panel" id={`drawer-${slug(item.label)}`} hidden>
+                    <p class="visually-hidden">Links marked with an arrow icon open the official Bulacan website in a new tab.</p>
                     <ul class="drawer-sublist">
                       {item.href && (
                         <li>
@@ -53,7 +60,7 @@ const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').
                   </div>
                 </>
               ) : (
-                <NavLink item={item} class="drawer-link" current={item.label === 'Home'} />
+                <NavLink item={item} class="drawer-link" />
               )}
             </li>
           ))
