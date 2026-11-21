@@ -69,7 +69,7 @@ const view = `${minX.toFixed(0)} ${minY.toFixed(0)} ${(maxX - minX).toFixed(0)} 
       }
     </g>
   </svg>
-  <figcaption class="bmap__caption" aria-live="polite" data-bmap-caption>Hover or tap a town to see its name.</figcaption>
+  <figcaption class="bmap__caption" aria-live="polite" data-bmap-caption>Select a town to see its details.</figcaption>
   <p class="bmap__legend"><span class="bmap__key bmap__key--city"></span>City <span class="bmap__key"></span>Municipality</p>
 </figure>
 
@@ -85,7 +85,29 @@ const view = `${minX.toFixed(0)} ${minY.toFixed(0)} ${(maxX - minX).toFixed(0)} 
       links.forEach((l) => l.classList.toggle('is-active', l === link));
       cards.forEach((c) => c.classList.toggle('is-active', c.dataset.townCard === name));
     };
+    const detail = document.querySelector<HTMLElement>('[data-town-detail]');
+    const body = detail?.querySelector<HTMLElement>('[data-town-detail-body]');
+    let selected: string | null = null;
+    const select = (name: string | null) => {
+      selected = name;
+      links.forEach((l) => l.classList.toggle('is-selected', l.dataset.town === name));
+      if (!detail || !body) return;
+      const card = cards.find((c) => c.dataset.townCard === name);
+      detail.hidden = !card;
+      if (!card) return;
+      body.innerHTML = card.innerHTML;
+      detail.classList.remove('is-entering');
+      void detail.offsetWidth;
+      detail.classList.add('is-entering');
+      detail.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    };
+    detail?.querySelector('[data-town-detail-close]')?.addEventListener('click', () => select(null));
     links.forEach((l) => {
+      // With script, a click shows the town's card; the link to the official page lives inside the card.
+      l.addEventListener('click', (e) => {
+        e.preventDefault();
+        select(selected === l.dataset.town ? null : l.dataset.town!);
+      });
       for (const ev of ['pointerenter', 'focus']) l.addEventListener(ev, () => show(l.dataset.town!));
       for (const ev of ['pointerleave', 'blur']) l.addEventListener(ev, () => show(null));
     });

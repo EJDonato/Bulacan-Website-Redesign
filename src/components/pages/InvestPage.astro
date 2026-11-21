@@ -1,6 +1,9 @@
 ---
+import { Image } from 'astro:assets';
 import PageShell from '../PageShell.astro';
 import type { PageEntry } from '../../data/pages';
+import banner from '../../assets/pages/invest/Invest-in-Bulacan.jpg';
+import awardPhoto from '../../assets/pages/invest/awards_business-1.jpg';
 
 /** Invest in Bulacan: the welcome message, awards, labor figures and wage rates, as published by the Province. */
 interface Props {
@@ -26,6 +29,8 @@ const awards = [
   { year: 2015, result: 'Winner' },
 ];
 
+const tally = ['Winner', 'Finalist', 'Special Citation'].map((r) => ({ r, n: awards.filter((a) => a.result === r).length }));
+
 const labor = [
   { value: '2,623,946', label: 'Population 15 years old and over' },
   { value: '59.3%', label: 'Labor force participation rate' },
@@ -43,28 +48,42 @@ const wages = [
 
 <PageShell
   page={page}
-  eyebrow="Business and investment"
   lead="Welcome to Bulacan, the Most Business-Friendly Province in the Philippines."
   description="Why invest in Bulacan: awards, labor force and wage rates. A page in a concept redesign, not the official website."
 >
   <section class="page-section invest-welcome" aria-labelledby="welcome-h">
     <h2 id="welcome-h">Why Bulacan</h2>
-    <div class="prose">
-      {welcome.map((p) => <p>{p}</p>)}
+    <Image class="invest-banner" src={banner} alt="Experience Bulacan: the province's attractions beside a map of its towns and the road and rail links to Metro Manila" widths={[720, 1080, 1450]} sizes="(min-width: 1200px) 1136px, 100vw" quality={78} />
+    <div class="invest-welcome__text">
+      <p class="invest-welcome__lead">{welcome[0]}</p>
+      <div class="prose">
+        {welcome.slice(1).map((p) => <p>{p}</p>)}
+      </div>
     </div>
   </section>
 
   <section class="page-section" aria-labelledby="awards-h">
     <h2 id="awards-h">Awards received</h2>
     <p class="page-note">Consistent "Most Business-Friendly Province" awardee of the Philippine Chamber of Commerce and Industry.</p>
-    <div class="table-wrap">
-      <table class="data-table">
-        <caption class="visually-hidden">Most Business-Friendly LGU Award, by year</caption>
-        <thead><tr><th scope="col">Year</th><th scope="col">Most Business-Friendly LGU Award</th></tr></thead>
-        <tbody>
-          {awards.map((a) => <tr><th scope="row">{a.year}</th><td>{a.result}</td></tr>)}
-        </tbody>
-      </table>
+    <div class="awards">
+      <figure class="awards__photo">
+        <Image src={awardPhoto} alt="Provincial officials receiving the 2022 Most Business-Friendly LGU award, Provincial Level" width={338} />
+      </figure>
+      <div class="awards__main">
+        <p class="awards__tally">
+          {tally.map((t) => <span><strong>{t.n}</strong> {t.r === 'Special Citation' ? (t.n === 1 ? 'special citation' : 'special citations') : t.r.toLowerCase() + (t.n === 1 ? '' : 's')}</span>)}
+        </p>
+        <ol class="awards__list" role="list" aria-label="Most Business-Friendly LGU Award, by year">
+          {
+            awards.map((a) => (
+              <li class={`award award--${a.result.split(' ')[0].toLowerCase()}`}>
+                <span class="award__year">{a.year}</span>
+                <span class="award__result">{a.result}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
     </div>
   </section>
 
@@ -76,6 +95,7 @@ const wages = [
     </dl>
   </section>
 
+  <div class="invest-split">
   <section class="page-section" aria-labelledby="wage-h">
     <h2 id="wage-h">Daily minimum wage rates (in pesos)</h2>
     <div class="table-wrap">
@@ -102,4 +122,5 @@ const wages = [
       </p>
     </div>
   </section>
+  </div>
 </PageShell>

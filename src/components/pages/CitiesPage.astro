@@ -41,6 +41,11 @@ const cityCount = towns.filter((t) => t.city).length;
         <p class="find-status" role="status" data-filter-status></p>
       </div>
 
+      <section class="card town-detail" aria-live="polite" aria-label="Selected city or municipality" data-town-detail hidden>
+        <div class="town-detail__body" data-town-detail-body></div>
+        <button type="button" class="town-detail__close" data-town-detail-close>Close<span class="visually-hidden"> the selected town</span></button>
+      </section>
+
       <ul class="card-grid town-grid" role="list">
         {
           towns.map((t) => (
