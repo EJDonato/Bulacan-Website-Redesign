@@ -52,6 +52,12 @@ const total = agencies.length;
         ))
       }
     </ul>
+
+    <nav class="agencies__pager" aria-label="Agencies pagination" data-pager>
+      <button type="button" class="pager__btn icon press" style="--icon: var(--icon-chevron-left)" aria-label="Previous page" data-pager-prev></button>
+      <div class="pager__pages" data-pager-pages></div>
+      <button type="button" class="pager__btn icon press" style="--icon: var(--icon-chevron-right)" aria-label="Next page" data-pager-next></button>
+    </nav>
   </div>
 </section>
 
@@ -62,110 +68,174 @@ const total = agencies.length;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3) var(--space-5);
-    margin-block-end: var(--space-5);
+    margin-block-end: 0;
+    border-block-end: 1px solid var(--border);
   }
   /* Chips need script; without it the grid simply shows everything. */
   .agencies__filter { display: none; }
   :global(.js) .agencies__filter { display: flex; }
 
-  .chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
   .chip {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    min-block-size: 36px;
-    padding: 0 var(--space-4);
-    border: 1.5px solid var(--border-strong);
-    border-radius: var(--radius-full);
-    background: var(--white);
-    color: var(--navy-950);
+    min-block-size: 44px;
+    padding: 0 var(--space-1);
+    border: 0;
+    background: transparent;
+    color: var(--fg-muted);
     font-size: var(--text-sm);
     font-weight: 600;
     cursor: pointer;
-    transition:
-      transform var(--dur-instant) var(--ease-spring),
-      background-color var(--dur-fast) var(--ease-out),
-      border-color var(--dur-fast) var(--ease-out),
-      color var(--dur-fast) var(--ease-out);
+    transition: color var(--dur-instant) var(--ease-out);
   }
-  .chip:hover { background: var(--navy-50); }
-  .chip:active { transform: scale(var(--press-scale)); }
-  .chip[aria-pressed='true'] { background: var(--navy-950); border-color: var(--navy-950); color: var(--white); }
-  .chip[aria-pressed='true']:hover { background: var(--navy-900); }
+  .chip::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: -1px;
+    block-size: 2px;
+    background: var(--navy-950);
+    transform: scaleX(0);
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .chip:hover { color: var(--navy-950); }
+  .chip[aria-pressed='true'] { color: var(--navy-950); }
+  .chip[aria-pressed='true']::after { transform: scaleX(1); }
   .chip:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  /* The check "draws in": its slot opens with transform only, so the chip never changes width. */
-  .chip__check {
-    inline-size: 0;
-    block-size: 16px;
-    overflow: hidden;
-    --icon-style-size: 16px;
-    --icon-style-voffset: 0;
-    opacity: 0;
-    transform: scale(0.4);
-    transition: transform var(--dur-fast) var(--ease-spring), opacity var(--dur-fast) var(--ease-out);
+  .chip__check { display: none; }
+
+  .agencies__count { font-size: var(--text-sm); color: var(--fg-muted); font-variant-numeric: tabular-nums; padding-block-end: var(--space-2); }
+
+  /* Civic directory index (hairline rows, no card boxes) ------------------------------------------- */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0 var(--space-6);
   }
-  .chip__check::before { margin-inline-end: 0; }
-  .chip[aria-pressed='true'] .chip__check { opacity: 1; transform: none; inline-size: 16px; margin-inline-end: var(--space-1); }
-  @media (prefers-reduced-motion: reduce) { .chip__check { transform: none; } }
-
-  .agencies__count { font-size: var(--text-sm); color: var(--fg-muted); font-variant-numeric: tabular-nums; }
-
-  /* Grid ------------------------------------------------------------------------------------------- */
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
-  @media (min-width: 641px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); } }
-  @media (min-width: 1025px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  :global(html:not(.js)) .grid { border-block-start: 1px solid var(--border); }
+  @media (min-width: 641px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1025px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .tile-item { border-block-end: 1px solid var(--border); }
   .tile-item[hidden] { display: none; }
 
   .tile {
     position: relative;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: var(--space-4);
     block-size: 100%;
-    padding: var(--space-4);
-    border-radius: var(--radius-lg);
-    background: var(--white);
-    box-shadow: var(--shadow-1);
+    padding: var(--space-4) var(--space-2);
     color: var(--fg);
     text-decoration: none;
-    transition:
-      transform var(--dur-instant) var(--ease-spring),
-      box-shadow var(--dur-fast) var(--ease-out),
-      background-color var(--dur-fast) var(--ease-out);
+    transition: background-color var(--dur-fast) var(--ease-out);
   }
-  @media (min-width: 641px) { .tile { padding: var(--space-5) var(--space-4) var(--space-4); } }
   .tile:hover { text-decoration: none; background: var(--navy-50); }
-  @media (hover: hover) { .tile:hover { transform: var(--hover-lift); box-shadow: var(--shadow-2); } }
-  .tile:active { transform: scale(var(--press-scale)); }
+  .tile:active { background: var(--navy-100); }
 
   .tile__logo {
     display: grid;
     place-items: center;
-    inline-size: 56px;
-    block-size: 56px;
-    padding: var(--space-1);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: var(--white);
+    flex: none;
+    inline-size: 44px;
+    block-size: 44px;
   }
   .tile__logo img { inline-size: 100%; block-size: 100%; object-fit: contain; }
 
   .tile__ext {
-    position: absolute;
-    inset-block-start: var(--space-3);
-    inset-inline-end: var(--space-3);
-    color: var(--text-muted);
-    --icon-style-size: 20px;
+    order: 2;
+    margin-inline-start: auto;
+    flex: none;
+    color: var(--text-subtle);
+    --icon-style-size: 18px;
     --icon-style-voffset: 0;
     transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
   .tile:hover .tile__ext { transform: translate(2px, -2px); color: var(--navy-700); }
 
-  .tile__body { display: flex; flex-direction: column; gap: var(--space-1); }
-  .tile__acronym { color: var(--gold-700); line-height: 1.3; }
-  .tile__name { font-size: var(--text-base); font-weight: 600; line-height: 1.35; color: var(--navy-950); overflow-wrap: anywhere; }
+  .tile__body { display: flex; flex-direction: column; gap: 2px; min-inline-size: 0; }
+  .tile__acronym { color: var(--gold-700); font-size: 0.75rem; line-height: 1.3; }
+  .tile__name { font-size: var(--text-base); font-weight: 600; line-height: 1.3; color: var(--navy-950); overflow-wrap: anywhere; }
   .tile:hover .tile__name { text-decoration: underline; text-underline-offset: 3px; }
-  .tile__desc { font-size: var(--text-sm); color: var(--fg-muted); line-height: 1.45; }
+  .tile__desc { font-size: var(--text-sm); color: var(--fg-muted); line-height: 1.4; }
+
+  /* Pagination (JS only; hidden when <= 1 page) -------------------------------------------------- */
+  .agencies__pager {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-block-start: var(--space-6);
+  }
+  :global(.js) .agencies__pager:not([hidden]) { display: flex; }
+
+  .pager__pages { position: relative; display: flex; align-items: center; gap: var(--space-1); }
+
+  .pager__btn {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 40px;
+    block-size: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--navy-700);
+    cursor: pointer;
+    --icon-style-size: 20px;
+    --icon-style-voffset: 0;
+    transition:
+      transform var(--dur-instant) var(--ease-spring),
+      background-color var(--dur-instant) var(--ease-out),
+      color var(--dur-instant) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-out);
+  }
+  .pager__btn:hover:not(:disabled) { background: var(--navy-100); color: var(--navy-950); }
+  .pager__btn:active:not(:disabled) { transform: scale(var(--press-scale)); }
+  .pager__btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* :global because page buttons and sliding indicator are managed in script. */
+  .pager__pages :global(.pager__num) {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    min-inline-size: 36px;
+    block-size: 36px;
+    padding-inline: var(--space-2);
+    border: 0;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--fg-muted);
+    font: 600 var(--text-sm) / 1 var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition:
+      transform var(--dur-instant) var(--ease-spring),
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-instant) var(--ease-out);
+  }
+  .pager__pages :global(.pager__num:hover:not([aria-current="page"])) {
+    color: var(--navy-950);
+    background: var(--navy-50);
+  }
+  .pager__pages :global(.pager__num:active) { transform: scale(var(--press-scale)); }
+  .pager__pages :global(.pager__num[aria-current="page"]) {
+    color: var(--navy-950);
+    font-weight: 700;
+  }
+  .pager__pages :global(.pager__indicator) {
+    position: absolute;
+    inset-block-end: 4px;
+    inset-inline-start: 0;
+    inline-size: 16px;
+    block-size: 2px;
+    border-radius: var(--radius-full);
+    background: var(--gold-500);
+    pointer-events: none;
+    transition: transform var(--dur-fast) var(--ease-spring), opacity var(--dur-instant) var(--ease-out);
+  }
 </style>
 
 <script>
@@ -180,38 +250,104 @@ const total = agencies.length;
     const grid = section.querySelector<HTMLElement>('[data-grid]')!;
     const items = [...grid.querySelectorAll<HTMLElement>('.tile-item')];
     const count = section.querySelector<HTMLElement>('[data-result]')!;
+    const pager = section.querySelector<HTMLElement>('[data-pager]')!;
+    const pagerPages = section.querySelector<HTMLElement>('[data-pager-pages]')!;
+    const pagerPrev = section.querySelector<HTMLButtonElement>('[data-pager-prev]')!;
+    const pagerNext = section.querySelector<HTMLButtonElement>('[data-pager-next]')!;
+    const PAGE_SIZE = 6;
+    let activeCat = 'All';
+    let currentPage = 1;
+    let renderedPages = 0;
+    let pageButtons: HTMLButtonElement[] = [];
+    let indicator: HTMLSpanElement | null = null;
     let token = 0;
 
-    const message = (cat: string, n: number) => {
-      if (cat === 'All') return `Showing all ${n} agencies and partners`;
-      return `Showing ${n} of ${items.length}: ${cat}`;
+    const message = (cat: string, total: number, start: number, end: number) => {
+      if (total <= PAGE_SIZE) {
+        return cat === 'All' ? `Showing all ${total} agencies and partners` : `Showing ${total} of ${items.length}: ${cat}`;
+      }
+      return cat === 'All'
+        ? `Showing ${start}–${end} of ${total} agencies and partners`
+        : `Showing ${start}–${end} of ${total} in ${cat}`;
     };
 
-    const select = async (cat: string) => {
+    const moveIndicator = () => {
+      const activeBtn = pageButtons[currentPage - 1];
+      if (!indicator || !activeBtn) return;
+      const x = activeBtn.offsetLeft + (activeBtn.offsetWidth - indicator.offsetWidth) / 2;
+      indicator.style.transform = `translateX(${x}px)`;
+    };
+
+    const renderPager = (totalPages: number) => {
+      pager.hidden = totalPages <= 1;
+      if (totalPages <= 1) return;
+      if (currentPage === 1 && document.activeElement === pagerPrev) pagerNext.focus({ preventScroll: true });
+      if (currentPage === totalPages && document.activeElement === pagerNext) pagerPrev.focus({ preventScroll: true });
+      pagerPrev.disabled = currentPage === 1;
+      pagerNext.disabled = currentPage === totalPages;
+
+      if (renderedPages !== totalPages) {
+        renderedPages = totalPages;
+        pageButtons = Array.from({ length: totalPages }, (_, idx) => {
+          const p = idx + 1;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'pager__num';
+          btn.textContent = String(p);
+          btn.setAttribute('aria-label', `Page ${p}`);
+          btn.addEventListener('click', () => select(activeCat, p));
+          return btn;
+        });
+        indicator = document.createElement('span');
+        indicator.className = 'pager__indicator';
+        indicator.setAttribute('aria-hidden', 'true');
+        pagerPages.replaceChildren(...pageButtons, indicator);
+      }
+
+      pageButtons.forEach((btn, idx) => {
+        if (idx + 1 === currentPage) btn.setAttribute('aria-current', 'page');
+        else btn.removeAttribute('aria-current');
+      });
+      requestAnimationFrame(moveIndicator);
+    };
+
+    const select = async (cat: string, page = 1, animate = true) => {
       const run = ++token;
-      const match = (el: HTMLElement) => cat === 'All' || el.dataset.category === cat;
+      const prevCat = activeCat;
+      const prevPage = currentPage;
+      const dir = cat === prevCat ? (page >= prevPage ? 1 : -1) : 1;
+      activeCat = cat;
+
+      const matched = items.filter((el) => cat === 'All' || el.dataset.category === cat);
+      const totalPages = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
+      currentPage = Math.min(totalPages, Math.max(1, page));
+      const startIdx = (currentPage - 1) * PAGE_SIZE;
+      const visibleSet = new Set(matched.slice(startIdx, startIdx + PAGE_SIZE));
+
+      const fromHeight = grid.getBoundingClientRect().height;
       const before = new Map(items.filter((el) => !el.hidden).map((el) => [el, el.getBoundingClientRect()]));
-      const leaving = items.filter((el) => !el.hidden && !match(el));
-      const entering = items.filter((el) => el.hidden && match(el));
-      const n = items.filter(match).length;
+      const leaving = items.filter((el) => !el.hidden && !visibleSet.has(el));
+      const entering = items.filter((el) => el.hidden && visibleSet.has(el));
 
       chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.category === cat)));
-      count.textContent = message(cat, n);
+      count.textContent = message(cat, matched.length, startIdx + 1, Math.min(startIdx + PAGE_SIZE, matched.length));
+      renderPager(totalPages);
 
       // Stop any animation from a previous, faster click so measurements start from the real layout.
+      grid.getAnimations().forEach((a) => a.cancel());
       items.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
 
       const apply = () => {
-        items.forEach((el) => { el.hidden = !match(el); });
+        items.forEach((el) => { el.hidden = !visibleSet.has(el); });
       };
 
-      if (reduced()) { apply(); return; }
+      if (!animate || reduced()) { apply(); return; }
 
-      // 1) Exit: tiles that no longer match fade out quickly (exits are faster than enters).
+      // 1) Exit: tiles that no longer match slide & fade out smoothly.
       if (leaving.length) {
         const out = leaving.map((el) =>
           el.animate(
-            [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }],
+            [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-10 * dir}px)` }],
             { duration: ms('--dur-instant'), easing: css('--ease-in'), fill: 'forwards' },
           ).finished,
         );
@@ -219,17 +355,29 @@ const total = agencies.length;
         if (run !== token) return;
       }
 
-      // 2) FLIP: apply the new layout, then play each tile from its old position to its new one.
+      // 2) Apply new page/filter and smoothly transition container height if row count changed.
       apply();
+      const toHeight = grid.getBoundingClientRect().height;
       const medium = ms('--dur-medium');
       const easeOut = css('--ease-out');
-      items.forEach((el, i) => {
+      if (Math.abs(fromHeight - toHeight) > 2) {
+        grid.style.overflow = 'hidden';
+        grid
+          .animate([{ height: `${fromHeight}px` }, { height: `${toHeight}px` }], { duration: medium, easing: easeOut })
+          .finished.finally(() => {
+            if (run === token) grid.style.overflow = '';
+          });
+      }
+
+      // 3) Enter + FLIP remaining tiles.
+      let enterIdx = 0;
+      items.forEach((el) => {
         if (el.hidden) return;
         el.getAnimations().forEach((a) => a.cancel());
         if (entering.includes(el)) {
           el.animate(
-            [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }],
-            { duration: medium, easing: easeOut, delay: Math.min(i, 8) * ms('--stagger'), fill: 'backwards' },
+            [{ opacity: 0, transform: `translateX(${14 * dir}px)` }, { opacity: 1, transform: 'none' }],
+            { duration: medium, easing: easeOut, delay: Math.min(enterIdx++, 6) * 28, fill: 'backwards' },
           );
           return;
         }
@@ -246,6 +394,11 @@ const total = agencies.length;
       });
     };
 
-    chips.forEach((chip) => chip.addEventListener('click', () => select(chip.dataset.category ?? 'All')));
+    chips.forEach((chip) => chip.addEventListener('click', () => select(chip.dataset.category ?? 'All', 1)));
+    pagerPrev.addEventListener('click', () => select(activeCat, currentPage - 1));
+    pagerNext.addEventListener('click', () => select(activeCat, currentPage + 1));
+
+    // Initial view: show page 1 (6 items) without exit/enter animation.
+    select('All', 1, false);
   }
 </script>

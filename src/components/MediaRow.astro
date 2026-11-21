@@ -111,9 +111,7 @@ const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
         <h3 class="player__title" id="player-title" data-player-title></h3>
         <button type="button" class="player__close icon press" style="--icon: var(--icon-x)" aria-label="Close video" autofocus data-player-close></button>
       </div>
-      <div class="player__frame" data-player-frame>
-        <img class="player__poster" alt="" width="1280" height="720" data-player-poster />
-      </div>
+      <div class="player__frame" data-player-frame></div>
     </div>
   </dialog>
 </div>
@@ -127,31 +125,27 @@ const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
   }
 
   /* Publications ---------------------------------------------------------------------------------- */
-  .pubs__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-  @media (min-width: 641px) { .pubs__list { gap: var(--space-5); } }
-  @media (min-width: 1025px) { .pubs__list { grid-template-columns: 1fr; } }
+  .pubs__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  @media (min-width: 1025px) {
+    .pubs__list { grid-template-columns: 1fr; gap: 0; }
+    .pubs__list > li + li { padding-block-start: var(--space-5); margin-block-start: var(--space-5); border-block-start: 1px solid var(--border); }
+  }
 
   .pub {
     position: relative;
     display: grid;
     gap: var(--space-4);
     block-size: 100%;
-    padding: var(--space-4);
-    border-radius: var(--radius-lg);
-    background: var(--surface-2);
     color: var(--fg);
     text-decoration: none;
     align-content: start;
-    transition:
-      transform var(--dur-instant) var(--ease-spring),
-      box-shadow var(--dur-fast) var(--ease-out);
+    transition: transform var(--dur-instant) var(--ease-spring);
   }
   @media (min-width: 1025px) {
-    .pub { grid-template-columns: 150px 1fr; align-items: center; gap: var(--space-5); padding: var(--space-5); }
+    .pub { grid-template-columns: 132px 1fr; align-items: center; gap: var(--space-5); }
   }
-  .pub:hover { text-decoration: none; box-shadow: var(--shadow-2); }
+  .pub:hover { text-decoration: none; }
   .pub:active { transform: scale(var(--press-scale)); }
-  @media (hover: hover) { .pub:hover { transform: var(--hover-lift); } .pub:active { transform: scale(var(--press-scale)); } }
 
   .pub__cover {
     display: block;
@@ -169,8 +163,8 @@ const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
   @media (min-width: 641px) and (max-width: 1024px) { .pub__cover { max-inline-size: 260px; } }
 
   .pub__text { display: grid; gap: var(--space-1); justify-items: start; }
-  .pub__title { font-size: var(--text-lg); font-weight: 600; line-height: 1.3; color: var(--navy-950); }
-  .pub:hover .pub__title { text-decoration: underline; text-underline-offset: 3px; }
+  .pub__title { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 600; line-height: 1.25; color: var(--navy-950); }
+  .pub:hover .pub__title { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
   .pub__issue { font-size: var(--text-sm); color: var(--fg-muted); }
   .pub__cta {
     margin-block-start: var(--space-2);
@@ -509,7 +503,6 @@ const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
     const bg = dialog.querySelector<HTMLElement>('[data-player-bg]')!;
     const bar = dialog.querySelector<HTMLElement>('[data-player-bar]')!;
     const frame = dialog.querySelector<HTMLElement>('[data-player-frame]')!;
-    const poster = dialog.querySelector<HTMLImageElement>('[data-player-poster]')!;
     const titleEl = dialog.querySelector<HTMLElement>('[data-player-title]')!;
     const closeBtn = dialog.querySelector<HTMLButtonElement>('[data-player-close]')!;
     let source: HTMLElement | null = null;
@@ -530,7 +523,13 @@ const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
       closing = false;
       dialog.classList.remove('is-closing');
       titleEl.textContent = card.dataset.videoTitle ?? '';
+      const poster = document.createElement('img');
+      poster.className = 'player__poster';
+      poster.alt = '';
+      poster.width = 1280;
+      poster.height = 720;
       poster.src = img.currentSrc || img.src;
+      frame.replaceChildren(poster);
       dialog.showModal();
 
       const medium = ms('--dur-medium');
@@ -592,8 +591,7 @@ const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
       dialog.addEventListener('click', (e) => { if (e.target === dialog) dismiss(); });
     }
     dialog.addEventListener('close', () => {
-      dialog.querySelector('iframe')?.remove();
-      poster.removeAttribute('src');
+      frame.replaceChildren();
       dialog.getAnimations({ subtree: true }).forEach((a) => a.cancel());
       dialog.classList.remove('is-closing');
       closing = false;

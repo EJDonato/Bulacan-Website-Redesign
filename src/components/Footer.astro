@@ -7,7 +7,7 @@ import { Image } from 'astro:assets';
 import '../styles/icons.css';
 import '../styles/footer.css';
 import { footerColumns, seals } from '../data/footer';
-import { logos, site } from '../data/site';
+import { logos, site, isExternal, OFFICIAL_ORIGIN } from '../data/site';
 
 const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
@@ -20,39 +20,61 @@ const slug = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').
           <div class="fcol" data-fcol>
             <h2 class="fcol__title" data-ftitle>{col.heading}</h2>
             <ul class="fcol__list" id={`footer-${slug(col.heading)}`}>
-              {col.links.map((link) => (
-                <li>
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">
-                    {link.label}
-                    <span class="visually-hidden"> (opens in a new tab)</span>
-                  </a>
-                </li>
-              ))}
+              {col.links.map((link) => {
+                const external = isExternal(link.href);
+                return (
+                  <li>
+                    <a
+                      href={link.href}
+                      target={external ? '_blank' : undefined}
+                      rel={external ? 'noopener noreferrer' : undefined}
+                    >
+                      {link.label}
+                      {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))
       }
     </nav>
 
-    <div class="footer-seals">
-      {
-        seals.map((seal) => (
-          <a class="seal-link" href={seal.href} target="_blank" rel="noopener noreferrer">
-            <Image src={seal.src} alt={seal.label} height={128} loading="lazy" decoding="async" />
-            <span class="visually-hidden"> (opens in a new tab)</span>
-          </a>
-        ))
-      }
-      <Image src={logos.peoplesAgenda.src} alt={logos.peoplesAgenda.alt} height={128} loading="lazy" decoding="async" />
-    </div>
+    <div class="footer-bottom">
+      <div class="footer-meta">
+        <div class="footer-seals">
+          {
+            seals.map((seal) => (
+              <a class="seal-link" href={seal.href} target="_blank" rel="noopener noreferrer">
+                <Image src={seal.src} alt={seal.label} height={128} loading="lazy" decoding="async" />
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            ))
+          }
+          <Image src={logos.peoplesAgenda.src} alt={logos.peoplesAgenda.alt} height={128} loading="lazy" decoding="async" />
+        </div>
 
-    <div class="footer-legal">
-      <p>{site.conceptCredit}</p>
-      <p class="footer-legal__quote">
-        Original site credit: <q>{site.originalCredit}</q> Hosted by
-        <a href={site.hosting.href} target="_blank" rel="noopener noreferrer">{site.hosting.label}<span class="visually-hidden"> (opens in a new tab)</span></a>.
-      </p>
-      <p class="footer-legal__disclaimer">{site.disclaimer}</p>
+        <p class="footer-legal__quote">
+          Original site credit: <q>{site.originalCredit}</q> Hosted by
+          <a href={site.hosting.href} target="_blank" rel="noopener noreferrer">{site.hosting.label}<span class="visually-hidden"> (opens in a new tab)</span></a>.
+        </p>
+      </div>
+
+      <aside class="footer-concept" aria-label="Concept redesign notice">
+        <p class="footer-concept__badge">Concept Redesign</p>
+        <p class="footer-concept__text">{site.conceptCredit}</p>
+        <p class="footer-concept__disclaimer">{site.disclaimer}</p>
+        <a
+          class="footer-concept__link icon-end"
+          style="--icon-end: var(--icon-external-link)"
+          href={OFFICIAL_ORIGIN}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Visit official bulacan.gov.ph<span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+      </aside>
     </div>
   </div>
 </footer>

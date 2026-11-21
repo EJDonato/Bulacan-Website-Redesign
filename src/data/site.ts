@@ -40,9 +40,9 @@ export const isExternal = (href: string) => /^https?:/.test(href);
 export const site = {
   name: 'Provincial Government of Bulacan',
   // Shown once, quietly, in the footer. There is no site-wide banner (owner's decision, 2026-11-20).
-  disclaimer: 'Concept redesign, not the official website of the Provincial Government of Bulacan.',
+  disclaimer: 'This website is only a concept redesign, not the official website of the Provincial Government of Bulacan.',
   conceptCredit:
-    'Concept redesign by Elton. Content from bulacan.gov.ph, developed by the Provincial Information Technology Office. Not affiliated with the Provincial Government of Bulacan.',
+    'Concept redesign by Elton James Donato. Content from bulacan.gov.ph, developed by the Provincial Information Technology Office. Not affiliated with the Provincial Government of Bulacan.',
   originalCredit:
     'Provincial Government of Bulacan | Developed and Designed by the Provincial Information Technology Office. © Copyright 2022. All Rights Reserved.',
   hosting: { label: 'Philippine Data Center', href: 'https://bnshosting.net/' },

@@ -4,7 +4,12 @@
  * work without script. Script (src/scripts/hero.ts) only adds the controls and announcements.
  */
 
-.hero { padding-block: var(--space-4) var(--space-4); }
+.hero {
+  background: var(--navy-950);
+  border-block-end: 2px solid var(--gold-500);
+  padding-block: var(--space-4) var(--space-4);
+  --hero-max-h: min(640px, calc(100svh - var(--header-h) - var(--space-8)));
+}
 @media (min-width: 641px) { .hero { padding-block: var(--space-5) var(--space-5); } }
 
 .hero__wrap {
@@ -17,7 +22,6 @@
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-2);
   background: var(--bg-inverse);
   color: var(--white);
 }
@@ -50,9 +54,6 @@
    width follows its capped height at 2000:897) and stays centered, so the poster shrinks as a whole and is
    never cropped. The cap leaves room for the header, the space around the poster, the slim bar and a peek of
    what follows. */
-.hero {
-  --hero-max-h: min(680px, calc(100svh - var(--header-h) - var(--space-9)));
-}
 .hero__frame {
   max-inline-size: calc(var(--hero-max-h) * 2000 / 897);
   margin-inline: auto;
@@ -63,8 +64,10 @@
   block-size: auto;
   aspect-ratio: 2000 / 897;
   object-fit: contain;
+  border-radius: var(--radius-lg);
   background: var(--navy-900);
 }
+@media (min-width: 641px) { .hero__slide img { border-radius: var(--radius-xl); } }
 
 /* ---------- Control bar (script only): the progress scrubber, in a slim bar under the poster ---------- */
 
@@ -72,20 +75,20 @@
 .js .hero__bar { display: block; padding: 0 var(--space-4); }
 @media (min-width: 641px) { .js .hero__bar { padding-inline: var(--space-5); } }
 
-/* Progress: 13 thin segments with an invisible native range laid over them for pointer and keyboard scrubbing. */
-.hero__progress { position: relative; min-inline-size: 0; block-size: 36px; display: grid; align-items: center; }
-.hero__segs { display: flex; gap: 2px; align-items: center; block-size: 8px; pointer-events: none; }
+/* Progress: 13 subtle hairline segments with an invisible native range laid over them. */
+.hero__progress { position: relative; min-inline-size: 0; block-size: 28px; display: grid; align-items: center; }
+.hero__segs { display: flex; gap: 3px; align-items: center; block-size: 6px; pointer-events: none; }
 .hero__seg {
   flex: 1;
-  block-size: 4px;
+  block-size: 2px;
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--white) 38%, transparent);
-    transform-origin: center;
+  background: color-mix(in srgb, var(--white) 20%, transparent);
+  transform-origin: center;
   transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
 }
-.hero__seg.is-done { background: var(--gold-400); }
+.hero__seg.is-done { background: color-mix(in srgb, var(--gold-400) 55%, transparent); }
 /* The current slide is also taller, so position never depends on color alone (WCAG 1.4.1). */
-.hero__seg.is-current { background: var(--white); transform: scaleY(2); }
+.hero__seg.is-current { background: var(--gold-400); transform: scaleY(1.75); }
 
 .hero__scrub {
   position: absolute;
@@ -117,7 +120,7 @@
   padding: 0;
   border: 1.5px solid color-mix(in srgb, var(--white) 40%, transparent);
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--navy-950) 60%, transparent);
+  background: color-mix(in srgb, var(--navy-950) 65%, transparent);
   backdrop-filter: blur(8px);
   color: var(--white);
   --icon-style-size: 1.25rem;
@@ -125,9 +128,15 @@
   transition:
     transform var(--dur-instant) var(--ease-spring),
     background-color var(--dur-instant) var(--ease-out),
+    border-color var(--dur-instant) var(--ease-out),
+    color var(--dur-instant) var(--ease-out),
     opacity var(--dur-fast) var(--ease-out);
 }
-.hero__btn:hover:not(:disabled) { background: color-mix(in srgb, var(--navy-950) 85%, transparent); }
+.hero__btn:hover:not(:disabled) {
+  background: var(--gold-400);
+  border-color: var(--gold-400);
+  color: var(--navy-950);
+}
 .hero__btn:active:not(:disabled) { transform: scale(var(--press-scale)); }
 .hero__btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .hero__btn:focus-visible { outline-color: var(--gold-300); }
@@ -149,3 +158,4 @@
   .hero__seg { background: GrayText; }
   .hero__seg.is-done, .hero__seg.is-current { background: Highlight; }
 }
+

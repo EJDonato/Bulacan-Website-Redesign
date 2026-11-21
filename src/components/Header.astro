@@ -21,20 +21,24 @@ const containsCurrent = (item: NavItem): boolean =>
 <header class="site-header" data-site-header>
   <div class="header-inner" data-header-inner>
     <a class="brand" href={home}>
-      <Image class="brand-seal" src={logos.seal.src} alt="" width={80} height={80} />
-      <Image class="brand-banner" src={logos.provinceBanner.src} alt={logos.provinceBanner.alt} width={391} height={87} />
+      <span class="brand-logos">
+        <Image class="brand-seal" src={logos.seal.src} alt="" width={80} height={80} />
+        <Image class="brand-agenda" src={logos.peoplesAgenda.src} alt="" width={80} height={80} />
+      </span>
+      <span class="brand-text">
+        <span class="brand-sub">Republic of the Philippines</span>
+        <span class="brand-title">Province of Bulacan</span>
+      </span>
     </a>
-    <Image class="brand-agenda" src={logos.peoplesAgenda.src} alt={logos.peoplesAgenda.alt} width={80} height={80} />
 
     <nav class="site-nav" aria-label="Primary" data-site-nav>
       <ul class="nav-list">
         {
           nav.map((item) => {
             if (!item.children) {
-              const isHome = item.label === 'Home';
               return (
                 <li class="nav-item">
-                  <NavLink item={item} class="nav-link" iconOnly={isHome ? 'house' : undefined} />
+                  <NavLink item={item} class="nav-link" />
                 </li>
               );
             }
@@ -75,12 +79,7 @@ const containsCurrent = (item: NavItem): boolean =>
     </nav>
 
     <div class="header-actions">
-      <button
-        class="icon-btn icon"
-        type="button"
-        style="--icon: var(--icon-search)"
-        aria-label="Search"
-        popovertarget="search-panel"></button>
+      <button class="search-button" type="button" popovertarget="search-panel">Search</button>
       <button
         class="menu-button icon-start"
         style="--icon-start: var(--icon-menu)"
@@ -95,13 +94,26 @@ const containsCurrent = (item: NavItem): boolean =>
   </div>
 </header>
 
-<!-- Visual only (PRD §3): nothing is submitted or stored. -->
+<!-- Site-only search: goes to the best match in this concept's own pages and sections. -->
 <search id="search-panel" class="search-panel" popover="auto">
   <form class="search-form" data-search-form novalidate>
     <label class="visually-hidden" for="site-search">Search the site</label>
-    <input id="site-search" class="search-input" type="search" name="q" placeholder="Search" autocomplete="off" autofocus />
+    <input
+      id="site-search"
+      class="search-input"
+      type="search"
+      name="q"
+      placeholder="Search offices, services, towns, news"
+      autocomplete="off"
+      autofocus
+      role="combobox"
+      aria-expanded="false"
+      aria-controls="search-results"
+      aria-autocomplete="list"
+    />
     <button class="btn btn--primary" type="submit">Search</button>
   </form>
+  <ul class="search-results" id="search-results" role="listbox" aria-label="Suggestions" hidden data-search-results></ul>
   <p class="search-message" role="status" data-search-message></p>
 </search>
 

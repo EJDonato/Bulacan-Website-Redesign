@@ -43,10 +43,10 @@ if (root && track) {
     if (next.disabled && document.activeElement === next) prev.focus();
   }
 
-  function goTo(i: number) {
+  function goTo(i: number, byUser = true) {
     const to = Math.min(total - 1, Math.max(0, i));
     target = to;
-    userMoved = true;
+    if (byUser) userMoved = true;
     render(to); // the UI answers when the user decides, not when the slide lands
     track.scrollTo({ left: to * track.clientWidth, behavior: reduced.matches ? 'instant' : 'smooth' });
   }
@@ -100,6 +100,38 @@ if (root && track) {
   render(0);
   ready = true;
   scrub.setAttribute('aria-valuetext', describe(0));
+
+  // Auto-advance every 3 seconds; pause on hover, focus, hidden tab, or reduced motion.
+  const INTERVAL_MS = 3000;
+  let timer = 0;
+  let paused = false;
+
+  const stopTimer = () => {
+    clearInterval(timer);
+    timer = 0;
+  };
+  const startTimer = () => {
+    stopTimer();
+    if (paused || reduced.matches || document.hidden) return;
+    timer = window.setInterval(() => {
+      goTo((current + 1) % total, false);
+    }, INTERVAL_MS);
+  };
+
+  root.addEventListener('pointerenter', () => { paused = true; stopTimer(); });
+  root.addEventListener('pointerleave', () => { paused = false; startTimer(); });
+  root.addEventListener('focusin', () => { paused = true; stopTimer(); });
+  root.addEventListener('focusout', (e) => {
+    if (!root.contains(e.relatedTarget as Node | null)) { paused = false; startTimer(); }
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopTimer(); else startTimer();
+  });
+  reduced.addEventListener('change', () => {
+    if (reduced.matches) stopTimer(); else startTimer();
+  });
+
+  startTimer();
 }
 
 export {};

@@ -1,58 +1,73 @@
-/* News cards (design-system §9.7). */
+/* News and announcements: asymmetric editorial lead + stacked horizontal rows. */
 
-/* ---------- News grid ---------- */
-
-.news-grid { display: grid; gap: var(--space-4); }
+.news-grid { display: grid; gap: var(--space-6); }
 .news-grid > li { display: grid; }
-@media (min-width: 1025px) { .news-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+@media (min-width: 1025px) {
+  .news-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-rows: auto auto;
+    gap: 0 var(--space-7);
+    align-items: start;
+  }
+  .news-grid > li:first-child {
+    grid-row: 1 / span 2;
+  }
+  .news-grid > li:not(:first-child) {
+    padding-block: var(--space-5);
+    border-block-start: 1px solid var(--border);
+  }
+  .news-grid > li:nth-child(2) {
+    padding-block-start: 0;
+    border-block-start: 0;
+    padding-block-end: var(--space-5);
+  }
+}
 
 .news-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+  gap: var(--space-3);
   text-align: start;
-  box-shadow: var(--shadow-1);
-  transition:
-    transform var(--dur-fast) var(--ease-out),
-    box-shadow var(--dur-fast) var(--ease-out);
 }
-.news-card:hover { transform: var(--hover-lift); box-shadow: var(--shadow-2); z-index: var(--z-raised); }
-.news-card:active {
-  transform: scale(var(--press-scale));
-  box-shadow: var(--shadow-1);
-  transition-duration: var(--dur-instant);
-  transition-timing-function: var(--ease-spring);
-}
-/* The ring goes around the whole card, not just the title text. */
-.news-card:has(a:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+.news-card:has(a:focus-visible) { outline: 3px solid var(--focus); outline-offset: 6px; border-radius: var(--radius-sm); }
 .news-card a:focus-visible { outline: none; }
 
-.news-card__media { position: relative; aspect-ratio: 3 / 2; overflow: hidden; background: var(--surface-3); flex: none; }
+.news-card__media {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface-3);
+  flex: none;
+}
 .news-card__media img {
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
   transition: transform var(--dur-medium) var(--ease-out);
 }
-.news-card:hover .news-card__media img { transform: scale(1.05); }
+.news-card:hover .news-card__media img { transform: scale(1.04); }
 
 /* Generic seal image: small, centered, on a tinted tile instead of stretched. */
 .news-card__media--tile { display: grid; place-items: center; background: var(--navy-100); }
-.news-card__media--tile img { inline-size: 62%; block-size: auto; object-fit: contain; mix-blend-mode: multiply; }
+.news-card__media--tile img { inline-size: 56%; block-size: auto; object-fit: contain; mix-blend-mode: multiply; }
 
-.news-card__body { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; padding: var(--space-4); }
-@media (min-width: 1025px) { .news-card__body { padding: var(--space-4) var(--space-4) var(--space-5); } }
+.news-card__body { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; }
 
-.news-card__date { font-size: var(--text-sm); color: var(--text-subtle); }
+.news-card__date {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold-700);
+}
 .news-card__title {
+  font-family: var(--font-serif);
   font-size: var(--text-lg);
   font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: 0;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -60,8 +75,10 @@
   overflow: hidden;
 }
 .news-card__title a { color: var(--navy-950); text-decoration: none; }
-/* Stretched link: the pseudo-element covers the card. */
+.news-card:hover .news-card__title a { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+/* Stretched link: the pseudo-element covers the item. */
 .news-card__title a::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+
 .news-card__excerpt {
   color: var(--fg-muted);
   display: -webkit-box;
@@ -72,22 +89,32 @@
 }
 .news-card__more {
   margin-block-start: auto;
-  padding-block-start: var(--space-2);
+  padding-block-start: var(--space-1);
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
+  font-size: var(--text-sm);
   font-weight: 600;
   color: var(--link);
-  --icon-style-size: 1.125rem;
+  --icon-style-size: 1rem;
   --icon-style-spacing: 0.35em;
 }
 .news-card__more::after { transition: transform var(--dur-fast) var(--ease-out); }
-.news-card:hover .news-card__more { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .news-card:hover .news-card__more::after { transform: translateX(4px); }
 
-/* Tablet: horizontal cards keep the text readable where three columns would be too narrow. */
+/* Desktop lead story (item 1) + horizontal secondary rows (items 2 & 3). */
+@media (min-width: 1025px) {
+  .news-grid > li:first-child .news-card__media { aspect-ratio: 16 / 10; }
+  .news-grid > li:first-child .news-card__title { font-size: var(--text-xl); }
+
+  .news-grid > li:not(:first-child) .news-card { flex-direction: row; gap: var(--space-4); align-items: start; }
+  .news-grid > li:not(:first-child) .news-card__media { inline-size: 38%; aspect-ratio: 4 / 3; }
+  .news-grid > li:not(:first-child) .news-card__excerpt { -webkit-line-clamp: 2; line-clamp: 2; font-size: var(--text-sm); }
+}
+
+/* Tablet: horizontal rows keep the text readable. */
 @media (min-width: 641px) and (max-width: 1024px) {
-  .news-card { flex-direction: row; }
-  .news-card__media { flex: 0 0 38%; aspect-ratio: auto; }
-  .news-card__body { padding: var(--space-5); }
+  .news-grid > li + li { padding-block-start: var(--space-5); border-block-start: 1px solid var(--border); }
+  .news-card { flex-direction: row; gap: var(--space-5); }
+  .news-card__media { flex: 0 0 38%; aspect-ratio: 3 / 2; }
 }

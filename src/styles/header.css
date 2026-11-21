@@ -9,10 +9,8 @@
   inset-block-start: 0;
   z-index: var(--z-header);
   block-size: var(--header-h);
-  /* Brand navy with a gold edge, echoing the gold frame of the province banner. */
   background: var(--bg-inverse);
   color: var(--fg-inverse);
-  border-block-end: 2px solid var(--gold-500);
 }
 
 .header-inner {
@@ -31,19 +29,18 @@
   white-space: nowrap;
 }
 
-/* Shrink and gain a shadow over the first scroll distance. Decorative: progressive enhancement, no fallback. */
-@keyframes header-shrink {
+/* Gain a shadow on scroll while keeping the header height constant. */
+@keyframes header-shadow {
   to {
-    block-size: var(--header-h-scrolled);
     box-shadow: var(--shadow-2);
   }
 }
 @supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
   @media (prefers-reduced-motion: no-preference) {
     .site-header {
-      animation: header-shrink auto linear both;
+      animation: header-shadow auto linear both;
       animation-timeline: scroll(block root);
-      animation-range: 0px calc(var(--header-h) - var(--header-h-scrolled));
+      animation-range: 0px 48px;
     }
   }
 }
@@ -56,23 +53,38 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-4);
   border-radius: var(--radius-sm);
   text-decoration: none;
 }
 .brand:hover { text-decoration: none; }
-.brand-seal { inline-size: 40px; block-size: 40px; }
-/* The gold-framed plaque is its own wordmark. It is only 391px wide, so it stays at or under 2x. */
-.brand-banner { inline-size: auto; block-size: 44px; }
+.brand-logos { display: flex; align-items: center; gap: var(--space-2); flex: none; }
+.brand-seal,
+.brand-agenda { inline-size: 38px; block-size: 38px; flex: none; }
 
-/* People's Agenda 10 logo only where there is room; it always appears in the footer. */
-.brand-agenda { display: none; inline-size: 40px; block-size: 40px; }
-@media (min-width: 1500px) { .brand-agenda { display: block; } }
+.brand-text { display: grid; align-content: center; gap: 3px; padding-block-start: 3px; }
+.brand-sub {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.brand-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 0.94rem + 0.35vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
 
-/* Phones: the banner already carries the name, so drop the seal to keep room for search and menu. */
 @media (max-width: 640px) {
-  .brand-seal { display: none; }
-  .brand-banner { block-size: 40px; }
+  .brand { gap: var(--space-3); }
+  .brand-seal,
+  .brand-agenda { inline-size: 32px; block-size: 32px; }
+  .brand-sub { font-size: 0.5rem; letter-spacing: 0.09em; }
 }
 
 /* ---------- Actions ---------- */
@@ -101,8 +113,20 @@
 .menu-button:hover { background: rgb(255 255 255 / 0.1); border-color: var(--white); }
 .menu-button:active { transform: scale(var(--press-scale)); }
 
-.header-actions .icon-btn { color: var(--white); }
-.header-actions .icon-btn:hover { background: rgb(255 255 255 / 0.1); }
+/* Search is a word on a solid white button, so it stands apart from the navbar links and the outlined Menu button. */
+.search-button {
+  min-block-size: 44px;
+  padding-inline: var(--space-4);
+  border: 1.5px solid var(--white);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  color: var(--navy-950);
+  font: 600 var(--text-base) / 1 var(--font-sans);
+  cursor: pointer;
+  transition: transform var(--dur-instant) var(--ease-spring), background-color var(--dur-instant) var(--ease-out);
+}
+.search-button:hover { background: var(--gold-300); border-color: var(--gold-300); }
+.search-button:active { transform: scale(var(--press-scale)); }
 
 /* The default focus ring is navy; on the navy header it needs to be gold. Dropdown items stay on white. */
 .brand:focus-visible,
@@ -155,23 +179,22 @@ html:not(.js) .menu-button { display: none; }
   transition: color var(--dur-instant) var(--ease-out);
 }
 
-/* Gold underline grows from the center. */
+/* Tapered, pointy gold flourish that glides out smoothly from the center. */
 .nav-item > :is(.nav-link, .nav-trigger)::before {
   content: "";
   position: absolute;
-  inset-inline: 6px;
+  inset-inline: 4px;
   inset-block-end: 7px;
-  block-size: 2px;
-  background: var(--gold-400);
+  block-size: 1px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, transparent, var(--gold-400) 22%, var(--gold-300) 50%, var(--gold-400) 78%, transparent);
   transform: scaleX(0);
   transition: transform var(--dur-fast) var(--ease-out);
 }
-.nav-item > :is(.nav-link, .nav-trigger):is(:hover, [aria-expanded="true"]) { color: var(--gold-300); }
-.nav-item > :is(.nav-link, .nav-trigger):is(:hover, :focus-visible, [aria-expanded="true"])::before { transform: scaleX(1); }
-
-/* Current page: a thicker underline, 9.9:1 against navy (not color alone). */
-.nav-item > .nav-link[aria-current="page"]::before,
-.nav-item > .nav-trigger[aria-current="true"]::before { transform: scaleX(1); block-size: 3px; }
+.nav-item > :is(.nav-link, .nav-trigger):is(:hover, [aria-expanded="true"], [aria-current="page"], [aria-current="true"]) { color: var(--gold-300); }
+.nav-item > :is(.nav-link, .nav-trigger):is(:hover, :focus-visible, [aria-expanded="true"], [aria-current="page"], [aria-current="true"])::before {
+  transform: scaleX(1);
+}
 
 .nav-item > .nav-trigger::after { transition: transform var(--dur-fast) var(--ease-out); }
 .nav-item > .nav-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
@@ -331,6 +354,56 @@ html:not(.js) .menu-button { display: none; }
   font: inherit;
 }
 .search-form[data-feedback="error"] .search-input { border-color: var(--error); }
+
+/* Opens with a short fade and rise, and closes the same way (popovers switch display, so it must be discrete). */
+@media (prefers-reduced-motion: no-preference) {
+  .search-panel {
+    opacity: 0;
+    translate: 0 -8px;
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      translate var(--dur-fast) var(--ease-out),
+      display var(--dur-fast) allow-discrete,
+      overlay var(--dur-fast) allow-discrete;
+  }
+  .search-panel:popover-open { opacity: 1; translate: 0 0; }
+  @starting-style { .search-panel:popover-open { opacity: 0; translate: 0 -8px; } }
+}
+
+/* Suggestions appear under the field as you type. */
+.search-results {
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  max-block-size: min(22rem, 50dvh);
+  overflow-y: auto;
+}
+.search-results[hidden] { display: none; }
+.search-results a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-4);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  color: inherit;
+  text-decoration: none;
+}
+.search-results a:hover { background: var(--navy-50); }
+.search-results [aria-selected="true"] a { background: var(--navy-50); outline: 2px solid var(--navy-700); outline-offset: -2px; }
+.search-result-title { font-weight: 600; }
+.search-result-kind { color: var(--text-muted, var(--text)); font-size: var(--text-sm); }
+.search-result-empty { padding: var(--space-3); color: var(--text-muted, var(--text)); }
+@media (prefers-reduced-motion: no-preference) {
+  .search-results li { animation: search-result-in var(--dur-fast) var(--ease-out) backwards; }
+  .search-results li:nth-child(2) { animation-delay: 20ms; }
+  .search-results li:nth-child(3) { animation-delay: 40ms; }
+  .search-results li:nth-child(4) { animation-delay: 60ms; }
+  .search-results li:nth-child(5) { animation-delay: 80ms; }
+  .search-results li:nth-child(6) { animation-delay: 100ms; }
+}
+@keyframes search-result-in { from { opacity: 0; translate: 0 -4px; } }
 .search-message { margin-block-start: var(--space-2); color: var(--error); font-size: var(--text-sm); }
 .search-message:empty { display: none; }
 

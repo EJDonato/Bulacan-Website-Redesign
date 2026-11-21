@@ -39,10 +39,9 @@
   gap: var(--space-4);
   max-inline-size: 60ch;
   padding: var(--space-5);
-  border: 1px solid var(--navy-100);
-  border-inline-start: 4px solid var(--gold-400);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--white);
+  background: var(--surface-2);
 }
 .inner-notice h2 { font-size: var(--text-xl); }
 .inner-notice p { color: var(--fg-muted); }

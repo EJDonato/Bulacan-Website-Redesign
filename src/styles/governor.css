@@ -1,6 +1,5 @@
 /*
- * Governor's Message (design-system §9.7.2): a brief section on brand navy, with the photo standing on the
- * section's bottom edge. Only the opening paragraph shows; a native <details> expands the rest in place.
+ * Governor's Message: editorial pull-quote on brand navy + official provincial letterhead modal.
  */
 
 .section.gov {
@@ -8,92 +7,91 @@
   isolation: isolate;
   overflow: clip;
   /* The photo stands on the bottom edge, so the section adds no padding below it. */
-  padding-block: var(--space-6) 0;
+  padding-block: var(--space-7) 0;
 }
-
-/* Soft gold glow behind the photo. */
-.gov::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset-block-end: -35%;
-  inset-inline-end: -12%;
-  inline-size: min(70vw, 760px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--gold-500) 32%, transparent), transparent 66%);
-}
+@media (min-width: 1025px) { .section.gov { padding-block-start: var(--space-8); } }
 
 .gov :focus-visible { outline-color: var(--gold-300); }
 
 .gov__grid { display: grid; gap: var(--space-4); align-items: end; }
 @media (min-width: 1025px) {
-  .gov__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-7); }
+  .gov__grid { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--space-6); }
 }
 
 .gov__text {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
   align-content: start;
 }
-@media (min-width: 1025px) { .gov__text { align-self: center; padding-block-end: var(--space-6); } }
-.gov .section-head { margin-block-end: 0; }
+@media (min-width: 1025px) { .gov__text { align-self: center; padding-block-end: var(--space-8); } }
+.gov .section-head { margin-block-end: 0; padding-block-start: 0; border-block-start: 0; }
+.gov .section-head__bar { display: none; }
 
-/* The brief: one opening paragraph, set large. */
-.gov__quote { position: relative; margin: 0; padding-block-start: var(--space-5); max-inline-size: 60ch; }
-.gov__mark { position: absolute; inset-block-start: 0; inset-inline-start: 0; color: var(--gold-400); --icon-style-size: 1.75rem; }
+/* Broadsheet pull-quote: sculptural serif opening mark + fine top/bottom editorial hairlines. */
+.gov__quote {
+  position: relative;
+  margin: 0;
+  padding-block: var(--space-5);
+  border-block: 1px solid color-mix(in srgb, var(--white) 16%, transparent);
+  max-inline-size: 68ch;
+}
+.gov__quote::before {
+  content: "\201C";
+  position: absolute;
+  inset-block-start: -0.18em;
+  inset-inline-start: -0.04em;
+  font-family: var(--font-serif);
+  font-size: clamp(4.5rem, 3.8rem + 2.5vw, 6.25rem);
+  font-weight: 700;
+  line-height: 1;
+  color: color-mix(in srgb, var(--gold-400) 24%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
 .gov__quote p {
-  font-size: var(--text-lg);
-  line-height: 1.45;
+  position: relative;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 1.1rem + 0.65vw, 1.625rem);
+  line-height: 1.4;
   color: var(--white);
   text-wrap: pretty;
 }
-@media (min-width: 1025px) { .gov__quote p { font-size: var(--text-xl); } }
+
+.gov__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  max-inline-size: 68ch;
+}
 
 .gov__by { display: grid; font-size: var(--text-sm); }
-.gov__name { font-weight: 600; color: var(--white); }
+.gov__name { font-weight: 600; color: var(--gold-300); }
 .gov__role { color: var(--fg-inverse-muted); }
 
-/* ---------- Expand in place ---------- */
-
-.gov__more { max-inline-size: 65ch; }
 .gov__toggle {
-  list-style: none;
-  --icon-style-size: 1.125rem;
-  --icon-style-spacing: 0.5em;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--white);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--gold-400) 70%, transparent);
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1.5px;
+  cursor: pointer;
+  --icon-style-size: 1rem;
+  --icon-style-spacing: 0.4em;
 }
-.gov__toggle::-webkit-details-marker { display: none; }
+.gov__toggle:hover { color: var(--gold-300); text-decoration-color: var(--gold-300); }
 .gov__toggle::after { transition: transform var(--dur-fast) var(--ease-out); }
-.gov__more[open] .gov__toggle::after { transform: rotate(180deg); }
-
-/* One label at a time. */
-.gov__more:not([open]) .gov__when-open,
-.gov__more[open] .gov__when-closed { display: none; }
-
-.gov__rest {
-  display: grid;
-  gap: var(--space-4);
-  padding-block: var(--space-5) var(--space-2);
-  color: var(--fg-inverse-muted);
-  line-height: 1.6;
-  text-wrap: pretty;
-}
-
-/* Slide open and closed where the browser lets us animate to an intrinsic height; elsewhere it opens instantly. */
-@supports (interpolate-size: allow-keywords) and selector(::details-content) {
-  @media (prefers-reduced-motion: no-preference) {
-    .gov__more {
-      interpolate-size: allow-keywords;
-    }
-    .gov__more::details-content {
-      block-size: 0;
-      overflow: clip;
-      transition: block-size var(--dur-medium) var(--ease-out), content-visibility var(--dur-medium);
-      transition-behavior: allow-discrete;
-    }
-    .gov__more[open]::details-content { block-size: auto; }
-  }
-}
+.gov__toggle:hover::after { transform: translateX(4px); }
 
 /* ---------- Photo ---------- */
 
@@ -102,4 +100,108 @@
 .gov__photo img { display: block; inline-size: 100%; block-size: auto; }
 @media (min-width: 1025px) {
   .gov__photo { justify-self: end; inline-size: min(100%, 380px); }
+}
+
+/* ---------- Official Letterhead Modal ---------- */
+
+.gov-letter {
+  inline-size: min(680px, calc(100% - 2 * var(--gutter)));
+  max-inline-size: none;
+  max-block-size: calc(100dvh - 2 * var(--space-4));
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+.gov-letter::backdrop {
+  background: rgb(0 6 66 / 0.78);
+  transition: opacity var(--dur-medium) var(--ease-out);
+}
+@starting-style { .gov-letter[open]::backdrop { opacity: 0; } }
+
+.gov-letter__paper {
+  position: relative;
+  overflow-y: auto;
+  max-block-size: calc(100dvh - 2 * var(--space-4));
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--border);
+  border-block-start: 4px solid var(--navy-950);
+  border-radius: 4px;
+  background: #fcfbf7;
+  color: var(--fg);
+  box-shadow: var(--shadow-3);
+}
+@media (min-width: 641px) {
+  .gov-letter__paper { padding: var(--space-7) var(--space-8); }
+}
+@starting-style {
+  .gov-letter[open] .gov-letter__paper { opacity: 0; transform: translateY(12px); }
+}
+.gov-letter__paper {
+  transition: opacity var(--dur-medium) var(--ease-out), transform var(--dur-medium) var(--ease-out);
+}
+
+.gov-letter__close {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-3);
+}
+
+.gov-letter__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+  padding-block-end: var(--space-4);
+  margin-block-end: var(--space-5);
+  border-block-end: 2px solid var(--navy-950);
+  box-shadow: 0 3px 0 0 #fcfbf7, 0 4px 0 0 var(--gold-500);
+}
+.gov-letter__seal { inline-size: 56px; block-size: 56px; object-fit: contain; }
+.gov-letter__republic {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.gov-letter__office {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--navy-950);
+}
+
+.gov-letter__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  color: var(--navy-950);
+  margin-block-end: var(--space-4);
+}
+
+.gov-letter__body {
+  display: grid;
+  gap: var(--space-4);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--fg);
+  max-inline-size: 60ch;
+}
+
+.gov-letter__sig {
+  margin-block-start: var(--space-6);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--border);
+}
+.gov-letter__sig-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--navy-950);
+}
+.gov-letter__sig-role {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
 }

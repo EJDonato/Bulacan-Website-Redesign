@@ -81,13 +81,12 @@ export const agencies: Agency[] = [
     href: 'https://pdrrmo.bulacan.gov.ph/index.php',
   },
   {
-    // Full name is not stated on its own site or the homepage (content.md §13). Shown as the acronym only.
     acronym: 'BPSTPC',
-    name: 'BPSTPC',
-    category: 'Government',
+    name: 'Bulacan Packaging Service and Toll Packing Center',
+    description: 'Packaging and label design services',
+    category: 'Services',
     logo: bpstpc,
     href: 'https://bpstpc.bulacan.gov.ph/index.php',
-    nameUnverified: true,
   },
   {
     acronym: 'BPC',

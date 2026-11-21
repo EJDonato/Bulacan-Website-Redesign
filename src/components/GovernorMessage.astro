@@ -1,50 +1,41 @@
 ---
 /**
- * Governor's Message (design-system §9.7.2): its own brief section with the Governor's photo. Only the opening
- * is shown; the rest of the message expands in place. A native <details> does the expanding, so it works
- * without script and the hidden text stays searchable with Find in page.
+ * Governor's Message: editorial pull-quote on brand navy with an official letterhead modal for the full text.
  */
 import { Image } from 'astro:assets';
 import '../styles/buttons.css';
 import '../styles/governor.css';
 import SectionHeading from './SectionHeading.astro';
 import { governor } from '../data/governor';
+import { logos } from '../data/site';
 
 const brief = governor.paragraphs.slice(0, governor.excerptParagraphs);
-const rest = governor.paragraphs.slice(governor.excerptParagraphs);
 ---
 
 <section class="section section--inverse gov" aria-labelledby="governor-heading">
   <div class="container gov__grid">
     <div class="gov__text" data-reveal>
-      <SectionHeading id="governor-heading" eyebrow={governor.eyebrow} title={governor.heading} />
+      <SectionHeading id="governor-heading" title={governor.heading} />
 
       <blockquote class="gov__quote">
-        <span class="gov__mark icon" style="--icon: var(--icon-quote)" aria-hidden="true"></span>
         {brief.map((p) => <p>{p}</p>)}
       </blockquote>
 
-      <p class="gov__by">
-        <span class="gov__name">{governor.attribution.name}</span>
-        <span class="gov__role">{governor.attribution.title}</span>
-      </p>
+      <div class="gov__footer">
+        <p class="gov__by">
+          <span class="gov__name">{governor.attribution.name}</span>
+          <span class="gov__role">{governor.attribution.title}</span>
+        </p>
 
-      {
-        rest.length > 0 && (
-          <details class="gov__more">
-            <summary
-              class="btn btn--ghost gov__toggle icon-end"
-              style="--icon-end: var(--icon-chevron-down)"
-            >
-              <span class="gov__when-closed">{governor.readMore}</span>
-              <span class="gov__when-open">{governor.readLess}</span>
-            </summary>
-            <div class="gov__rest">
-              {rest.map((p) => <p>{p}</p>)}
-            </div>
-          </details>
-        )
-      }
+        <button
+          type="button"
+          class="gov__toggle icon-end"
+          style="--icon-end: var(--icon-arrow-right)"
+          data-gov-open
+        >
+          {governor.readMore}
+        </button>
+      </div>
     </div>
 
     <figure class="gov__photo" data-reveal style="--i: 1">
@@ -58,4 +49,52 @@ const rest = governor.paragraphs.slice(governor.excerptParagraphs);
       />
     </figure>
   </div>
+
+  <dialog class="gov-letter" aria-labelledby="gov-letter-title" closedby="any" data-gov-dialog>
+    <article class="gov-letter__paper">
+      <button
+        type="button"
+        class="icon-btn gov-letter__close icon"
+        style="--icon: var(--icon-x)"
+        aria-label="Close message"
+        autofocus
+        data-gov-close
+      ></button>
+
+      <header class="gov-letter__head">
+        <Image class="gov-letter__seal" src={logos.seal.src} alt="" width={64} height={64} loading="lazy" />
+        <div class="gov-letter__org">
+          <p class="gov-letter__republic">Republic of the Philippines · Province of Bulacan</p>
+          <p class="gov-letter__office">Office of the Governor</p>
+        </div>
+      </header>
+
+      <h2 id="gov-letter-title" class="gov-letter__title">{governor.heading}</h2>
+
+      <div class="gov-letter__body">
+        {governor.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+
+      <footer class="gov-letter__sig">
+        <p class="gov-letter__sig-name">{governor.attribution.name}</p>
+        <p class="gov-letter__sig-role">{governor.attribution.title}</p>
+      </footer>
+    </article>
+  </dialog>
 </section>
+
+<script>
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-gov-open]');
+  const dialog = document.querySelector<HTMLDialogElement>('[data-gov-dialog]');
+  const closeBtn = document.querySelector<HTMLButtonElement>('[data-gov-close]');
+
+  if (openBtn && dialog && typeof dialog.showModal === 'function') {
+    openBtn.addEventListener('click', () => dialog.showModal());
+    closeBtn?.addEventListener('click', () => dialog.close());
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) dialog.close();
+      });
+    }
+  }
+</script>

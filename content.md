@@ -297,7 +297,7 @@ Play button label: "Play video: {title}".
 | 4 | PESO | Provincial Public Employment Service Office | Jobs and employment services | Services | `2024/01/ppeso_logo.png` | `https://peso.bulacan.gov.ph/` |
 | 5 | GAD-FPS | Gender and Development Focal Point System | PGB Gender and Development | Services | `2021/06/GAD-PGB-LOGO-230x300.png` | `https://gad.bulacan.gov.ph/` |
 | 6 | PDRRMO | Provincial Disaster Risk Reduction and Management Office | Disaster preparedness and response | Services | `2023/07/PDRRMO.png` | `https://pdrrmo.bulacan.gov.ph/index.php` |
-| 7 | BPSTPC | **To verify**: full name not stated on its site | — | Government | `2021/07/BPSTPC.png` | `https://bpstpc.bulacan.gov.ph/index.php` |
+| 7 | BPSTPC | Bulacan Packaging Service and Toll Packing Center | Packaging and label design services | Services | `2021/07/BPSTPC.png` | `https://bpstpc.bulacan.gov.ph/index.php` |
 | 8 | BPC | Bulacan Polytechnic College | Provincial college ("Your Partner to Reach the World") | Education | `2021/06/bpclogo.png` | `https://bpc.edu.ph/` |
 | 9 | — | Bulacan Provincial Library | Provincial library | Education | `2026/01/BPL_LOGO.png` | `https://sites.google.com/view/bulacan-provincial-library/home` |
 | 10 | GKA | Gintong Kabataan Awards | Awards for outstanding Bulakenyo youth | Awards | `2024/10/gka_logo.png` | `https://gka.bulacan.gov.ph/` |

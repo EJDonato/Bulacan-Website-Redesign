@@ -58,15 +58,29 @@
 }
 @keyframes fcol-in { from { opacity: 0; transform: translateY(calc(var(--reveal-distance) / -2)); } }
 
-/* Seals --------------------------------------------------------------------------------------------- */
+/* Bottom row: seals + source credit on left, concept notice on right ------------------------------- */
+.footer-bottom {
+  display: grid;
+  gap: var(--space-6);
+  margin-block-start: var(--space-7);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid rgb(255 255 255 / 0.12);
+}
+@media (min-width: 1025px) {
+  .footer-bottom {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+    gap: var(--space-8);
+    align-items: start;
+  }
+}
+
+.footer-meta { display: grid; gap: var(--space-5); align-content: start; }
+
 .footer-seals {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-5);
-  margin-block-start: var(--space-7);
-  padding-block-start: var(--space-6);
-  border-block-start: 1px solid rgb(255 255 255 / 0.12);
 }
 .footer-seals img { block-size: 64px; inline-size: auto; }
 .seal-link {
@@ -77,9 +91,32 @@
 @media (hover: hover) { .seal-link:hover { transform: var(--hover-lift); } }
 .seal-link:active { transform: scale(var(--press-scale)); }
 
-/* Credits and disclaimer ---------------------------------------------------------------------------- */
-.footer-legal { display: grid; gap: var(--space-3); margin-block-start: var(--space-6); max-inline-size: 75ch; }
-.footer-legal p { line-height: 1.55; }
-.footer-legal__quote { font-size: var(--text-sm); color: var(--navy-200); }
+.footer-legal__quote { font-size: var(--text-sm); color: var(--navy-200); line-height: 1.55; max-inline-size: 62ch; }
 .footer-legal__quote q { quotes: "\201C" "\201D"; }
-.footer-legal__disclaimer { font-weight: 600; color: var(--white); }
+
+.footer-concept {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+@media (min-width: 1025px) {
+  .footer-concept { justify-self: end; max-inline-size: 46ch; }
+}
+.footer-concept__badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.footer-concept__text { line-height: 1.55; color: var(--navy-200); }
+.footer-concept__disclaimer { font-weight: 600; color: var(--white); line-height: 1.5; }
+.footer-concept__link {
+  justify-self: start;
+  margin-block-start: var(--space-1);
+  font-weight: 600;
+  color: var(--gold-300) !important;
+  --icon-style-size: 0.95rem;
+  --icon-style-spacing: 0.35em;
+}
+.footer-concept__link:hover { color: var(--white) !important; }
