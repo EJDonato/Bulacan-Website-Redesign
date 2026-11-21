@@ -1,0 +1,13 @@
+{
+  "name": "Provincial Government of Bulacan (concept redesign)",
+  "short_name": "Bulacan",
+  "description": "A concept redesign of the Provincial Government of Bulacan website. Not the official website.",
+  "start_url": "./",
+  "display": "browser",
+  "background_color": "#000642",
+  "theme_color": "#000642",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
