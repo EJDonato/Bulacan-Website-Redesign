@@ -49,7 +49,9 @@ dl.card-grid .card dt { font-weight: 600; }
 .policy-grid .card h3 { font-size: var(--text-lg); margin-block-end: var(--space-2); }
 .eeo { padding: var(--space-5); border: 1px solid var(--navy-100); border-radius: var(--radius-lg); background: var(--navy-50); }
 .eeo__title { font-size: var(--text-xl); }
-.eeo__text { display: grid; gap: var(--space-3); max-inline-size: 75ch; line-height: 1.7; }
+.eeo__text { display: grid; gap: var(--space-3); line-height: 1.7; }
+/* Two columns on wide screens so the statement fills the card instead of leaving the right half empty */
+@media (min-width: 900px) { .eeo__text { display: block; columns: 2; column-gap: var(--space-7); } .eeo__text > p { break-inside: avoid-column; margin-block-end: var(--space-3); } }
 .eeo__text[hidden] { display: none; }
 
 /* Health */
