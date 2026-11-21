@@ -244,3 +244,16 @@ dl.card-grid .card dt { font-weight: 600; }
 /* No browser focus box or tap flash on the map; keyboard focus still shows as a gold outline on the town itself */
 .bmap, .bmap * { -webkit-tap-highlight-color: transparent; }
 .bmap :focus, .bmap a:focus, .bmap svg:focus { outline: none; }
+
+/* Health tabs: fades and arrows at the edges where the row scrolls */
+.svc-tabs-wrap { position: relative; }
+.svc-tabs-more { display: none; }
+@media (max-width: 899px) {
+  .svc-tabs-wrap[data-end="true"] .svc-tabs { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3.5rem), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 3.5rem), transparent); }
+  .svc-tabs-wrap[data-start="true"] .svc-tabs { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 3.5rem), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 3.5rem), transparent); }
+  .svc-tabs-wrap[data-start="true"][data-end="true"] .svc-tabs { -webkit-mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent); mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent); }
+  .svc-tabs-more { position: absolute; inset-block-start: 50%; translate: 0 -50%; z-index: 1; display: none; inline-size: 2.25rem; block-size: 2.25rem; padding: 0; border: 1px solid var(--navy-200); border-radius: var(--radius-full); background: var(--white); color: var(--navy-700); box-shadow: var(--shadow-1); --icon-size: 1.1rem; }
+  .svc-tabs-more--next { inset-inline-end: 0; }
+  .svc-tabs-more--prev { inset-inline-start: 0; }
+  .svc-tabs-wrap[data-end="true"] .svc-tabs-more--next, .svc-tabs-wrap[data-start="true"] .svc-tabs-more--prev { display: grid; place-items: center; }
+}

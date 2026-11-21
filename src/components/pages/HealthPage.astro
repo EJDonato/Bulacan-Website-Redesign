@@ -54,8 +54,12 @@ const split = (paras: string[]) => {
       <li><span class="glance__icon icon-start" style="--icon-start: var(--icon-building-2)" aria-hidden="true"></span><strong>{hospitals.length}</strong><span>district hospitals across the province</span></li>
     </ul>
 
-    <div class="svc-tabs pill-tabs" role="tablist" aria-label="Services and facilities" data-health-tabs hidden>
+    <div class="svc-tabs-wrap" data-health-wrap>
+        <div class="svc-tabs pill-tabs" role="tablist" aria-label="Services and facilities" data-health-tabs hidden>
       {panels.map((t, i) => <button type="button" role="tab" id={`tab-${t.id}`} aria-controls={`panel-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={t.id}>{t.label}</button>)}
+    </div>
+      <button type="button" class="svc-tabs-more svc-tabs-more--prev icon" style="--icon: var(--icon-chevron-left)" aria-hidden="true" tabindex="-1" data-scroll="-1"></button>
+      <button type="button" class="svc-tabs-more svc-tabs-more--next icon" style="--icon: var(--icon-chevron-right)" aria-hidden="true" tabindex="-1" data-scroll="1"></button>
     </div>
 
     <div class="svc-panels">
@@ -120,6 +124,18 @@ const split = (paras: string[]) => {
     // Every panel is in the page; with script, one shows at a time.
     tabs.hidden = false;
     root.classList.add('is-tabbed');
+    // On a phone the tab row scrolls sideways: edge fades and arrows show which way there is more.
+    const wrap = root.querySelector<HTMLElement>('[data-health-wrap]')!;
+    const edges = () => {
+      wrap.dataset.start = String(tabs.scrollLeft > 4);
+      wrap.dataset.end = String(tabs.scrollLeft + tabs.clientWidth < tabs.scrollWidth - 4);
+    };
+    tabs.addEventListener('scroll', edges, { passive: true });
+    addEventListener('resize', edges);
+    wrap.querySelectorAll<HTMLButtonElement>('[data-scroll]').forEach((m) =>
+      m.addEventListener('click', () => tabs.scrollBy({ left: Number(m.dataset.scroll) * tabs.clientWidth * 0.7, behavior: 'smooth' })),
+    );
+    edges();
     const buttons = [...tabs.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
     const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
     const show = (id: string, focus = false) => {
