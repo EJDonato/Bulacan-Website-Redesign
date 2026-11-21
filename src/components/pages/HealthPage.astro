@@ -128,6 +128,7 @@ const split = (paras: string[]) => {
         b.setAttribute('aria-selected', String(on));
         b.tabIndex = on ? 0 : -1;
         if (on && focus) b.focus();
+        if (on && root.dataset.ready) b.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
       });
       panels.forEach((p) => {
         const on = p.dataset.panel === id;

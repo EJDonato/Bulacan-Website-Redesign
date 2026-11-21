@@ -86,7 +86,7 @@ dl.card-grid .card dt { font-weight: 600; }
 .video-link__label { padding: var(--space-3) var(--space-4); }
 
 /* Invest */
-.stat-grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); }
+.stat-grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr)); }
 .stat { display: flex; flex-direction: column-reverse; align-items: center; justify-content: center; text-align: center; gap: var(--space-1); padding: var(--space-4) var(--space-5); border: 1px solid var(--navy-100); border-radius: var(--radius-md); background: var(--white); }
 .stat dd { color: var(--navy-950); font: 700 var(--text-2xl) / 1.1 var(--font-serif); }
 .stat dt { color: var(--text-muted); font-size: var(--text-sm); }
@@ -223,3 +223,20 @@ dl.card-grid .card dt { font-weight: 600; }
 .eeo__text.is-entering > p:nth-child(3) { animation-delay: 120ms; }
 .eeo__text.is-entering > p:nth-child(n+4) { animation-delay: 180ms; }
 .eeo__tabs button { transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+
+/* ---------- Phones ---------- */
+@media (max-width: 899px) {
+  /* Search boxes beside a heading go full width and sit flush left */
+  .section-bar .find { inline-size: 100%; margin-inline-start: 0; }
+  /* The long offices list scrolls inside its own box so the sections after it stay within reach */
+  .office-scroll { position: relative; max-block-size: 24rem; overflow-y: auto; overscroll-behavior: contain; border: 1px solid var(--navy-100); border-radius: var(--radius-md); padding-inline: var(--space-2); background: var(--white); }
+  .office-scroll .office-list { border-block-start: 0; }
+  .office-scroll .office-list > li:last-child { border-block-end: 0; }
+  /* The map leads the Cities page on a phone */
+  .cities-map { order: -1; }
+  /* Service tabs are one swipeable row instead of a wrapped heap */
+  .svc-tabs { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity; padding-block-end: var(--space-1); scrollbar-width: none; }
+  .svc-tabs::-webkit-scrollbar { display: none; }
+  .svc-tabs button { flex: none; scroll-snap-align: center; }
+}
+.invest-welcome__lead { text-wrap: wrap; }
