@@ -240,3 +240,7 @@ dl.card-grid .card dt { font-weight: 600; }
   .svc-tabs button { flex: none; scroll-snap-align: center; }
 }
 .invest-welcome__lead { text-wrap: wrap; }
+
+/* No browser focus box or tap flash on the map; keyboard focus still shows as a gold outline on the town itself */
+.bmap, .bmap * { -webkit-tap-highlight-color: transparent; }
+.bmap :focus, .bmap a:focus, .bmap svg:focus { outline: none; }
