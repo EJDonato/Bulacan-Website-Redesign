@@ -13,7 +13,6 @@ const open = vacancies.length;
 
 <PageShell
   page={page}
-  eyebrow="Provincial Human Resource Management Office"
   lead={`${open} published vacant plantilla positions, the Province's HR policies, and the forms you need to apply.`}
   description="Vacant positions, HR policies and application forms of the Provincial Government of Bulacan. A page in a concept redesign, not the official website."
 >
@@ -25,35 +24,44 @@ const open = vacancies.length;
   </nav>
 
   <section class="page-section" id="vacancies" aria-labelledby="vacancies-h" data-filter="positions">
-    <h2 id="vacancies-h">Publication of vacant plantilla positions</h2>
-    <p class="page-note">Newest first. Each notice opens as a file on bulacan.gov.ph.</p>
-
-    <div class="find" data-filter-box hidden>
-      <label for="vacancy-find">Find a position or office</label>
-      <input id="vacancy-find" type="search" placeholder="For example: nurse, accounting, 2026" autocomplete="off" data-filter-input />
-      <p class="find-status" role="status" data-filter-status></p>
+    <div class="section-bar">
+      <div>
+        <h2 id="vacancies-h">Publication of vacant plantilla positions</h2>
+        <p class="page-note">Newest first. Each notice opens as a file on bulacan.gov.ph.</p>
+      </div>
+      <div class="find" data-filter-box hidden>
+        <label for="vacancy-find">Find a position or office</label>
+        <input id="vacancy-find" type="search" placeholder="For example: nurse, accounting, 2026" autocomplete="off" data-filter-input />
+        <p class="find-status" role="status" data-filter-status></p>
+      </div>
     </div>
 
-    <ul class="doc-list vacancy-list" role="list">
-      {
-        vacancies.map((v) => (
-          <li data-filter-item>
-            {v.href ? (
-              <a class="doc" href={v.href} target="_blank" rel="noopener noreferrer">
-                <span class="doc__icon icon-start" style="--icon-start: var(--icon-file-text)" aria-hidden="true" />
-                <span class="doc__label">
-                  {v.title}
-                  <span class="doc__meta">Posted {v.date}</span>
-                  <span class="visually-hidden"> (file opens in a new tab)</span>
-                </span>
-              </a>
-            ) : (
-              <span class="doc is-missing"><span class="doc__label">{v.title}<span class="doc__meta">Posted {v.date}</span></span></span>
-            )}
-          </li>
-        ))
-      }
-    </ul>
+    <div class="table-wrap vacancy-table" tabindex="0" role="region" aria-label="Vacant positions, scrolls">
+      <table class="data-table">
+        <thead>
+          <tr><th scope="col">Posted</th><th scope="col">Position and office</th><th scope="col"><span class="visually-hidden">Notice</span></th></tr>
+        </thead>
+        <tbody>
+          {
+            vacancies.map((v) => (
+              <tr data-filter-item>
+                <td class="vacancy-table__date">{v.date}</td>
+                <th scope="row">{v.title}</th>
+                <td class="vacancy-table__open">
+                  {v.href ? (
+                    <a class="icon-end" style="--icon-end: var(--icon-external-link)" href={v.href} target="_blank" rel="noopener noreferrer">
+                      Open<span class="visually-hidden"> notice for {v.title} (file opens in a new tab)</span>
+                    </a>
+                  ) : (
+                    <span class="vacancy-table__none">No file</span>
+                  )}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
     <p class="page-note" data-filter-empty hidden>No position matches that search.</p>
   </section>
 
@@ -61,7 +69,7 @@ const open = vacancies.length;
     <h2 id="forms-h">Personal Data Sheet (PDS)</h2>
     {
       pdsForms.map((g) => (
-        <ul class="doc-list" role="list">
+        <ul class="doc-list doc-list--cols" role="list">
           {g.links.map((l) => (
             <li>
               <a class="doc" href={l.href} target="_blank" rel="noopener noreferrer">

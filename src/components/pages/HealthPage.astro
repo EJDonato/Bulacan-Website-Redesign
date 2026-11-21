@@ -10,11 +10,26 @@ interface Props {
 }
 const { page } = Astro.props;
 
+const extraFacts: Record<string, string[][]> = {
+  'Emergency Room': [['24 hours', 'open every day'], ['6', 'beds'], ['OPD Complex', 'at the entrance']],
+  'Laboratory': [['7', 'sections, from blood bank to drug testing'], ['OPD Complex', 'right wing']],
+  'Pharmacy': [['24 / 7', 'for patients and walk-in customers']],
+  'Radiology': [['X-ray', 'basic services'], ['CT scan', 'spiral CAT-SCAN']],
+  'Private Rooms': [['3', 'pay wards'], ['7', 'room types']],
+  'Dialysis Unit': [['9', 'hemodialysis machines'], ['3rd floor', 'BMC Building, Mojon'], ['2012', 'established']],
+};
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-const toc = [
-  { id: 'in-patient', label: 'In-patient' },
-  { id: 'out-patient', label: 'Out-patient' },
-  ...services.map((s) => ({ id: slug(s.title), label: s.title })),
+const panels = [
+  { id: 'in-patient', label: 'In-patient', title: 'In-patient', paras: inPatient, facts: [['4', 'clinical departments'], ['50+', 'beds per department'], ['ICU · NICU · PICU', 'special care units']], opd: false },
+  { id: 'out-patient', label: 'Out-patient', title: 'Out-patient', paras: outPatient, facts: [['Mon – Fri', 'OPD days'], ['8 am – 5 pm', 'clinic hours']], opd: true },
+  ...services.map((s) => ({
+    id: slug(s.title),
+    label: s.title,
+    title: s.title,
+    paras: s.paragraphs,
+    facts: (extraFacts[s.title] ?? []) as string[][],
+    opd: false,
+  })),
 ];
 
 // "Private Rooms" ends with a list of room types after "These consists of:".
@@ -26,45 +41,51 @@ const split = (paras: string[]) => {
 
 <PageShell
   page={page}
-  eyebrow="Provincial Public Health Office"
   lead="Services and schedules at Bulacan Medical Center, and the district hospitals across the province."
   description="Bulacan Medical Center services and the district hospitals of Bulacan. A page in a concept redesign, not the official website."
 >
-  <section class="page-section" aria-labelledby="bmc-h">
+  <section class="page-section" aria-labelledby="bmc-h" data-health>
     <h2 id="bmc-h">Bulacan Medical Center</h2>
-    <nav class="pill-tabs" aria-label="Services and facilities">
-      {toc.map((t) => <a href={`#${t.id}`}>{t.label}</a>)}
-    </nav>
 
-    <div class="health-grid">
-      <article class="card health-card health-card--wide" id="in-patient">
-        <h3>In-patient</h3>
-        {inPatient.map((p) => <p>{p}</p>)}
-      </article>
+    <ul class="glance" role="list" aria-label="At a glance">
+      <li><span class="glance__icon icon-start" style="--icon-start: var(--icon-hospital)" aria-hidden="true"></span><strong>4</strong><span>clinical departments</span></li>
+      <li><span class="glance__icon icon-start" style="--icon-start: var(--icon-clock)" aria-hidden="true"></span><strong>24 / 7</strong><span>emergency room and pharmacy</span></li>
+      <li><span class="glance__icon icon-start" style="--icon-start: var(--icon-calendar)" aria-hidden="true"></span><strong>Mon – Fri</strong><span>out-patient clinics, 8 am – 5 pm</span></li>
+      <li><span class="glance__icon icon-start" style="--icon-start: var(--icon-building-2)" aria-hidden="true"></span><strong>{hospitals.length}</strong><span>district hospitals across the province</span></li>
+    </ul>
 
-      <article class="card health-card health-card--wide" id="out-patient">
-        <h3>Out-patient</h3>
-        {outPatient.map((p) => <p>{p}</p>)}
-        <div class="table-wrap" tabindex="0" role="region" aria-label="Out-patient schedule">
-          <table class="data-table">
-            <thead>
-              <tr><th scope="col">OPD cases</th><th scope="col">Location</th><th scope="col">Schedule</th></tr>
-            </thead>
-            <tbody>
-              {opd.map((r) => <tr><th scope="row">{r.cases}</th><td>{r.location}</td><td>{r.schedule}</td></tr>)}
-            </tbody>
-          </table>
-        </div>
-      </article>
+    <div class="svc-tabs pill-tabs" role="tablist" aria-label="Services and facilities" data-health-tabs hidden>
+      {panels.map((t, i) => <button type="button" role="tab" id={`tab-${t.id}`} aria-controls={`panel-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={t.id}>{t.label}</button>)}
+    </div>
 
+    <div class="svc-panels">
       {
-        services.map((s) => {
-          const { text, list } = split(s.paragraphs);
+        panels.map((t) => {
+          const { text, list } = split(t.paras);
           return (
-            <article class="card health-card" id={slug(s.title)}>
-              <h3>{s.title}</h3>
-              {text.map((p) => <p>{p}</p>)}
-              {list.length > 0 && <ul class="health-list">{list.map((x) => <li>{x}</li>)}</ul>}
+            <article class="svc" id={`panel-${t.id}`} role="tabpanel" aria-labelledby={`tab-${t.id}`} data-panel={t.id}>
+              <div class="svc__main">
+                <h3>{t.title}</h3>
+                {text.map((p) => <p>{p}</p>)}
+                {list.length > 0 && <ul class="health-list">{list.map((x) => <li>{x}</li>)}</ul>}
+                {t.opd && (
+                  <div class="table-wrap" tabindex="0" role="region" aria-label="Out-patient schedule">
+                    <table class="data-table">
+                      <thead>
+                        <tr><th scope="col">OPD cases</th><th scope="col">Location</th><th scope="col">Schedule</th></tr>
+                      </thead>
+                      <tbody>
+                        {opd.map((r) => <tr><th scope="row">{r.cases}</th><td>{r.location}</td><td>{r.schedule}</td></tr>)}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+              {t.facts.length > 0 && (
+                <dl class="svc__facts">
+                  {t.facts.map(([v, l]) => <div><dd>{v}</dd><dt>{l}</dt></div>)}
+                </dl>
+              )}
             </article>
           );
         })
@@ -91,3 +112,36 @@ const split = (paras: string[]) => {
     </ul>
   </section>
 </PageShell>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-health]');
+  const tabs = root?.querySelector<HTMLElement>('[data-health-tabs]');
+  if (root && tabs) {
+    // Every panel is in the page; with script, one shows at a time.
+    tabs.hidden = false;
+    root.classList.add('is-tabbed');
+    const buttons = [...tabs.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const show = (id: string, focus = false) => {
+      buttons.forEach((b) => {
+        const on = b.dataset.tab === id;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        if (on && focus) b.focus();
+      });
+      panels.forEach((p) => (p.hidden = p.dataset.panel !== id));
+    };
+    buttons.forEach((b, i) => {
+      b.addEventListener('click', () => show(b.dataset.tab!));
+      b.addEventListener('keydown', (e) => {
+        const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (step) {
+          e.preventDefault();
+          show(buttons[(i + step + buttons.length) % buttons.length].dataset.tab!, true);
+        }
+      });
+    });
+    const fromHash = location.hash.slice(1).replace(/^panel-/, '');
+    show(buttons.some((b) => b.dataset.tab === fromHash) ? fromHash : buttons[0].dataset.tab!);
+  }
+</script>

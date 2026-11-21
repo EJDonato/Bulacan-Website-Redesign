@@ -44,7 +44,8 @@ dl.card-grid .card dt { font-weight: 600; }
 
 /* HR */
 .policy-grid { display: grid; gap: var(--space-4); }
-@media (min-width: 801px) { .policy-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Masonry columns so a short card never leaves a hole beside a tall one */
+@media (min-width: 801px) { .policy-grid { display: block; columns: 2; column-gap: var(--space-4); } .policy-grid > .card { break-inside: avoid; margin-block-end: var(--space-4); } }
 .policy-grid .card h3 { font-size: var(--text-lg); margin-block-end: var(--space-2); }
 .eeo { padding: var(--space-5); border: 1px solid var(--navy-100); border-radius: var(--radius-lg); background: var(--navy-50); }
 .eeo__title { font-size: var(--text-xl); }
@@ -172,3 +173,34 @@ dl.card-grid .card dt { font-weight: 600; }
 .town-detail .town__numbers > div { flex-direction: column; justify-content: flex-start; gap: 2px; }
 .town-detail .town__numbers dd { color: var(--navy-950); font: 700 var(--text-lg) / 1.2 var(--font-sans, inherit); font-variant-numeric: tabular-nums; }
 .town-detail .town__numbers dd { margin: 0; text-align: start; }
+
+/* Health: at-a-glance tiles and one-at-a-time service panels */
+.glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: var(--space-3); }
+.glance li { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "icon value" "icon label"; column-gap: var(--space-3); align-items: center; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--navy-950); color: var(--white); }
+.glance__icon { grid-area: icon; display: grid; place-items: center; inline-size: 2.5rem; block-size: 2.5rem; border-radius: var(--radius-full); background: rgb(255 255 255 / 0.1); color: var(--gold-300); --icon-style-size: 1.25rem; --icon-style-spacing: 0; }
+.glance strong { grid-area: value; font: 700 var(--text-xl) / 1.15 var(--font-serif); }
+.glance li > span:last-child { grid-area: label; color: var(--navy-200); font-size: var(--text-sm); line-height: 1.3; }
+.svc-tabs { margin-block-start: var(--space-2); }
+.svc { display: grid; gap: var(--space-5); padding: var(--space-5); border: 1px solid var(--navy-100); border-radius: var(--radius-lg); background: var(--white); }
+.is-tabbed .svc[hidden] { display: none; }
+.svc-panels { display: grid; gap: var(--space-4); }
+.svc__main { display: grid; gap: var(--space-3); align-content: start; min-inline-size: 0; }
+.svc__main h3 { font-size: var(--text-xl); }
+.svc__main p { line-height: 1.6; max-inline-size: 70ch; }
+.svc__facts { display: grid; gap: var(--space-2); align-content: start; }
+.svc__facts > div { display: flex; flex-direction: column-reverse; gap: 2px; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--navy-50); }
+.svc__facts dd { margin: 0; color: var(--navy-950); font: 700 var(--text-xl) / 1.1 var(--font-serif); }
+.svc__facts dt { color: var(--text-muted); font-size: var(--text-sm); }
+@media (min-width: 900px) { .svc { grid-template-columns: minmax(0, 1fr) 16rem; gap: var(--space-6); } }
+
+/* HR: contained vacancy table, two-column form links */
+.vacancy-table { max-block-size: 26rem; }
+.vacancy-table thead th { position: sticky; inset-block-start: 0; z-index: 1; }
+.vacancy-table .data-table tbody th { font-weight: 600; color: var(--navy-950); }
+.vacancy-table__date { white-space: nowrap; color: var(--text-muted); }
+.vacancy-table__open { white-space: nowrap; text-align: end; }
+.vacancy-table__open a { --icon-style-size: 0.9em; font-weight: 600; text-decoration: none; }
+.vacancy-table__open a:hover { text-decoration: underline; }
+.vacancy-table__none { color: var(--text-subtle); }
+.vacancy-table tbody tr:hover > * { background: var(--navy-50); }
+.doc-list--cols { grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); }
