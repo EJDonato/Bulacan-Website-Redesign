@@ -1,0 +1,29 @@
+/* Transparency band: a calm white strip with a gold edge, between the quick links and the news. */
+
+.transparency { background: var(--white); border-block-end: 1px solid var(--navy-100); padding-block: var(--space-6); }
+.transparency__inner { display: grid; gap: var(--space-5); align-items: center; }
+@media (min-width: 801px) { .transparency__inner { grid-template-columns: 1fr auto; gap: var(--space-7); } }
+
+.transparency__text { display: grid; gap: var(--space-1); padding-inline-start: var(--space-4); border-inline-start: 3px solid var(--gold-500); max-inline-size: 60ch; }
+.transparency__text h2 { font-size: var(--text-xl); }
+.transparency__text p:not(.eyebrow) { color: var(--fg-muted); }
+
+.transparency__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.transparency__years { display: flex; gap: var(--space-2); }
+.transparency__years a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding-inline: var(--space-4);
+  border: 1.5px solid var(--navy-200);
+  border-radius: var(--radius-full);
+  color: var(--navy-700);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color var(--dur-instant) var(--ease-out), border-color var(--dur-instant) var(--ease-out);
+}
+.transparency__years a:hover { background: var(--navy-50); border-color: var(--navy-700); }
+
+.quick-links + .transparency + .section { padding-block-start: var(--space-7); }
+
+@media (forced-colors: active) { .transparency__years a { border-color: ButtonText; } }

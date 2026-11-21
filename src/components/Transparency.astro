@@ -1,0 +1,29 @@
+---
+/**
+ * Transparency band: a slim, always-visible way into the Full Disclosure Report, right under the quick links.
+ * The recent-year chips deep-link into the report (#fdr-YYYY).
+ */
+import '../styles/buttons.css';
+import '../styles/transparency.css';
+import { fdrYears } from '../data/fullDisclosure';
+import { page } from '../data/site';
+
+const href = page('/government/full-disclosure-report/');
+const recent = fdrYears.slice(0, 3);
+---
+
+<section class="transparency" aria-labelledby="transparency-title">
+  <div class="container transparency__inner">
+    <div class="transparency__text">
+      <p class="eyebrow">Transparency</p>
+      <h2 id="transparency-title">Full Disclosure Report</h2>
+      <p>Where the Province's money goes: budgets, procurement plans and quarterly financial reports.</p>
+    </div>
+    <div class="transparency__actions">
+      <ul class="transparency__years" aria-label="Open a recent year">
+        {recent.map((y) => <li><a href={`${href}#fdr-${y.year}`}>{y.year}</a></li>)}
+      </ul>
+      <a class="btn btn--primary icon-end" style="--icon-end: var(--icon-arrow-right)" href={href}>View all reports</a>
+    </div>
+  </div>
+</section>

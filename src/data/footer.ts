@@ -28,6 +28,7 @@ export const footerColumns: FooterColumn[] = [
       { label: 'Government', href: page('/government/') },
       { label: 'Cities and Municipalities', href: page('/cities-and-municipalities/') },
       { label: "Citizen's Charter", href: page('/government/citizens-charter/') },
+      { label: 'Full Disclosure Report', href: page('/government/full-disclosure-report/') },
       { label: 'HR Corner', href: page('/hr-corner/') },
       { label: 'Contact Us', href: page('/contact-us/') },
     ],

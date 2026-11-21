@@ -14,6 +14,7 @@ export const conceptPages: readonly string[] = [
   '/cities-and-municipalities/',
   '/government/offices/',
   '/government/citizens-charter/',
+  '/government/full-disclosure-report/',
   '/invest-in-bulacan/',
   '/health/',
   '/tourism/',

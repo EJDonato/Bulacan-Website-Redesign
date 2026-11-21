@@ -11,6 +11,11 @@
   --hero-max-h: min(640px, calc(100svh - var(--header-h) - var(--space-8)));
 }
 @media (min-width: 641px) { .hero { padding-block: var(--space-5) var(--space-5); } }
+/* On desktop the six quick links sit in one row (about 160px) right under the hero. Leave room for the hero's own
+   padding and slim bar (about 76px) plus that row, so they are visible without scrolling. */
+@media (min-width: 1025px) {
+  .hero { --hero-max-h: max(320px, min(640px, calc(100svh - var(--header-h) - 15rem))); }
+}
 
 .hero__wrap {
   max-inline-size: 1440px;

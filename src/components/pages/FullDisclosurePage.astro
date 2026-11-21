@@ -1,0 +1,138 @@
+---
+import PageShell from '../PageShell.astro';
+import { fdrYears, fdrSource } from '../../data/fullDisclosure';
+import type { PageEntry } from '../../data/pages';
+
+/**
+ * Full Disclosure Report: every annual and quarterly report by year, newest first. All years are in the HTML (the year
+ * chips are anchors), and script shows one year at a time plus a "find a report" filter.
+ */
+interface Props {
+  page: PageEntry;
+}
+const { page } = Astro.props;
+
+const QUARTERS = [1, 2, 3, 4] as const;
+const QLABEL = ['First', 'Second', 'Third', 'Fourth'];
+const latest = fdrYears[0].year;
+const earliest = fdrYears[fdrYears.length - 1].year;
+---
+
+<PageShell
+  page={page}
+  eyebrow="Transparency"
+  lead={`The Province's budgets, procurement plans and quarterly financial reports, ${earliest} to ${latest}. Choose a year to see its documents.`}
+  description="Annual and quarterly Full Disclosure Reports of the Provincial Government of Bulacan, 2012 to 2026. A page in a concept redesign, not the official website."
+>
+  <div class="fdr" data-fdr>
+    <nav class="page-section" aria-label="Choose a year">
+      <h2 class="visually-hidden">Year</h2>
+      <ul class="pill-tabs" role="list">
+        {
+          fdrYears.map((y, i) => (
+            <li>
+              <a href={`#fdr-${y.year}`} aria-current={i === 0 ? 'true' : undefined} data-fdr-year={y.year}>{y.year}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="find" data-fdr-find hidden>
+      <label for="fdr-find">Find a report in this year</label>
+      <input id="fdr-find" type="search" placeholder="For example: cash flows, bid results, GAD" autocomplete="off" />
+      <p class="find-status" role="status" data-fdr-status></p>
+    </div>
+
+    {
+      fdrYears.map((y, i) => (
+        <section class="fdr-year page-section" id={`fdr-${y.year}`} aria-labelledby={`fdr-h-${y.year}`} data-fdr-panel={y.year}>
+          <h2 id={`fdr-h-${y.year}`} tabindex="-1">Full Disclosure Report {y.year}</h2>
+
+          <div class="page-section" data-fdr-block>
+            <h3>I. Annual reports</h3>
+            <ul class="doc-list" role="list">
+              {y.annual.map((d) => (
+                <li data-fdr-item>
+                  {d.href ? (
+                    <a class="doc" href={d.href} target="_blank" rel="noopener noreferrer">
+                      <span class="doc__icon icon-start" style="--icon-start: var(--icon-file-text)" aria-hidden="true" />
+                      <span class="doc__label">{d.label}<span class="visually-hidden"> (PDF, opens in a new tab)</span></span>
+                      <span class="doc__tag" aria-hidden="true">PDF</span>
+                    </a>
+                  ) : (
+                    <span class="doc is-missing">
+                      <span class="doc__label">{d.label}<span class="visually-hidden"> (no file posted)</span></span>
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="page-section" data-fdr-block>
+            <h3>II. Quarterly reports</h3>
+            <ul class="fdr-groups" role="list">
+              {y.quarterly.map((g) => (
+                <li class="fdr-group" data-fdr-item>
+                  <p class="fdr-group__title">{g.title}</p>
+                  <ul class="fdr-quarters" role="list">
+                    {QUARTERS.map((q) => {
+                      const d = g.docs.find((x) => x.q === q);
+                      return (
+                        <li>
+                          {d?.href ? (
+                            <a class="fdr-q" href={d.href} target="_blank" rel="noopener noreferrer">
+                              <span aria-hidden="true">Q{q}</span>
+                              <span class="visually-hidden">{QLABEL[q - 1]} quarter, {g.title} (PDF, opens in a new tab)</span>
+                            </a>
+                          ) : (
+                            <span class="fdr-q is-missing">
+                              <span aria-hidden="true">Q{q}</span>
+                              <span class="visually-hidden">{QLABEL[q - 1]} quarter, {g.title}: not posted</span>
+                            </span>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {y.other.length > 0 && (
+            <div class="page-section" data-fdr-block>
+              <h3>Other documents</h3>
+              <ul class="doc-list" role="list">
+                {y.other.map((d) => (
+                  <li data-fdr-item>
+                    {d.href ? (
+                      <a class="doc" href={d.href} target="_blank" rel="noopener noreferrer">
+                        <span class="doc__icon icon-start" style="--icon-start: var(--icon-file-text)" aria-hidden="true" />
+                        <span class="doc__label">{d.label}<span class="visually-hidden"> (PDF, opens in a new tab)</span></span>
+                        <span class="doc__tag" aria-hidden="true">PDF</span>
+                      </a>
+                    ) : (
+                      <span class="doc is-missing"><span class="doc__label">{d.label}</span></span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <p class="page-note">
+            Source: {fdrSource}. Documents open as PDFs on bulacan.gov.ph.{i === 0 ? ' Quarters not yet posted are shown dimmed.' : ''}
+          </p>
+        </section>
+      ))
+    }
+
+    <p class="page-note" data-fdr-empty hidden>No report matches that search in this year.</p>
+  </div>
+</PageShell>
+
+<script>
+  import '../../scripts/fullDisclosure';
+</script>

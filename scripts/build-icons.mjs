@@ -12,6 +12,8 @@ const names = [
   'external-link', 'house', 'info', 'check', 'play', 'pause', 'qr-code', 'quote',
   // quick links (content.md §4)
   'map-pinned', 'building-2', 'file-check-2', 'briefcase', 'trending-up', 'hospital',
+  // inner pages
+  'file-text', 'phone', 'mail', 'clock', 'calendar', 'download', 'map-pin', 'award', 'shield-check', 'landmark',
 ];
 
 const encode = (svg) =>

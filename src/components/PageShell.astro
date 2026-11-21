@@ -1,0 +1,61 @@
+---
+import '../styles/buttons.css';
+import '../styles/inner.css';
+import '../styles/pages.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import type { PageEntry } from '../data/pages';
+
+/**
+ * Frame for a designed inner page: breadcrumb, intro band (eyebrow, h1, lead) and a body slot.
+ * Pages that have no dedicated component use InnerPage.astro (the placeholder) instead.
+ */
+interface Props {
+  page: PageEntry;
+  lead?: string;
+  eyebrow?: string;
+  description?: string;
+}
+
+const { page, lead, eyebrow, description } = Astro.props;
+const home = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title={page.title} description={description ?? `${page.title}. A page in a concept redesign of the Provincial Government of Bulacan website. Not the official website.`}>
+  <Header slot="header" />
+
+  <div class="inner">
+    <nav class="breadcrumb" aria-label="Breadcrumbs">
+      <ol class="container">
+        <li><a href={home}>Home</a></li>
+        {
+          page.crumbs.map((c) => (
+            <li>{c.href ? <a href={c.href}>{c.title}</a> : <span class="breadcrumb-text">{c.title}</span>}</li>
+          ))
+        }
+        <li><a href={page.href} aria-current="page">{page.title}</a></li>
+      </ol>
+    </nav>
+
+    <header class="inner-intro">
+      <div class="container inner-intro-grid">
+        <div class="inner-intro-text">
+          {eyebrow && <p class="inner-eyebrow">{eyebrow}</p>}
+          <h1>{page.title}</h1>
+          {lead && <p class="inner-lead">{lead}</p>}
+          <slot name="intro" />
+        </div>
+      </div>
+    </header>
+
+    <div class="container page-body">
+      <slot />
+
+      <p class="page-original">
+        <a class="icon-end" style="--icon-end: var(--icon-external-link)" href={page.official} target="_blank" rel="noopener noreferrer">
+          View this page on bulacan.gov.ph<span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
