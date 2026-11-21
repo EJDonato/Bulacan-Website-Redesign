@@ -129,7 +129,17 @@ const split = (paras: string[]) => {
         b.tabIndex = on ? 0 : -1;
         if (on && focus) b.focus();
       });
-      panels.forEach((p) => (p.hidden = p.dataset.panel !== id));
+      panels.forEach((p) => {
+        const on = p.dataset.panel === id;
+        const wasHidden = p.hidden;
+        p.hidden = !on;
+        // Restart the entry animation each time a card is shown, but not on first paint.
+        p.classList.remove('is-entering');
+        if (on && wasHidden && root.dataset.ready) {
+          void p.offsetWidth;
+          p.classList.add('is-entering');
+        }
+      });
     };
     buttons.forEach((b, i) => {
       b.addEventListener('click', () => show(b.dataset.tab!));
@@ -143,5 +153,6 @@ const split = (paras: string[]) => {
     });
     const fromHash = location.hash.slice(1).replace(/^panel-/, '');
     show(buttons.some((b) => b.dataset.tab === fromHash) ? fromHash : buttons[0].dataset.tab!);
+    root.dataset.ready = 'true';
   }
 </script>

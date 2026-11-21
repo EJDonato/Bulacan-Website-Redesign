@@ -206,3 +206,11 @@ dl.card-grid .card dt { font-weight: 600; }
 .vacancy-table__none { color: var(--text-subtle); }
 .vacancy-table tbody tr:hover > * { background: var(--navy-50); }
 .doc-list--cols { grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); }
+
+/* Health: a card eases in when selected, its figures following one after another */
+.svc.is-entering { animation: enter-up var(--dur-medium) var(--ease-out) both; --enter-distance: 12px; }
+.svc.is-entering .svc__facts > div { animation: enter-up var(--dur-slow) var(--ease-out) both; --enter-distance: 10px; }
+.svc.is-entering .svc__facts > div:nth-child(1) { animation-delay: 90ms; }
+.svc.is-entering .svc__facts > div:nth-child(2) { animation-delay: 150ms; }
+.svc.is-entering .svc__facts > div:nth-child(3) { animation-delay: 210ms; }
+.svc-tabs button { transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-instant) var(--ease-out); }
