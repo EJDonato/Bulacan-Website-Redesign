@@ -2,13 +2,10 @@
 import { Image } from 'astro:assets';
 import PageShell from '../PageShell.astro';
 import type { PageEntry } from '../../data/pages';
+import cover from '../../assets/pages/charter/handbook-cover.jpg';
 import qr from '../../assets/pages/charter/QRcode_FeedbackRedressMechanism.jpg';
-import mark2015 from '../../assets/pages/charter/ISO_TestMark2015-300x111.jpg';
-import cert2015 from '../../assets/pages/charter/ISO_Cert2015-212x300.jpg';
-import mark2008 from '../../assets/pages/charter/ISO_TestMark2008-300x111.jpg';
-import cert2008 from '../../assets/pages/charter/ISO_Cert2008-216x300.jpg';
 
-/** Citizen's Charter: the handbook, related documents, the feedback mechanism and ISO certifications. */
+/** Citizen's Charter: the handbook, related documents and the feedback mechanism. */
 interface Props {
   page: PageEntry;
 }
@@ -21,26 +18,24 @@ const docs = [
   { label: 'SALN blank form', href: `${U}/2022/01/Blank_SALN_Form.docx`, tag: 'DOCX' },
   { label: '2018 Department Performance Commitment and Review (DPCR) ranking, in alphabetical order', href: `${U}/2022/08/dpcrRANKING_alphabetical.pdf`, tag: 'PDF' },
 ];
-const certs = [
-  { year: 2015, mark: mark2015, cert: cert2015, certHref: `${U}/2021/06/ISO_Cert2015.jpg`, markHref: `${U}/2021/06/ISO_TestMark2015-scaled.jpg` },
-  { year: 2008, mark: mark2008, cert: cert2008, certHref: `${U}/2021/06/ISO_Cert2008.jpg`, markHref: `${U}/2021/06/ISO_TestMark2008-scaled.jpg` },
-];
 ---
 
 <PageShell
   page={page}
-  eyebrow="Services"
   lead="What each service needs, what it costs and how long it takes, in one handbook."
   description="Citizen's Charter of the Provincial Government of Bulacan. A page in a concept redesign, not the official website."
 >
-  <section class="charter-hero" aria-labelledby="handbook-h">
-    <div class="charter-hero__text">
-      <p class="eyebrow">2026, first edition</p>
-      <h2 id="handbook-h">Citizen's Charter Handbook</h2>
-      <p>The Province's updated Citizen's Charter: every frontline service, its requirements, fees and processing time.</p>
-    </div>
-    <a class="btn btn--accent icon-end" style="--icon-end: var(--icon-download)" href={handbook} target="_blank" rel="noopener noreferrer">
-      Open the handbook (PDF)<span class="visually-hidden"> (opens in a new tab)</span>
+  <section class="charter-pub" aria-labelledby="handbook-h">
+    <a class="charter-pub__link" href={handbook} target="_blank" rel="noopener noreferrer">
+      <span class="charter-pub__cover">
+        <Image src={cover} alt="Cover of the Citizen's Charter Handbook 2026, first edition" widths={[200, 320, 480]} sizes="160px" width={320} quality={72} />
+      </span>
+      <span class="charter-pub__text">
+        <span class="charter-pub__title" id="handbook-h">Citizen's Charter Handbook</span>
+        <span class="charter-pub__issue">2026, first edition</span>
+        <span class="charter-pub__desc">The Province's updated Citizen's Charter: every frontline service, its requirements, fees and processing time.</span>
+        <span class="charter-pub__cta icon-end" style="--icon-end: var(--icon-download)">Open the handbook (PDF)<span class="visually-hidden"> (opens in a new tab)</span></span>
+      </span>
     </a>
   </section>
 
@@ -71,29 +66,6 @@ const certs = [
           Open the form<span class="visually-hidden"> (opens in a new tab)</span>
         </a>
       </div>
-    </div>
-  </section>
-
-  <section class="page-section" aria-labelledby="iso-h">
-    <h2 id="iso-h">Provincial Government of Bulacan ISO certification</h2>
-    <div class="card-grid">
-      {
-        certs.map((c) => (
-          <article class="card iso">
-            <h3>{c.year} certification</h3>
-            <div class="iso__images">
-              <a href={c.markHref} target="_blank" rel="noopener noreferrer">
-                <Image src={c.mark} alt={`ISO ${c.year} test mark`} loading="lazy" />
-                <span class="visually-hidden">View the {c.year} test mark at full size (opens in a new tab)</span>
-              </a>
-              <a href={c.certHref} target="_blank" rel="noopener noreferrer">
-                <Image src={c.cert} alt={`ISO ${c.year} certificate`} loading="lazy" />
-                <span class="visually-hidden">View the {c.year} certificate at full size (opens in a new tab)</span>
-              </a>
-            </div>
-          </article>
-        ))
-      }
     </div>
   </section>
 </PageShell>
