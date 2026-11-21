@@ -12,3 +12,50 @@
     transition-duration: 150ms !important;
   }
 }
+
+/* Page entry: on every inner page the title band, then each section, then list rows ease up into place.
+   Pure CSS from a keyframe, so it runs on load without script and never leaves content hidden. */
+@keyframes enter-up {
+  from { opacity: 0; transform: translateY(var(--enter-distance, 14px)); }
+  to { opacity: 1; transform: none; }
+}
+.inner :is(.breadcrumb, .inner-intro-text > *, .page-body > *, .page-original) {
+  animation: enter-up var(--dur-slow) var(--ease-out) both;
+}
+.inner .breadcrumb { animation-name: enter-up; --enter-distance: 6px; animation-duration: var(--dur-medium); }
+.inner .inner-intro-text > :nth-child(1) { animation-delay: 40ms; }
+.inner .inner-intro-text > :nth-child(2) { animation-delay: 90ms; }
+.inner .inner-intro-text > :nth-child(n+3) { animation-delay: 140ms; }
+.inner .page-body > :nth-child(1) { animation-delay: 120ms; }
+.inner .page-body > :nth-child(2) { animation-delay: 190ms; }
+.inner .page-body > :nth-child(3) { animation-delay: 260ms; }
+.inner .page-body > :nth-child(n+4) { animation-delay: 320ms; }
+/* Rows and cards inside the first sections cascade quickly, capped so long lists do not drag */
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(-n+14) {
+  animation: enter-up var(--dur-slow) var(--ease-out) both;
+  animation-delay: calc(180ms + var(--i, 0) * 28ms);
+  --enter-distance: 10px;
+}
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(1) { --i: 0; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(2) { --i: 1; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(3) { --i: 2; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(4) { --i: 3; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(5) { --i: 4; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(6) { --i: 5; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(7) { --i: 6; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(8) { --i: 7; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(9) { --i: 8; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(10) { --i: 9; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(11) { --i: 10; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(12) { --i: 11; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(13) { --i: 12; }
+.inner .page-body :is(.office-list, .card-grid, .hotlines, .doc-list) > :nth-child(14) { --i: 13; }
+@media (prefers-reduced-motion: reduce) {
+  .inner * { --enter-distance: 0px; }
+}
+
+/* Home entry: the hero slides up first; the quick links, News and the rest below it already reveal on scroll. */
+.hero__wrap { animation: enter-up var(--dur-slow) var(--ease-out) 60ms both; --enter-distance: 18px; }
+@media (prefers-reduced-motion: reduce) {
+  .hero__wrap { --enter-distance: 0px; }
+}

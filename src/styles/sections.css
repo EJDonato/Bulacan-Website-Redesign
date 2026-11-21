@@ -8,25 +8,14 @@
 .section--tight { padding-block: var(--space-6); }
 @media (min-width: 1025px) { .section--tight { padding-block: var(--space-7); } }
 
-/* Section heading block: architectural hairline rule with gold notch, h2, optional lead, optional "view all" link. */
+/* Section heading block: h2, optional lead, optional "view all" link. No rule above it. */
 .section-head {
   display: grid;
   gap: var(--space-3);
   margin-block-end: var(--space-6);
-  padding-block-start: var(--space-4);
-  border-block-start: 1px solid var(--border);
   position: relative;
 }
-.section-head__bar {
-  position: absolute;
-  inset-block-start: -1px;
-  inset-inline-start: 0;
-  inline-size: 48px;
-  block-size: 2px;
-  background: var(--gold-500);
-}
-.section--inverse .section-head { border-block-start-color: rgb(255 255 255 / 0.2); }
-.section--inverse .section-head__bar { background: var(--gold-400); }
+.section-head__bar { display: none; }
 .section-head__row { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-3) var(--space-5); }
 .section-head__lead { max-inline-size: 65ch; color: var(--fg-muted); font-size: var(--text-lg); line-height: 1.5; }
 .section--inverse .section-head__lead { color: var(--fg-inverse-muted); }

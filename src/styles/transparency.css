@@ -1,10 +1,10 @@
-/* Transparency band: a calm white strip with a gold edge, between the quick links and the news. */
+/* Transparency band: a calm white strip between the quick links and the news. */
 
 .transparency { background: var(--white); border-block-end: 1px solid var(--navy-100); padding-block: var(--space-6); }
 .transparency__inner { display: grid; gap: var(--space-5); align-items: center; }
 @media (min-width: 801px) { .transparency__inner { grid-template-columns: 1fr auto; gap: var(--space-7); } }
 
-.transparency__text { display: grid; gap: var(--space-1); padding-inline-start: var(--space-4); border-inline-start: 3px solid var(--gold-500); max-inline-size: 60ch; }
+.transparency__text { display: grid; gap: var(--space-1); max-inline-size: 60ch; }
 .transparency__text h2 { font-size: var(--text-xl); }
 .transparency__text p:not(.eyebrow) { color: var(--fg-muted); }
 

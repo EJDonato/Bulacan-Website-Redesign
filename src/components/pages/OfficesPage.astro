@@ -17,7 +17,7 @@ const rows = offices.map((o) => {
 
 // "796-2087 / 662-0273" -> one tap-to-call link per local number (area code 044); anything else stays plain text
 const callable = (value: string) =>
-  value.split('/').map((part) => {
+  value.split('/').filter((part) => part.trim()).map((part) => {
     const n = part.trim();
     return /^\d{3}-\d{4}$/.test(n) ? { n, href: `tel:+6344${n.replace('-', '')}` } : { n, href: '' };
   });
@@ -51,8 +51,8 @@ const callable = (value: string) =>
         rows.map((o) => (
           <li data-filter-item>
             <a class="office icon-end" style="--icon-end: var(--icon-external-link)" href={o.href} target="_blank" rel="noopener noreferrer">
-              <span class="office__abbr">{o.abbr}</span>
               <span class="office__name">{o.name}<span class="visually-hidden"> (opens in a new tab)</span></span>
+              <span class="office__abbr">{o.abbr}</span>
             </a>
           </li>
         ))

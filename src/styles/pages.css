@@ -149,14 +149,14 @@ a.fdr-q:active { transform: scale(var(--press-scale)); }
 }
 .office-list > li { border-block-end: 1px solid var(--navy-100); }
 .office {
-  display: grid; grid-template-columns: 5.5rem 1fr auto; align-items: baseline; gap: var(--space-3);
+  display: grid; grid-template-columns: 1fr auto auto; align-items: baseline; gap: var(--space-3);
   min-block-size: 48px; padding: var(--space-3) var(--space-2);
   color: var(--navy-950); line-height: 1.35; text-decoration: none; --icon-style-size: 1rem;
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 .office:hover { background: var(--navy-50); }
 .office:hover .office__name { text-decoration: underline; text-underline-offset: 3px; }
-.office__abbr { color: var(--navy-700); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.02em; }
+.office__abbr { justify-self: end; color: var(--navy-700); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.02em; }
 .office__name { min-inline-size: 0; }
 .office:focus-visible { outline-offset: -2px; }
 
@@ -179,3 +179,6 @@ a.fdr-q:active { transform: scale(var(--press-scale)); }
 .section-bar .emergency-sub { margin-block-start: 0; }
 .section-bar .find-status { min-block-size: 0; }
 .section-bar .page-note { margin-block-start: var(--space-2); }
+.hotlines dd { margin: 0; }
+/* Two-column tables (awards, wages) stay readable instead of stretching across the page */
+.table-wrap:not(:has(th:nth-child(3))) { max-inline-size: 44rem; }

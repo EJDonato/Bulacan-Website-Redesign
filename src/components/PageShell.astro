@@ -18,7 +18,7 @@ interface Props {
   description?: string;
 }
 
-const { page, lead, eyebrow, description } = Astro.props;
+const { page, lead, description } = Astro.props;
 const home = import.meta.env.BASE_URL;
 ---
 
@@ -41,7 +41,6 @@ const home = import.meta.env.BASE_URL;
     <header class="inner-intro">
       <div class="container inner-intro-grid">
         <div class="inner-intro-text">
-          {eyebrow && <p class="inner-eyebrow">{eyebrow}</p>}
           <h1>{page.title}</h1>
           {lead && <p class="inner-lead">{lead}</p>}
           <slot name="intro" />
