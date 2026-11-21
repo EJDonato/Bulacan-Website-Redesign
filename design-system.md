@@ -385,6 +385,24 @@ Rendered as text in `--text-subtle` with a dashed underline and a tooltip/label 
 
 ---
 
+### 9.14 Inner pages (designed)
+
+All designed inner pages use `PageShell.astro` (breadcrumb, intro band with eyebrow, h1 and lead, then a body) and the building blocks in `src/styles/pages.css`: pill tabs (year or section chips), find box (`listFilter.ts`, hidden until script runs), document row (`.doc`, file icon + PDF tag, opens in a new tab), card grid, data table in a scrollable region. Page-specific styles live in `pages-extra.css`. Pages map to components in `components/dedicated.ts`.
+
+| Page | Pattern |
+| --- | --- |
+| Full Disclosure Report | Year chips (2012 to 2026, newest first, deep link `#fdr-YYYY`), annual document rows, a Q1 to Q4 grid per quarterly report, find-a-report filter. Also a homepage Transparency band and a footer link. |
+| Offices | Filterable grid of 29 offices (official pages), emergency-numbers table, provincial emergency cards. |
+| Cities and Municipalities | Filterable 24-card grid with fire, police and disaster numbers, sticky province map on desktop. |
+| Citizen's Charter | Handbook call to action, related documents, feedback QR and form, ISO certificates. |
+| Invest in Bulacan | Welcome text, awards table, labor stat tiles, wage table, PPP code. |
+| Health | Bulacan Medical Center service cards with the out-patient schedule table, district hospital photo cards. |
+| Tourism | Banner, six explore tiles, events, three video links. |
+| HR Corner | Filterable vacancies (96), PDS forms, policy documents, English/Filipino EEO statement toggle. |
+| Contact Us | Emergency and feedback cards, filterable directory of 55 offices with mailto and tel links. |
+
+Content is copied from bulacan.gov.ph (fetched 2026-11-21) into `src/data/` (`fullDisclosure.ts`, `directory.ts`, `contacts.ts`, `hr.ts`, `health.ts`). Documents and office pages stay on the official site and open in a new tab.
+
 ## 10. Tokens file preview
 
 ```css

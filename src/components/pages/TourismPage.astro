@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import PageShell from '../PageShell.astro';
+import type { PageEntry } from '../../data/pages';
+import banner from '../../assets/pages/tourism/Its-more-fun-in-Bulacan.jpg';
+import festivals from '../../assets/pages/tourism/Festivals.jpg';
+import historical from '../../assets/pages/tourism/Historical-Shrines.jpg';
+import churches from '../../assets/pages/tourism/Churches.jpg';
+import eco from '../../assets/pages/tourism/Tourism-site1.jpg';
+import delicacies from '../../assets/pages/tourism/Native-Delicacies.jpg';
+
+/** Tourism: the five ways to explore Bulacan, the Province's events, and its featured videos. */
+interface Props {
+  page: PageEntry;
+}
+const { page } = Astro.props;
+const T = 'https://bulacan.gov.ph/tourism';
+
+const categories = [
+  { label: 'Historical sites', href: `${T}/historical-sites/`, image: historical, alt: 'Casa Real, the Marcelo H. del Pilar Shrine and the Meyto Shrine' },
+  { label: 'Heritage sites', href: `${T}/heritage-sites/`, image: undefined, alt: '' },
+  { label: 'Ecological sites', href: `${T}__trashed/ecological-sites/`, image: eco, alt: 'Bulacan eco-tourism sites: caves, rivers and falls' },
+  { label: 'Religious sites', href: `${T}__trashed/religious-sites/`, image: churches, alt: 'Century-old churches of Bulacan' },
+  { label: 'Festivals', href: `${T}__trashed/festivals/`, image: festivals, alt: 'Bulacan festivals: Singkaban, Angel, Kneeling Carabao and more' },
+];
+
+const events = [
+  { name: 'Singkaban Festival', text: '"Sining at Kalinangan ng Bulacan, Pamanang Babalik-balikan!"', href: 'https://www.facebook.com/PHACTOTourism/' },
+  { name: 'SINEliksik', text: 'Bulacan Docufest', href: 'https://sineliksik.bulacan.gov.ph/index.php' },
+  { name: 'LIS Award', text: 'Search for Outstanding Public Libraries with Innovative Program to Promote Literacy', href: 'https://lisaward.bulacan.gov.ph/index.php' },
+];
+
+const videos = [
+  { id: '4TkLlMw02JQ', title: 'Tourist Destinations' },
+  { id: 'fp7sDKDUEfI', title: 'Pasalubong Center' },
+  { id: 'FFkYnYjKi_w', title: 'Bulakenyo, Dangal ng Lahi' },
+];
+---
+
+<PageShell
+  page={page}
+  eyebrow="Discover fun in Bulacan"
+  lead="Historic shrines, century-old churches, eco-tourism sites, festivals and native delicacies, an hour or less from Manila."
+  description="Tourism in Bulacan: sites, festivals and videos. A page in a concept redesign, not the official website."
+>
+  <figure class="tourism-banner">
+    <Image src={banner} alt="Discover Fun in Bulacan" widths={[640, 1024, 1440]} sizes="(min-width: 1232px) 1200px, 100vw" loading="eager" />
+  </figure>
+
+  <section class="page-section" aria-labelledby="explore-h">
+    <h2 id="explore-h">Explore Bulacan</h2>
+    <ul class="card-grid tourism-grid" role="list">
+      {
+        categories.map((c) => (
+          <li>
+            <a class="tour-card" href={c.href} target="_blank" rel="noopener noreferrer">
+              {c.image ? (
+                <Image src={c.image} alt={c.alt} widths={[480, 720, 1024]} sizes="(min-width: 1025px) 380px, (min-width: 641px) 45vw, 100vw" loading="lazy" />
+              ) : (
+                <span class="tour-card__plain" aria-hidden="true" />
+              )}
+              <span class="tour-card__label icon-end" style="--icon-end: var(--icon-external-link)">
+                {c.label}<span class="visually-hidden"> (opens in a new tab)</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a class="tour-card" href={`${T}/where-to-stay-dine-and-have-fun/`} target="_blank" rel="noopener noreferrer">
+          <Image src={delicacies} alt="Authentic and native delicacies of Bulacan" widths={[480, 720, 1024]} sizes="(min-width: 1025px) 380px, (min-width: 641px) 45vw, 100vw" loading="lazy" />
+          <span class="tour-card__label icon-end" style="--icon-end: var(--icon-external-link)">
+            Where to stay, dine and have fun<span class="visually-hidden"> (opens in a new tab)</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="page-section" aria-labelledby="events-h">
+    <h2 id="events-h">Events and awards</h2>
+    <ul class="card-grid" role="list">
+      {
+        events.map((e) => (
+          <li>
+            <a class="card card-link" href={e.href} target="_blank" rel="noopener noreferrer">
+              <h3 class="icon-end" style="--icon-end: var(--icon-external-link)">{e.name}<span class="visually-hidden"> (opens in a new tab)</span></h3>
+              <p>{e.text}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="page-section" aria-labelledby="tv-h">
+    <h2 id="tv-h">Featured videos</h2>
+    <ul class="card-grid" role="list">
+      {
+        videos.map((v) => (
+          <li>
+            <a class="video-link" href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener noreferrer">
+              <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" />
+              <span class="video-link__label">{v.title}<span class="visually-hidden"> (video on YouTube, opens in a new tab)</span></span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</PageShell>

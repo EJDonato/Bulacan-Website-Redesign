@@ -1,0 +1,102 @@
+---
+import PageShell from '../PageShell.astro';
+import { contacts } from '../../data/contacts';
+import type { PageEntry } from '../../data/pages';
+import { page as sitePage } from '../../data/site';
+
+/** Contact Us: the full directory of offices with heads, emails, phone numbers and social pages. */
+interface Props {
+  page: PageEntry;
+}
+const { page } = Astro.props;
+
+const isEmail = (l: string) => /[\w.-]+@[\w.-]+\.\w+/.test(l);
+const email = (l: string) => l.match(/[A-Za-z][\w.-]*@[\w.-]+\.\w+/)![0];
+const lead = (l: string) => l.replace(/[A-Za-z][\w.-]*@[\w.-]+\.\w+/, '').trim();
+// tel: link for the first number on a line like "+63(44) 791-8170/8171".
+const tel = (l: string) => {
+  const m = l.match(/\+?[\d()][\d()\s-]{5,}\d/);
+  return m ? 'tel:' + m[0].replace(/[^\d+]/g, '') : null;
+};
+const isPhone = (l: string) => !isEmail(l) && /\d{3}-\d{3,4}/.test(l);
+const social = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+
+<PageShell
+  page={page}
+  eyebrow="Get in touch"
+  lead={`Emails, phone numbers and social pages of ${contacts.length} provincial offices and hospitals.`}
+  description="Contact directory of Bulacan provincial government offices. A page in a concept redesign, not the official website."
+>
+  <section class="contact-help" aria-label="Other ways to reach us">
+    <div class="card">
+      <h2>Emergency?</h2>
+      <p>Fire, police and disaster-council numbers for every city and municipality are on the Offices page.</p>
+      <a class="btn btn--primary" href={sitePage('/government/offices/') + '#emergency'}>See emergency numbers</a>
+    </div>
+    <div class="card">
+      <h2>Tell us your concern</h2>
+      <p>Share feedback about a service through the Province's Feedback and Redress form.</p>
+      <a class="btn btn--secondary" href="https://forms.gle/iWRccrL6EdD3t3rk7" target="_blank" rel="noopener noreferrer">
+        Open the feedback form<span class="visually-hidden"> (opens in a new tab)</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="directory-h" data-filter="offices">
+    <h2 id="directory-h">Office directory</h2>
+
+    <div class="find" data-filter-box hidden>
+      <label for="contact-find">Find an office, person or email</label>
+      <input id="contact-find" type="search" placeholder="For example: treasurer, PDRRMO, hospital" autocomplete="off" data-filter-input />
+      <p class="find-status" role="status" data-filter-status></p>
+    </div>
+
+    <ul class="card-grid contact-grid" role="list">
+      {
+        contacts.map((c) => (
+          <li data-filter-item>
+            <article class="card contact">
+              <h3>
+                {c.href ? (
+                  <a href={c.href} target="_blank" rel="noopener noreferrer">{c.name}<span class="visually-hidden"> (opens in a new tab)</span></a>
+                ) : (
+                  c.name
+                )}
+              </h3>
+              {c.head && <p class="contact__head">{c.head}</p>}
+              <ul class="contact__lines" role="list">
+                {
+                  c.lines.map((l) =>
+                    isEmail(l) ? (
+                      <li class="contact__email">
+                        {lead(l) && <span>{lead(l)} </span>}
+                        <a href={`mailto:${email(l)}`}>{email(l)}</a>
+                      </li>
+                    ) : isPhone(l) && tel(l) ? (
+                      <li><a href={tel(l)!}>{l}</a></li>
+                    ) : (
+                      <li class="contact__label">{l}</li>
+                    ),
+                  )
+                }
+              </ul>
+              {c.social.length > 0 && (
+                <ul class="contact__social" role="list" aria-label="Social pages">
+                  {c.social.map((s) => (
+                    <li><a href={s} target="_blank" rel="noopener noreferrer">{social(s)}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="page-note" data-filter-empty hidden>No office matches that search.</p>
+  </section>
+</PageShell>
+
+<script>
+  import '../../scripts/listFilter';
+</script>

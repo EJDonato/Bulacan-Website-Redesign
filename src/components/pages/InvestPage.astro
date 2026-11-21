@@ -1,0 +1,105 @@
+---
+import PageShell from '../PageShell.astro';
+import type { PageEntry } from '../../data/pages';
+
+/** Invest in Bulacan: the welcome message, awards, labor figures and wage rates, as published by the Province. */
+interface Props {
+  page: PageEntry;
+}
+const { page } = Astro.props;
+
+const welcome = [
+  'For many years now, Bulacan has become one of the most favorite business destinations in the country. Just 15 minutes away from Metropolitan Manila, we offer a business experience like no other. We take pride in our competent and empowered workforce, well-managed tax collection program, modernized transportation and communication system, well-developed infrastructure support, abundant natural resources, and an attractive business incentive package, making every investor feel the warm welcome of the Bulakenyos. We have also maintained a community conducive to doing business.',
+  'With our continuous effort to respond to the demands of the times, the Provincial Government is investing in important projects that will benefit not only our business partners in Bulacan but all over Luzon. Bulacan is also coming up with an Information and Communications Technology (ICT) Park which will serve as the center for ICT-related businesses in the province.',
+  'But more importantly, Bulacan is investing in equipping our people with the right skills and knowledge to be able to develop a generation of entrepreneurs, competitive and determined to face the challenges of the changing times.',
+  'Visit us, and experience for yourself what we have in store for you.',
+];
+
+const awards = [
+  { year: 2022, result: 'Winner' },
+  { year: 2021, result: 'Finalist' },
+  { year: 2020, result: 'Winner' },
+  { year: 2019, result: 'Special Citation' },
+  { year: 2018, result: 'Finalist' },
+  { year: 2017, result: 'Special Citation' },
+  { year: 2016, result: 'Winner' },
+  { year: 2015, result: 'Winner' },
+];
+
+const labor = [
+  { value: '2,623,946', label: 'Population 15 years old and over' },
+  { value: '59.3%', label: 'Labor force participation rate' },
+  { value: '91.6%', label: 'Employment rate' },
+  { value: '7.7%', label: 'Unemployment rate' },
+];
+
+const wages = [
+  { sector: 'Non-agriculture', rate: '443.00 – 450.00' },
+  { sector: 'Agriculture (plantation)', rate: '420.00' },
+  { sector: 'Agriculture (non-plantation)', rate: '404.00' },
+  { sector: 'Retail / service', rate: '425.00 – 439.00' },
+];
+---
+
+<PageShell
+  page={page}
+  eyebrow="Business and investment"
+  lead="Welcome to Bulacan, the Most Business-Friendly Province in the Philippines."
+  description="Why invest in Bulacan: awards, labor force and wage rates. A page in a concept redesign, not the official website."
+>
+  <section class="page-section invest-welcome" aria-labelledby="welcome-h">
+    <h2 id="welcome-h">Why Bulacan</h2>
+    <div class="prose">
+      {welcome.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="awards-h">
+    <h2 id="awards-h">Awards received</h2>
+    <p class="page-note">Consistent "Most Business-Friendly Province" awardee of the Philippine Chamber of Commerce and Industry.</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <caption class="visually-hidden">Most Business-Friendly LGU Award, by year</caption>
+        <thead><tr><th scope="col">Year</th><th scope="col">Most Business-Friendly LGU Award</th></tr></thead>
+        <tbody>
+          {awards.map((a) => <tr><th scope="row">{a.year}</th><td>{a.result}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="labor-h">
+    <h2 id="labor-h">Labor and employment</h2>
+    <p class="page-note">Source: PSA Labor Force Survey 2021.</p>
+    <dl class="stat-grid">
+      {labor.map((s) => <div class="stat"><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
+    </dl>
+  </section>
+
+  <section class="page-section" aria-labelledby="wage-h">
+    <h2 id="wage-h">Daily minimum wage rates (in pesos)</h2>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th scope="col">Sector</th><th scope="col">Rate per day</th></tr></thead>
+        <tbody>
+          {wages.map((w) => <tr><th scope="row">{w.sector}</th><td>{w.rate}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+    <p class="page-note">
+      Basic pay per day for all provinces in Region 3 (excluding Aurora), based on National Wages and Productivity Commission
+      Wage Order No. RBIII-23, effective June 20, 2022. Retail and service rates are as of May 1, 2020.
+    </p>
+  </section>
+
+  <section class="page-section" aria-labelledby="ppp-h">
+    <h2 id="ppp-h">Existing Public-Private Partnership Code</h2>
+    <div class="card">
+      <h3>Provincial Ordinance No. 18-2015</h3>
+      <p>
+        A Provincial Code Adopting and Pursuing a Public-Private Partnership Approach Towards Development, Creating a PPP
+        Regulatory Authority, and Providing Appropriations and Incentives Therefor, and For Other Purposes.
+      </p>
+    </div>
+  </section>
+</PageShell>

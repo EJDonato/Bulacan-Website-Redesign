@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets';
+import PageShell from '../PageShell.astro';
+import type { PageEntry } from '../../data/pages';
+import qr from '../../assets/pages/charter/QRcode_FeedbackRedressMechanism.jpg';
+import mark2015 from '../../assets/pages/charter/ISO_TestMark2015-300x111.jpg';
+import cert2015 from '../../assets/pages/charter/ISO_Cert2015-212x300.jpg';
+import mark2008 from '../../assets/pages/charter/ISO_TestMark2008-300x111.jpg';
+import cert2008 from '../../assets/pages/charter/ISO_Cert2008-216x300.jpg';
+
+/** Citizen's Charter: the handbook, related documents, the feedback mechanism and ISO certifications. */
+interface Props {
+  page: PageEntry;
+}
+const { page } = Astro.props;
+const U = 'https://bulacan.gov.ph/wp-content/uploads';
+
+const handbook = `${U}/2026/03/CitizensCharterHandbook2026_1stEdition.pdf`;
+const docs = [
+  { label: 'Filing of Statement of Assets, Liabilities and Net Worth (SALN)', href: `${U}/2022/01/SALN_memo.pdf`, tag: 'PDF' },
+  { label: 'SALN blank form', href: `${U}/2022/01/Blank_SALN_Form.docx`, tag: 'DOCX' },
+  { label: '2018 Department Performance Commitment and Review (DPCR) ranking, in alphabetical order', href: `${U}/2022/08/dpcrRANKING_alphabetical.pdf`, tag: 'PDF' },
+];
+const certs = [
+  { year: 2015, mark: mark2015, cert: cert2015, certHref: `${U}/2021/06/ISO_Cert2015.jpg`, markHref: `${U}/2021/06/ISO_TestMark2015-scaled.jpg` },
+  { year: 2008, mark: mark2008, cert: cert2008, certHref: `${U}/2021/06/ISO_Cert2008.jpg`, markHref: `${U}/2021/06/ISO_TestMark2008-scaled.jpg` },
+];
+---
+
+<PageShell
+  page={page}
+  eyebrow="Services"
+  lead="What each service needs, what it costs and how long it takes, in one handbook."
+  description="Citizen's Charter of the Provincial Government of Bulacan. A page in a concept redesign, not the official website."
+>
+  <section class="charter-hero" aria-labelledby="handbook-h">
+    <div class="charter-hero__text">
+      <p class="eyebrow">2026, first edition</p>
+      <h2 id="handbook-h">Citizen's Charter Handbook</h2>
+      <p>The Province's updated Citizen's Charter: every frontline service, its requirements, fees and processing time.</p>
+    </div>
+    <a class="btn btn--accent icon-end" style="--icon-end: var(--icon-download)" href={handbook} target="_blank" rel="noopener noreferrer">
+      Open the handbook (PDF)<span class="visually-hidden"> (opens in a new tab)</span>
+    </a>
+  </section>
+
+  <section class="page-section" aria-labelledby="docs-h">
+    <h2 id="docs-h">Related documents</h2>
+    <ul class="doc-list" role="list">
+      {
+        docs.map((d) => (
+          <li>
+            <a class="doc" href={d.href} target="_blank" rel="noopener noreferrer">
+              <span class="doc__icon icon-start" style="--icon-start: var(--icon-file-text)" aria-hidden="true" />
+              <span class="doc__label">{d.label}<span class="visually-hidden"> (file opens in a new tab)</span></span>
+              <span class="doc__tag" aria-hidden="true">{d.tag}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="page-section" aria-labelledby="feedback-h">
+    <h2 id="feedback-h">Feedback and Redress Mechanism</h2>
+    <div class="feedback-card card">
+      <Image src={qr} alt="QR code that opens the Feedback and Redress Mechanism form" width={160} height={160} loading="lazy" />
+      <div>
+        <p>Used a service? Tell the Province how it went, or file a concern. Scan the code or open the form.</p>
+        <a class="btn btn--primary" href="https://forms.gle/iWRccrL6EdD3t3rk7" target="_blank" rel="noopener noreferrer">
+          Open the form<span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="iso-h">
+    <h2 id="iso-h">Provincial Government of Bulacan ISO certification</h2>
+    <div class="card-grid">
+      {
+        certs.map((c) => (
+          <article class="card iso">
+            <h3>{c.year} certification</h3>
+            <div class="iso__images">
+              <a href={c.markHref} target="_blank" rel="noopener noreferrer">
+                <Image src={c.mark} alt={`ISO ${c.year} test mark`} loading="lazy" />
+                <span class="visually-hidden">View the {c.year} test mark at full size (opens in a new tab)</span>
+              </a>
+              <a href={c.certHref} target="_blank" rel="noopener noreferrer">
+                <Image src={c.cert} alt={`ISO ${c.year} certificate`} loading="lazy" />
+                <span class="visually-hidden">View the {c.year} certificate at full size (opens in a new tab)</span>
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</PageShell>

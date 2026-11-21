@@ -1,0 +1,93 @@
+---
+import { Image } from 'astro:assets';
+import PageShell from '../PageShell.astro';
+import { inPatient, outPatient, opd, services, hospitals } from '../../data/health';
+import type { PageEntry } from '../../data/pages';
+
+/** Health: Bulacan Medical Center's services and schedules, then the district hospitals. */
+interface Props {
+  page: PageEntry;
+}
+const { page } = Astro.props;
+
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const toc = [
+  { id: 'in-patient', label: 'In-patient' },
+  { id: 'out-patient', label: 'Out-patient' },
+  ...services.map((s) => ({ id: slug(s.title), label: s.title })),
+];
+
+// "Private Rooms" ends with a list of room types after "These consists of:".
+const split = (paras: string[]) => {
+  const i = paras.findIndex((p) => /consists of:?$/i.test(p));
+  return i === -1 ? { text: paras, list: [] as string[] } : { text: paras.slice(0, i + 1), list: paras.slice(i + 1) };
+};
+---
+
+<PageShell
+  page={page}
+  eyebrow="Provincial Public Health Office"
+  lead="Services and schedules at Bulacan Medical Center, and the district hospitals across the province."
+  description="Bulacan Medical Center services and the district hospitals of Bulacan. A page in a concept redesign, not the official website."
+>
+  <section class="page-section" aria-labelledby="bmc-h">
+    <h2 id="bmc-h">Bulacan Medical Center</h2>
+    <nav class="pill-tabs" aria-label="Services and facilities">
+      {toc.map((t) => <a href={`#${t.id}`}>{t.label}</a>)}
+    </nav>
+
+    <div class="health-grid">
+      <article class="card health-card health-card--wide" id="in-patient">
+        <h3>In-patient</h3>
+        {inPatient.map((p) => <p>{p}</p>)}
+      </article>
+
+      <article class="card health-card health-card--wide" id="out-patient">
+        <h3>Out-patient</h3>
+        {outPatient.map((p) => <p>{p}</p>)}
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Out-patient schedule">
+          <table class="data-table">
+            <thead>
+              <tr><th scope="col">OPD cases</th><th scope="col">Location</th><th scope="col">Schedule</th></tr>
+            </thead>
+            <tbody>
+              {opd.map((r) => <tr><th scope="row">{r.cases}</th><td>{r.location}</td><td>{r.schedule}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      {
+        services.map((s) => {
+          const { text, list } = split(s.paragraphs);
+          return (
+            <article class="card health-card" id={slug(s.title)}>
+              <h3>{s.title}</h3>
+              {text.map((p) => <p>{p}</p>)}
+              {list.length > 0 && <ul class="health-list">{list.map((x) => <li>{x}</li>)}</ul>}
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="hospitals-h">
+    <h2 id="hospitals-h">District hospitals</h2>
+    <p class="page-note">Each hospital's page is on bulacan.gov.ph and opens in a new tab.</p>
+    <ul class="card-grid hospital-grid" role="list">
+      {
+        hospitals.map((h) => (
+          <li>
+            <a class="hospital" href={h.href} target="_blank" rel="noopener noreferrer">
+              <Image src={h.image} alt="" widths={[320, 480, 640]} sizes="(min-width: 1025px) 280px, (min-width: 641px) 45vw, 100vw" loading="lazy" />
+              <span class="hospital__name icon-end" style="--icon-end: var(--icon-external-link)">
+                {h.name}<span class="visually-hidden"> (opens in a new tab)</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</PageShell>

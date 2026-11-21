@@ -1,0 +1,109 @@
+/* Page-specific styles for the designed inner pages (cities, contact, HR, health, tourism, invest, charter). */
+
+.prose { display: grid; gap: var(--space-4); max-inline-size: 70ch; font-size: var(--text-lg); line-height: 1.65; }
+.doc__meta { display: block; margin-block-start: 2px; color: var(--text-muted); font-size: var(--text-sm); font-weight: 400; }
+.page-body > .pill-tabs { margin-block-end: calc(var(--space-4) * -1); }
+.card-grid > li { display: grid; }
+.card-grid .doc { block-size: 100%; }
+
+/* Emergency numbers */
+.emergency-sub { font-size: var(--text-lg); margin-block-start: var(--space-4); }
+.emergency-number { color: var(--navy-950) !important; font-size: var(--text-lg) !important; font-weight: 700; }
+dl.card-grid .card dt { font-weight: 600; }
+
+/* Cities */
+.cities-layout { display: grid; gap: var(--space-7); }
+@media (min-width: 1025px) {
+  .cities-layout { grid-template-columns: minmax(0, 1fr) 24rem; align-items: start; }
+  .cities-map { position: sticky; inset-block-start: calc(var(--header-h) + var(--space-5)); }
+}
+.cities-map { display: grid; gap: var(--space-3); }
+.cities-map img { inline-size: 100%; block-size: auto; border-radius: var(--radius-lg); border: 1px solid var(--navy-100); background: var(--white); }
+.town-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); }
+.town h3 a { text-decoration: none; color: var(--navy-700); --icon-style-size: 0.85em; }
+.town h3 a:hover { text-decoration: underline; }
+.town__kind { font-size: var(--text-sm); color: var(--text-muted); }
+.town__numbers { display: grid; gap: var(--space-1); margin-block-start: var(--space-2); padding-block-start: var(--space-3); border-block-start: 1px solid var(--navy-100); }
+.town__numbers > div { display: flex; justify-content: space-between; gap: var(--space-3); }
+.town__numbers dt { color: var(--text-muted); font-size: var(--text-sm); }
+.town__numbers dd { color: var(--navy-950); font-weight: 600; font-size: var(--text-sm); text-align: end; }
+
+/* Contact */
+.contact-help { display: grid; gap: var(--space-4); }
+@media (min-width: 801px) { .contact-help { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.contact-help .card { justify-items: start; gap: var(--space-3); padding: var(--space-5); }
+.contact-help h2 { font-size: var(--text-xl); }
+.contact-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); }
+.contact h3 { font-size: var(--text-base); }
+.contact h3 a { text-decoration: none; color: var(--navy-700); }
+.contact h3 a:hover { text-decoration: underline; }
+.contact__head { color: var(--text) !important; font-weight: 600; }
+.contact__lines { display: grid; gap: var(--space-1); font-size: var(--text-sm); overflow-wrap: anywhere; }
+.contact__label { color: var(--text-muted); margin-block-start: var(--space-2); font-weight: 600; }
+.contact__social { display: grid; gap: var(--space-1); margin-block-start: var(--space-2); padding-block-start: var(--space-3); border-block-start: 1px solid var(--navy-100); font-size: var(--text-sm); overflow-wrap: anywhere; }
+
+/* HR */
+.policy-grid { display: grid; gap: var(--space-4); }
+@media (min-width: 801px) { .policy-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.policy-grid .card h3 { font-size: var(--text-lg); margin-block-end: var(--space-2); }
+.eeo { padding: var(--space-5); border: 1px solid var(--navy-100); border-radius: var(--radius-lg); background: var(--navy-50); }
+.eeo__title { font-size: var(--text-xl); }
+.eeo__text { display: grid; gap: var(--space-3); max-inline-size: 75ch; line-height: 1.7; }
+.eeo__text[hidden] { display: none; }
+
+/* Health */
+.health-grid { display: grid; gap: var(--space-4); }
+@media (min-width: 801px) {
+  .health-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .health-card--wide { grid-column: 1 / -1; }
+}
+.health-card { scroll-margin-block-start: calc(var(--header-h) + var(--space-4)); padding: var(--space-5); gap: var(--space-3); }
+.health-card h3 { font-size: var(--text-lg); }
+.health-card p { color: var(--text); font-size: var(--text-base); line-height: 1.6; }
+.health-list { display: grid; gap: var(--space-1); padding-inline-start: var(--space-5); list-style: disc; color: var(--text); }
+.hospital-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+.hospital { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border: 1px solid var(--navy-100); border-radius: var(--radius-md); background: var(--white); color: var(--navy-700); font-weight: 600; text-decoration: none; transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out); }
+.hospital:hover { border-color: var(--navy-700); box-shadow: var(--shadow-1); }
+.hospital img { inline-size: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.hospital__name { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); line-height: 1.3; --icon-style-size: 1rem; }
+
+/* Tourism */
+.tourism-banner img { inline-size: 100%; block-size: auto; border-radius: var(--radius-lg); }
+.tourism-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); }
+.tour-card { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border: 1px solid var(--navy-100); border-radius: var(--radius-md); background: var(--white); color: var(--navy-700); font-weight: 600; text-decoration: none; transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out); }
+.tour-card:hover { border-color: var(--navy-700); box-shadow: var(--shadow-1); }
+.tour-card img { inline-size: 100%; aspect-ratio: 2500 / 1121; object-fit: cover; }
+.tour-card__plain { display: grid; place-items: center; aspect-ratio: 2500 / 1121; background: linear-gradient(135deg, var(--navy-800), var(--navy-950)); color: var(--gold-300); }
+.tour-card__plain::before { content: ""; inline-size: 3rem; block-size: 3rem; background: currentColor; mask: var(--icon-landmark) no-repeat center / contain; }
+.tour-card__label { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); --icon-style-size: 1rem; }
+.card .icon-end { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); --icon-style-size: 1rem; }
+.video-link { display: grid; overflow: hidden; border: 1px solid var(--navy-100); border-radius: var(--radius-md); background: var(--white); color: var(--navy-700); font-weight: 600; text-decoration: none; }
+.video-link:hover { border-color: var(--navy-700); box-shadow: var(--shadow-1); }
+.video-link img { inline-size: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.video-link__label { padding: var(--space-3) var(--space-4); }
+
+/* Invest */
+.stat-grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); }
+.stat { display: flex; flex-direction: column-reverse; gap: var(--space-1); padding: var(--space-4) var(--space-5); border: 1px solid var(--navy-100); border-inline-start: 3px solid var(--gold-500); border-radius: var(--radius-md); background: var(--white); }
+.stat dd { color: var(--navy-950); font: 700 var(--text-2xl) / 1.1 var(--font-serif); }
+.stat dt { color: var(--text-muted); font-size: var(--text-sm); }
+
+/* Citizen Charter */
+.charter-hero { display: grid; gap: var(--space-4); align-items: center; padding: var(--space-6); border-radius: var(--radius-lg); background: var(--navy-950); color: var(--white); }
+@media (min-width: 801px) { .charter-hero { grid-template-columns: 1fr auto; gap: var(--space-7); } }
+.charter-hero__text { display: grid; gap: var(--space-2); max-inline-size: 56ch; }
+.charter-hero h2 { font-size: var(--text-2xl); color: var(--white); }
+.charter-hero p:not(.eyebrow) { color: var(--navy-200); }
+.charter-hero .eyebrow { color: var(--gold-300); }
+.charter-hero .btn { --icon-style-size: 1.1em; }
+.feedback-card { display: grid; gap: var(--space-5); align-items: center; padding: var(--space-5); }
+@media (min-width: 641px) { .feedback-card { grid-template-columns: auto 1fr; } }
+.feedback-card > div { display: grid; gap: var(--space-3); justify-items: start; }
+.feedback-card p { color: var(--text); font-size: var(--text-base); }
+.feedback-card img { inline-size: 160px; block-size: auto; border: 1px solid var(--navy-100); border-radius: var(--radius-md); }
+.iso__images { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: flex-start; }
+.iso__images img { block-size: auto; max-inline-size: 100%; border: 1px solid var(--navy-100); border-radius: var(--radius-sm); }
+
+/* Buttons inside cards keep their own colors. */
+.card a.btn--primary { color: var(--white); text-decoration: none; }
+.card a.btn--secondary { color: var(--navy-700); text-decoration: none; }

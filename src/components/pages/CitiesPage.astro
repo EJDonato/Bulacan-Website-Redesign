@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import PageShell from '../PageShell.astro';
+import { municipalities } from '../../data/nav';
+import { municipalEmergency } from '../../data/directory';
+import map from '../../assets/pages/cities-map.png';
+import type { PageEntry } from '../../data/pages';
+
+/** Cities and Municipalities: the 24 local governments, with their emergency numbers. Town pages live on the official site. */
+interface Props {
+  page: PageEntry;
+}
+const { page } = Astro.props;
+
+// The emergency table abbreviates or reorders some names.
+const emergencyKey: Record<string, string> = {
+  'City of Malolos': 'Malolos City',
+  'Meycauayan City': 'Meycauayan',
+  'Doña Remedios Trinidad': 'DRT',
+  'San Jose del Monte City': 'SJDM',
+};
+const towns = municipalities.map((m) => {
+  const key = emergencyKey[m.label] ?? m.label;
+  const e = municipalEmergency.find((x) => x.place === key);
+  return { name: m.label, href: m.href!, city: /\bCity\b/.test(m.label), e };
+});
+const cityCount = towns.filter((t) => t.city).length;
+---
+
+<PageShell
+  page={page}
+  eyebrow="Local governments"
+  lead={`The ${towns.length} cities and municipalities of Bulacan (${cityCount} cities and ${towns.length - cityCount} municipalities), with the emergency numbers of each.`}
+  description="The 24 cities and municipalities of Bulacan with their emergency numbers. A page in a concept redesign, not the official website."
+>
+  <div class="cities-layout">
+    <section class="page-section" aria-labelledby="towns-h" data-filter="cities and municipalities">
+      <h2 id="towns-h">Find your city or municipality</h2>
+
+      <div class="find" data-filter-box hidden>
+        <label for="town-find">Search by name</label>
+        <input id="town-find" type="search" placeholder="For example: Malolos" autocomplete="off" data-filter-input />
+        <p class="find-status" role="status" data-filter-status></p>
+      </div>
+
+      <ul class="card-grid town-grid" role="list">
+        {
+          towns.map((t) => (
+            <li data-filter-item>
+              <article class="card town">
+                <h3>
+                  <a class="icon-end" style="--icon-end: var(--icon-external-link)" href={t.href} target="_blank" rel="noopener noreferrer">
+                    {t.name}<span class="visually-hidden"> on bulacan.gov.ph (opens in a new tab)</span>
+                  </a>
+                </h3>
+                <p class="town__kind">{t.city ? 'City' : 'Municipality'}</p>
+                {t.e && (
+                  <dl class="town__numbers">
+                    <div><dt>Fire</dt><dd>{t.e.fire || '—'}</dd></div>
+                    <div><dt>Police</dt><dd>{t.e.police || '—'}</dd></div>
+                    <div><dt>Disaster</dt><dd>{t.e.disaster || '—'}</dd></div>
+                  </dl>
+                )}
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="page-note" data-filter-empty hidden>No city or municipality matches that search.</p>
+    </section>
+
+    <aside class="cities-map" aria-label="Map of Bulacan">
+      <Image src={map} alt="Map of the Province of Bulacan showing its cities and municipalities" widths={[480, 720, 1024]} sizes="(min-width: 1025px) 380px, 100vw" loading="lazy" />
+      <p class="page-note">Fire, police and disaster-council numbers are as listed by the Province (area code 044).</p>
+    </aside>
+  </div>
+</PageShell>
+
+<script>
+  import '../../scripts/listFilter';
+</script>
