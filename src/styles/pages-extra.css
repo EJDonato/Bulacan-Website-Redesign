@@ -214,3 +214,5 @@ dl.card-grid .card dt { font-weight: 600; }
 .svc.is-entering .svc__facts > div:nth-child(2) { animation-delay: 150ms; }
 .svc.is-entering .svc__facts > div:nth-child(3) { animation-delay: 210ms; }
 .svc-tabs button { transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-instant) var(--ease-out); }
+.doc-list--cols > li { display: grid; }
+.doc-list--cols .doc { block-size: 100%; }
