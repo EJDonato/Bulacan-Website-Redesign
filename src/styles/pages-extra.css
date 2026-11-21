@@ -257,3 +257,7 @@ dl.card-grid .card dt { font-weight: 600; }
   .svc-tabs-more--prev { inset-inline-start: 0; }
   .svc-tabs-wrap[data-end="true"] .svc-tabs-more--next, .svc-tabs-wrap[data-start="true"] .svc-tabs-more--prev { display: grid; place-items: center; }
 }
+
+/* Grid children may shrink below their content, so a scrolling row never widens the page */
+.page-body > *, .page-section > *, .svc-tabs-wrap { min-inline-size: 0; }
+.svc-tabs-wrap { max-inline-size: 100%; }
