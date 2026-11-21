@@ -1,9 +1,8 @@
 ---
-import { Image } from 'astro:assets';
 import PageShell from '../PageShell.astro';
 import { municipalities } from '../../data/nav';
 import { municipalEmergency } from '../../data/directory';
-import map from '../../assets/pages/cities-map.png';
+import CitiesMap from './CitiesMap.astro';
 import type { PageEntry } from '../../data/pages';
 
 /** Cities and Municipalities: the 24 local governments, with their emergency numbers. Town pages live on the official site. */
@@ -29,7 +28,6 @@ const cityCount = towns.filter((t) => t.city).length;
 
 <PageShell
   page={page}
-  eyebrow="Local governments"
   lead={`The ${towns.length} cities and municipalities of Bulacan (${cityCount} cities and ${towns.length - cityCount} municipalities), with the emergency numbers of each.`}
   description="The 24 cities and municipalities of Bulacan with their emergency numbers. A page in a concept redesign, not the official website."
 >
@@ -47,7 +45,7 @@ const cityCount = towns.filter((t) => t.city).length;
         {
           towns.map((t) => (
             <li data-filter-item>
-              <article class="card town">
+              <article class="card town" data-town-card={t.name}>
                 <h3>
                   <a class="icon-end" style="--icon-end: var(--icon-external-link)" href={t.href} target="_blank" rel="noopener noreferrer">
                     {t.name}<span class="visually-hidden"> on bulacan.gov.ph (opens in a new tab)</span>
@@ -70,7 +68,7 @@ const cityCount = towns.filter((t) => t.city).length;
     </section>
 
     <aside class="cities-map" aria-label="Map of Bulacan">
-      <Image src={map} alt="Map of the Province of Bulacan showing its cities and municipalities" widths={[480, 720, 1024]} sizes="(min-width: 1025px) 380px, 100vw" loading="lazy" />
+      <CitiesMap towns={towns} />
       <p class="page-note">Fire, police and disaster-council numbers are as listed by the Province (area code 044).</p>
     </aside>
   </div>

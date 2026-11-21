@@ -14,7 +14,7 @@ dl.card-grid .card dt { font-weight: 600; }
 /* Cities */
 .cities-layout { display: grid; gap: var(--space-7); }
 @media (min-width: 1025px) {
-  .cities-layout { grid-template-columns: minmax(0, 1fr) 24rem; align-items: start; }
+  .cities-layout { grid-template-columns: minmax(0, 1fr) 30rem; align-items: start; }
   .cities-map { position: sticky; inset-block-start: calc(var(--header-h) + var(--space-5)); }
 }
 .cities-map { display: grid; gap: var(--space-3); }
@@ -110,3 +110,19 @@ dl.card-grid .card dt { font-weight: 600; }
 /* Buttons inside cards keep their own colors. */
 .card a.btn--primary { color: var(--white); text-decoration: none; }
 .card a.btn--secondary { color: var(--navy-700); text-decoration: none; }
+
+/* Province map: tilted slab with an extruded edge */
+.bmap { display: grid; gap: var(--space-2); margin: 0; }
+.bmap svg { inline-size: 100%; block-size: auto; overflow: visible; }
+.bmap__depth path { fill: var(--navy-400, #6f86c0); stroke: var(--navy-400, #6f86c0); stroke-width: 1; stroke-linejoin: round; }
+.bmap__land path { fill: var(--navy-200); stroke: var(--white); stroke-width: 1.6; stroke-linejoin: round; transition: fill var(--dur-fast) var(--ease-out); }
+.bmap__land path.is-city { fill: var(--navy-300, #8da4de); }
+.bmap__land a { outline: none; cursor: pointer; }
+.bmap__land a:hover path, .bmap__land a.is-active path, .bmap__land a:focus-visible path { fill: var(--navy-700); }
+.bmap__land a:focus-visible path { stroke: var(--gold-500); stroke-width: 3; }
+.bmap__caption { min-block-size: 1.5em; color: var(--navy-950); font-weight: 600; text-align: center; }
+.bmap__legend { display: flex; justify-content: center; align-items: center; gap: var(--space-2); color: var(--text-muted); font-size: var(--text-sm); }
+.bmap__key { inline-size: 0.9rem; block-size: 0.9rem; border-radius: 3px; background: var(--navy-200); margin-inline-start: var(--space-3); }
+.bmap__key--city { background: var(--navy-300, #8da4de); margin-inline-start: 0; }
+.town.is-active { border-color: var(--navy-700); box-shadow: var(--shadow-1); }
+@media (prefers-reduced-motion: reduce) { .bmap__land path { transition: none; } }
