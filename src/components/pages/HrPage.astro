@@ -132,10 +132,21 @@ const open = vacancies.length;
     const panels = [...root.querySelectorAll<HTMLElement>('[data-eeo-panel]')];
     const buttons = [...tabs.querySelectorAll<HTMLButtonElement>('button')];
     const show = (lang: string) => {
-      panels.forEach((p) => (p.hidden = p.dataset.eeoPanel !== lang));
+      panels.forEach((p) => {
+        const on = p.dataset.eeoPanel === lang;
+        const wasHidden = p.hidden;
+        p.hidden = !on;
+        // Restart the entry animation on each switch, but not on first paint.
+        p.classList.remove('is-entering');
+        if (on && wasHidden && root.dataset.ready) {
+          void p.offsetWidth;
+          p.classList.add('is-entering');
+        }
+      });
       buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     };
     buttons.forEach((b) => b.addEventListener('click', () => show(b.dataset.lang!)));
     show('en');
+    root.dataset.ready = 'true';
   }
 </script>
