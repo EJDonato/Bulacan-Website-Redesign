@@ -24,11 +24,12 @@
 .breadcrumb-text { color: var(--text-muted); }
 
 /* ---------- Intro band ---------- */
-.inner-intro { background: var(--navy-50); border-block-end: 1px solid var(--navy-100); padding-block: var(--space-7); }
-.inner-intro-grid { display: grid; gap: var(--space-6); align-items: center; }
-.inner-intro-text { display: grid; gap: var(--space-3); max-inline-size: 60ch; }
-.inner-eyebrow { font-size: var(--text-sm); font-weight: 600; color: var(--navy-700); }
-.inner-lead { font-size: var(--text-lg); color: var(--fg-muted); }
+.inner-intro { background: var(--navy-50); border-block-end: 1px solid var(--navy-100); padding-block: var(--space-4); }
+.inner-intro-grid { display: grid; gap: var(--space-4); align-items: center; }
+.inner-intro-text { display: grid; gap: var(--space-1); max-inline-size: 75ch; }
+.inner-intro-text h1 { font-size: var(--text-2xl); line-height: 1.15; }
+.inner-eyebrow { font-size: var(--text-sm); font-weight: 600; color: var(--navy-700); line-height: 1.3; }
+.inner-lead { font-size: var(--text-base, 1rem); color: var(--fg-muted); line-height: 1.45; }
 
 
 /* ---------- Body ---------- */
